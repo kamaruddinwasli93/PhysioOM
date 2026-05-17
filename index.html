@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysioMeasure - Clinical Outcome Assessment</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for stable browser icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & ReactDOM (UMD versions for browser) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel standalone to compile JSX in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Extract React Hooks
+        const { useState } = React;
+        
+        // --- ICON WRAPPER (Replaces Lucide to fix browser module errors) ---
+        const IconWrapper = ({ name, size = 16, className = "" }) => {
+            let sizeClass = 'text-base';
+            if (size <= 12) sizeClass = 'text-xs';
+            else if (size <= 16) sizeClass = 'text-sm';
+            else if (size <= 20) sizeClass = 'text-lg';
+            else if (size <= 24) sizeClass = 'text-xl';
+            else if (size <= 28) sizeClass = 'text-2xl';
+            else if (size <= 32) sizeClass = 'text-3xl';
+            else if (size <= 48) sizeClass = 'text-5xl';
+            
+            return <i className={`fa-solid ${name} ${sizeClass} ${className}`}></i>;
+        };
+
+        const Activity = (p) => <IconWrapper name="fa-chart-line" {...p} />;
+        const Users = (p) => <IconWrapper name="fa-users" {...p} />;
+        const ClipboardList = (p) => <IconWrapper name="fa-clipboard-list" {...p} />;
+        const TrendingUp = (p) => <IconWrapper name="fa-arrow-trend-up" {...p} />;
+        const AlertTriangle = (p) => <IconWrapper name="fa-triangle-exclamation" {...p} />;
+        const Plus = (p) => <IconWrapper name="fa-plus" {...p} />;
+        const FileText = (p) => <IconWrapper name="fa-file-lines" {...p} />;
+        const Search = (p) => <IconWrapper name="fa-magnifying-glass" {...p} />;
+        const ArrowRight = (p) => <IconWrapper name="fa-arrow-right" {...p} />;
+        const Printer = (p) => <IconWrapper name="fa-print" {...p} />;
+        const ChevronRight = (p) => <IconWrapper name="fa-chevron-right" {...p} />;
+        const BarChart2 = (p) => <IconWrapper name="fa-chart-column" {...p} />;
+        const Clock = (p) => <IconWrapper name="fa-clock" {...p} />;
+        const Home = (p) => <IconWrapper name="fa-house" {...p} />;
+        const Info = (p) => <IconWrapper name="fa-circle-info" {...p} />;
+        const Mail = (p) => <IconWrapper name="fa-envelope" {...p} />;
+
+        // --- DATA DEFINITIONS ---
+
+        const clinicalEvidence = {
+          // Neurology
+          'Berg Balance Scale (BBS)': {
+            population: 'Stroke, elderly fall risk, Parkinson disease, vestibular disorders, neurological balance deficits',
+            findings: 'BBS has excellent reliability and validity in stroke and predicts fall risk and functional balance performance. Best for mild–moderate balance impairment. Ceiling effect in higher-functioning patients.',
+            citation: 'Berg, K., Wood‑Dauphinee, S., Williams, J. I., & Gayton, D. (1989). Physiotherapy Canada, 41, 304–311. Blum & Korner‑Bitensky (2008).'
+          },
+          'Timed Up and Go Test (TUG)': {
+            population: 'Stroke, geriatrics, Parkinson disease, mobility impairment, fall-risk screening',
+            findings: 'TUG predicts mobility limitation and fall risk among community-dwelling older adults and neurological populations.',
+            citation: 'Podsiadlo, D., & Richardson, S. (1991). JAGS, 39(2),142–148.'
+          },
+          '10 Metre Walk Test': {
+            population: 'Stroke, SCI, Parkinson disease, post-neurological gait impairment',
+            findings: 'Suitable for gait speed and ambulatory classification. Walking speed strongly predicts community participation.',
+            citation: 'Perry, J., Garrett, M., Gronley, J. K., & Mulroy, S. J. (1995). Stroke, 26(6), 982–989.'
+          },
+          'Functional Reach Test': {
+            population: 'Elderly falls, stroke, vestibular dysfunction, Parkinson disease',
+            findings: 'Useful for identifying dynamic balance deficits and fall risk.',
+            citation: 'Duncan, P. W., Weiner, D. K., Chandler, J., & Studenski, S. (1990). Journal of Gerontology, 45, M192–M197.'
+          },
+          'Fugl-Meyer Assessment (Upper Limb)': {
+            population: 'Stroke hemiparesis, upper limb motor recovery',
+            findings: 'Considered one of the gold standards for evaluating post-stroke motor recovery.',
+            citation: 'Gladstone, D. J., Danells, C. J., & Black, S. E. (2002). Stroke, 33, 972–977.'
+          },
+          'Motor Assessment Scale (MAS)': {
+            population: 'Stroke rehabilitation',
+            findings: 'Appropriate for monitoring functional task recovery during stroke rehabilitation.',
+            citation: 'Carr, J. H., Shepherd, R. B., Nordholm, L., & Lynne, D. (1985). Physical Therapy, 65, 175–180.'
+          },
+          'NIH Stroke Scale': {
+            population: 'Acute stroke, hyperacute stroke, emergency stroke care',
+            findings: 'Primarily developed to quantify neurological severity in acute stroke.',
+            citation: 'Brott, T., Adams, H. P., Olinger, C. P., et al. (1989). Stroke, 20, 864–870.'
+          },
+          'Montreal Cognitive Assessment (MoCA)': {
+            population: 'Stroke, mild cognitive impairment, Parkinson disease, neurological cognitive screening',
+            findings: 'More sensitive than MMSE for mild cognitive impairment.',
+            citation: 'Nasreddine, Z. S., Phillips, N., Bédirian, V., et al. (2005). JAGS, 53, 695–699.'
+          },
+          'Box and Block Test': {
+            population: 'Stroke, hand injury, neurological upper limb dysfunction',
+            findings: 'Useful for gross manual dexterity.',
+            citation: 'Mathiowetz, V., Volland, G., Kashman, N., & Weber, K. (1985). AJOT, 39, 386–391.'
+          },
+          'Nine-Hole Peg Test': {
+            population: 'Stroke, multiple sclerosis, fine motor dysfunction',
+            findings: 'Sensitive for finger dexterity and hand coordination deficits.',
+            citation: 'Oxford Grice, K., Vogel, K. A., Le, V., et al. (2003). AJOT, 57, 570–573.'
+          },
+          'ASIA Impairment Scale': {
+            population: 'Spinal cord injury',
+            findings: 'International standard classification system for SCI neurological level and completeness.',
+            citation: 'Kirshblum, S., Waring, W., Biering-Sorensen, F., et al. (2011). J Spinal Cord Med, 34, 547–554.'
+          },
+          'Spinal Cord Independence Measure (SCIM)': {
+            population: 'Spinal cord injury rehabilitation',
+            findings: 'Specifically developed to measure function in SCI; more responsive than FIM in SCI populations.',
+            citation: 'Catz, A., Itzkovich, M., Agranov, E., Ring, H., & Tamir, A. (1997). Spinal Cord, 35, 850–856.'
+          },
+          'Tinetti Test': {
+            population: 'Geriatric patients, balance disorders, fall risk',
+            findings: 'Suitable for identifying balance and gait deficits in older adults.',
+            citation: 'Tinetti, M. E. (1986). JAGS, 34, 119–126.'
+          },
+
+          // Musculoskeletal
+          'Numeric Pain Rating Scale (NPRS)': {
+            population: 'Acute and chronic MSK pain, cervical, lumbar, post-operative pain',
+            findings: 'Reliable and responsive for measuring pain intensity across MSK conditions.',
+            citation: 'Farrar, J. T., Young, J. P., LaMoreaux, L., et al. (2001). Pain, 94, 149–158.'
+          },
+          'Oswestry Disability Index (ODI)': {
+            population: 'Low back pain, lumbar disc disease, radiculopathy, chronic spinal disorders',
+            findings: 'Considered a gold standard for measuring disability in low back pain.',
+            citation: 'Fairbank, J. C. T., & Pynsent, P. B. (2000). Spine, 25, 2940–2953.'
+          },
+          'Neck Disability Index (NDI)': {
+            population: 'Cervical pain, whiplash, cervical radiculopathy, chronic neck disorders',
+            findings: 'Valid and reliable for measuring neck-related functional limitation.',
+            citation: 'Vernon, H., & Mior, S. (1991). JMPT, 14, 409–415.'
+          },
+          'Patient Specific Functional Scale (PSFS)': {
+            population: 'General MSK conditions, individualized functional limitations, sports injury',
+            findings: 'Sensitive to functional changes and patient-centered goals.',
+            citation: 'Stratford, P., Gill, C., Westaway, M., & Binkley, J. (1995). Physiotherapy Canada, 47, 258–263.'
+          },
+          'Fear Avoidance Beliefs Questionnaire (FABQ)': {
+            population: 'Chronic low back pain, persistent pain, psychosocial assessment',
+            findings: 'High scores correlate with chronic disability and delayed return to activity/work.',
+            citation: 'Waddell, G., Newton, M., Henderson, I., et al. (1993). Pain, 52, 157–168.'
+          },
+
+          // Cardiorespiratory
+          'Six Minute Walk Test (6MWT)': {
+            population: 'COPD, heart failure, pulmonary rehab, stroke, cardiopulmonary deconditioning',
+            findings: 'Widely used to assess functional exercise capacity and monitor progress.',
+            citation: 'American Thoracic Society. (2002). AJRCCM, 166, 111–117.'
+          },
+          'Two Minute Walk Test (2MWT)': {
+            population: 'Frail elderly, severe cardiopulmonary limitation',
+            findings: 'Useful alternative when 6MWT is too physically demanding.',
+            citation: 'Brooks, D., Parsons, J., Hunter, J. P., et al. (2001). Arch Phys Med Rehabil, 82, 1478–1483.'
+          },
+          'Borg Rating of Perceived Exertion': {
+            population: 'Pulmonary rehab, exercise prescription, cardiac rehab, ICU',
+            findings: 'Strong correlation with physiological exercise intensity and symptom monitoring.',
+            citation: 'Borg, G. A. V. (1982). Med Sci Sports Exerc, 14, 377–381.'
+          },
+          'mMRC Dyspnoea Scale': {
+            population: 'COPD, chronic respiratory disease, pulmonary fibrosis',
+            findings: 'Useful in grading functional breathlessness severity and predicting prognosis.',
+            citation: 'Fletcher, C. M. (1960). British Medical Journal, 2, 1665.'
+          },
+          'Incremental Shuttle Walk Test (ISWT)': {
+            population: 'COPD, pulmonary rehabilitation, cardiac rehabilitation',
+            findings: 'Strong relationship with peak oxygen uptake and exercise performance.',
+            citation: 'Singh, S. J., Morgan, M. D., Scott, S., et al. (1992). Thorax, 47, 1019–1024.'
+          },
+          'Chelsea Critical Care Physical Assessment (CPAx)': {
+            population: 'ICU patients, critical illness, ICU-acquired weakness',
+            findings: 'Developed specifically for ICU functional assessment and sensitive to change.',
+            citation: 'Corner, E. J., Wood, H., Englebretsen, C., & Thomas, A. (2013). Physiotherapy, 99, 33–41.'
+          },
+          'ICU Mobility Scale (IMS)': {
+            population: 'ICU patients, ventilated patients, critical care rehabilitation',
+            findings: 'Simple and reliable measure of mobility progression in ICU settings.',
+            citation: 'Hodgson, C., Needham, D., Haines, K., et al. (2014). Heart & Lung, 43, 19–24.'
+          },
+
+          // Paediatric
+          'Gross Motor Function Measure (GMFM)': {
+            population: 'Children with: Cerebral palsy, developmental delay, genetic syndromes, acquired brain injury, Down syndrome, neurodevelopmental disorders',
+            findings: 'GMFM is a valid and responsive measure for evaluating gross motor function changes and monitoring rehabilitation progress in children with cerebral palsy.',
+            citation: "Russell, D. J., Rosenbaum, P. L., Avery, L. M., & Lane, M. (2002). Gross Motor Function Measure User's Manual. Recent: Avery, L. M., et al. (2013). Developmental Medicine & Child Neurology, 55(5), 422–430."
+          },
+          'Pediatric Balance Scale (PBS)': {
+            population: 'Children with: Cerebral palsy, developmental coordination disorder, traumatic brain injury, balance impairment, mild neurological disorders',
+            findings: 'PBS demonstrates good reliability and validity for evaluating functional balance in school-aged children with mild-to-moderate motor impairment.',
+            citation: 'Franjoine, M. R., Gunther, J. S., & Taylor, M. J. (2003). Pediatric Physical Therapy, 15(2), 114–128. Recent: Darr, N., & Wiley, M. E. (2019). Pediatric Physical Therapy.'
+          },
+          'Pediatric Quality of Life Inventory (PedsQL)': {
+            population: 'Children with: Chronic illness, cerebral palsy, autism spectrum disorder, cancer, musculoskeletal disorders, pediatric rehabilitation',
+            findings: 'PedsQL is a reliable multidimensional measure assessing physical, emotional, social and school functioning in pediatric populations.',
+            citation: 'Varni, J. W., Seid, M., & Rode, C. A. (1999). Medical Care, 37(2), 126–139. Recent: Varni, J. W., Limbers, C. A., & Burwinkle, T. M. (2007).'
+          },
+          'Infant Neurological International Battery (INFANIB)': {
+            population: 'Infants aged 3–18 months with prematurity, developmental delay, neurological risk, hypoxic ischemic encephalopathy, high-risk infant follow-up',
+            findings: 'INFANIB demonstrates predictive validity for identifying infants at risk of neuromotor abnormalities and developmental delay.',
+            citation: 'Ellison, P. H., Horn, J. L., & Browning, C. A. (1985). Physical Therapy, 65(9), 1326–1331. Recent: Tsai, M. W., et al. (2004).'
+          }
+        };
+
+        const neurologyMeasuresData = {
+          'Berg Balance Scale (BBS)': {
+            equip: 'Chair with and without armrests, Stopwatch, Ruler, Step/stool',
+            proc: '14 tasks evaluating static and dynamic balance. Ensure patient safety during all tasks.',
+            unit: 'Total Points (0-56)',
+            inputType: 'detailed'
+          },
+          'Timed Up and Go Test (TUG)': {
+            equip: 'Standard armchair (~46 cm seat height), Stopwatch, Measuring tape (3 meters), Marker/cone, Flat walkway, Patient\'s usual walking aid.',
+            proc: '1. Patient sits with back against chair. 2. Explain: "When I say Go, stand up, walk at your normal speed to the line, turn around, walk back and sit down." 3. Patient may use regular walking aid. 4. Start timer on "Go". 5. Stop timer once patient sits completely.',
+            unit: 'Time in seconds',
+            inputType: 'number'
+          },
+          '10 Metre Walk Test': {
+            equip: 'Stopwatch (Walking time), Measuring tape (Mark 14 m walkway), Cones/tape (Start and finish lines), Walking aid (Patient\'s usual aid)',
+            proc: '1. Mark 14 m pathway. 2. First 2 m acceleration. 3. Middle 10 m timed. 4. Last 2 m deceleration. 5. Calculate speed = distance ÷ time.',
+            unit: 'Time in seconds (for the 10m zone)',
+            inputType: 'number'
+          },
+          'Functional Reach Test': {
+            equip: 'Measuring tape/ruler mounted on wall',
+            proc: '1. Stand beside wall. 2. Raise arm 90°. 3. Reach forward maximally without taking a step. 4. Measure reach distance.',
+            unit: 'Reach in cm',
+            inputType: 'number'
+          },
+          'Fugl-Meyer Assessment (Upper Limb)': {
+            equip: 'Reflex hammer, Chair, Small objects, Tennis ball, Stopwatch',
+            proc: 'Assess upper limb motor recovery evaluating reflexes, flexor/extensor synergies, wrist, hand, and coordination. Scoring: 0 = cannot perform, 1 = performs partially, 2 = performs fully. Maximum: 66.',
+            unit: 'Total Points (0-66)',
+            inputType: 'detailed'
+          },
+          'Motor Assessment Scale (MAS)': {
+            equip: 'Chair, Bed, Step, Small objects',
+            proc: 'Observe and score 8 functional tasks. Each task is scored from 0 (unable to perform) to 6 (normal independent performance). Maximum: 48.',
+            unit: 'Total Points (0-48)',
+            inputType: 'detailed'
+          },
+          'NIH Stroke Scale': {
+            equip: 'NIH score sheet, Pen, Visual object cards',
+            proc: 'Administer the 11-item examination to evaluate the severity of acute stroke. Includes consciousness, gaze, visual fields, facial palsy, motor strength, ataxia, sensory, language, and inattention.',
+            unit: 'Total Points (0-42)',
+            inputType: 'detailed'
+          },
+          'Montreal Cognitive Assessment (MoCA)': {
+            equip: 'MoCA test sheet, pen',
+            proc: 'Administer the cognitive screening tool covering attention, memory, naming, visuospatial/executive, language, abstraction, and orientation. Add 1 point if education is ≤12 years.',
+            unit: 'Total Points (0-30)',
+            inputType: 'detailed'
+          },
+          'Box and Block Test': {
+            equip: 'Standardized box with partition, 150 wooden blocks, Stopwatch',
+            proc: 'Move blocks over divider individually for 60 seconds.',
+            unit: 'Total Transferred Blocks',
+            inputType: 'number'
+          },
+          'Nine-Hole Peg Test': {
+            equip: 'Nine-hole peg board, 9 pegs, Stopwatch',
+            proc: 'Insert and remove 9 pegs. Time is recorded.',
+            unit: 'Time in seconds',
+            inputType: 'number'
+          },
+          'ASIA Impairment Scale': {
+            equip: 'Safety pin, cotton wisp',
+            proc: 'Motor: 10 key muscles. Sensory: Light touch and pinprick.',
+            unit: 'Grade Selection',
+            inputType: 'detailed'
+          },
+          'Spinal Cord Independence Measure (SCIM)': {
+            equip: 'Observation / Questionnaire',
+            proc: 'Domains: Self-care, Respiration, Mobility.',
+            unit: 'Total Score (0-100)',
+            inputType: 'detailed'
+          },
+          'Tinetti Test': {
+            equip: 'Armless chair, stopwatch, 15ft walkway',
+            proc: 'Balance section: 16 points. Gait section: 12 points. Total: 28 points.',
+            unit: 'Total Points (0-28)',
+            inputType: 'detailed'
+          }
+        };
+
+        const mskMeasuresData = {
+          'Numeric Pain Rating Scale (NPRS)': {
+            equip: 'Verbal questioning or printed 0-10 scale',
+            proc: 'Ask: "On a scale from 0–10, how much pain are you experiencing right now?"',
+            unit: 'Pain Score (0-10)',
+            inputType: 'detailed'
+          },
+          'Oswestry Disability Index (ODI)': {
+            equip: 'ODI Questionnaire',
+            proc: '10 sections: Pain, Lifting, Sitting, Walking, Standing, etc. Select one statement per section. Formula: (Patient score / Total possible score) x 100',
+            unit: 'Percentage (%)',
+            inputType: 'detailed'
+          },
+          'Neck Disability Index (NDI)': {
+            equip: 'NDI Questionnaire',
+            proc: '10 sections: Pain intensity, Personal care, Lifting, Reading, Headaches, Concentration, Work, Driving, Sleeping, Recreation. Choose one statement per section.',
+            unit: 'Score / 50 (%)',
+            inputType: 'detailed'
+          },
+          'Patient Specific Functional Scale (PSFS)': {
+            equip: 'Patient interview',
+            proc: 'Ask: "Identify 3 activities you are unable to do or having difficulty performing because of your condition." Rate each 0-10.',
+            unit: 'Average Score (0-10)',
+            inputType: 'detailed'
+          },
+          'Fear Avoidance Beliefs Questionnaire (FABQ)': {
+            equip: 'FABQ Questionnaire',
+            proc: 'Two domains: Physical Activity (4 items) and Work (7 items). Score 0 (completely disagree) to 6 (completely agree).',
+            unit: 'Subscale Scores',
+            inputType: 'detailed'
+          }
+        };
+
+        const cardioMeasuresData = {
+          'Six Minute Walk Test (6MWT)': {
+            equip: 'Flat corridor (preferably 30m straight walkway), Measuring tape, Cones/markers, Stopwatch, Chair (if resting needed), Patient\'s usual walking aid.',
+            proc: '1. Patient rests ~10 mins before test. 2. Explain: "Walk as far as possible for six minutes. Do not run or jog." 3. Patient may slow down, stop, or rest if needed. 4. Start timer. 5. Record total distance walked.',
+            unit: 'Distance in meters',
+            inputType: 'number'
+          },
+          'Two Minute Walk Test (2MWT)': {
+            equip: 'Flat corridor, Measuring tape, Cones/markers, Stopwatch.',
+            proc: 'Ask: "Walk as far as possible in 2 minutes at a safe pace." Record distance walked in meters.',
+            unit: 'Distance in meters',
+            inputType: 'number'
+          },
+          'Borg Rating of Perceived Exertion': {
+            equip: 'Modified Borg 0-10 Scale chart',
+            proc: 'Ask: "How hard are you working right now?" Assesses breathlessness, fatigue, and exercise intensity.',
+            unit: 'Score (0-10)',
+            inputType: 'detailed'
+          },
+          'mMRC Dyspnoea Scale': {
+            equip: 'mMRC Questionnaire',
+            proc: 'Ask: "Which statement best describes your breathlessness?"',
+            unit: 'Grade (0-4)',
+            inputType: 'detailed'
+          },
+          'Incremental Shuttle Walk Test (ISWT)': {
+            equip: '10m flat walkway, 2 cones, ISWT audio track/beeps',
+            proc: 'Ask: "Walk between the cones. Follow the beeps and increase speed as instructed." Test stops when patient cannot maintain speed or symptoms limit exercise.',
+            unit: 'Distance in meters',
+            inputType: 'number'
+          },
+          'Chelsea Critical Care Physical Assessment (CPAx)': {
+            equip: 'Observation in ICU setting',
+            proc: 'Assess 10 domains. Each scored 0 (dependent) to 5 (independent). Maximum: 50.',
+            unit: 'Total Points (0-50)',
+            inputType: 'detailed'
+          },
+          'ICU Mobility Scale (IMS)': {
+            equip: 'Observation',
+            proc: 'Determine the highest mobility achieved by the patient in the ICU.',
+            unit: 'Score (0-10)',
+            inputType: 'detailed'
+          }
+        };
+
+        const paediatricMeasuresData = {
+          'Gross Motor Function Measure (GMFM)': {
+            equip: 'Mat, bench, stairs, toys',
+            proc: 'Scoring: 0 = Does not initiate, 1 = Initiates (<10%), 2 = Partially completes, 3 = Completes task.',
+            unit: 'Percentage (%)',
+            inputType: 'detailed'
+          },
+          'Pediatric Balance Scale (PBS)': {
+            equip: 'Chair, stopwatch, step/stool, ruler, masking tape',
+            proc: '14 items evaluating static and dynamic balance in children. Scored 0-4 each. Maximum 56.',
+            unit: 'Total Points (0-56)',
+            inputType: 'detailed'
+          },
+          'Pediatric Quality of Life Inventory (PedsQL)': {
+            equip: 'Questionnaire (Child or Parent proxy)',
+            proc: 'Ask: "During the past month, how much of a problem has your child had with..." Scale 0-4. Automatically reverse transformed to 0-100 scale.',
+            unit: 'Average Score (0-100)',
+            inputType: 'detailed'
+          },
+          'Infant Neurological International Battery (INFANIB)': {
+            equip: 'Examining table',
+            proc: 'Assess tone, posture, reflexes, and movement quality (3-18 months). Calculate total score based on variable item scoring and select the final classification.',
+            unit: 'Classification',
+            inputType: 'detailed'
+          }
+        };
+
+        const makeOptions = (max) => Array.from({length: max + 1}, (_, i) => ({ val: i, label: i.toString() }));
+        const fmaOptions = [ { val: 0, label: '0 - Cannot perform' }, { val: 1, label: '1 - Performs partially' }, { val: 2, label: '2 - Performs fully' } ];
+        const gmfmOptions = [ { val: 0, label: '0 - Does not initiate' }, { val: 1, label: '1 - Initiates (<10%)' }, { val: 2, label: '2 - Partially completes' }, { val: 3, label: '3 - Completes task' } ];
+        const pedsqlOptions = [ { val: 0, label: '0 - Never (100)' }, { val: 1, label: '1 - Almost never (75)' }, { val: 2, label: '2 - Sometimes (50)' }, { val: 3, label: '3 - Often (25)' }, { val: 4, label: '4 - Almost always (0)' } ];
+
+        const bbsDetailedItems = [
+          { title: "1. SITTING TO STANDING", instruction: "INSTRUCTIONS: Please stand up. Try not to use your hand for support.", options: [ { score: 4, text: "4 - able to stand without using hands and stabilize independently" }, { score: 3, text: "3 - able to stand independently using hands" }, { score: 2, text: "2 - able to stand using hands after several tries" }, { score: 1, text: "1 - needs minimal aid to stand or stabilize" }, { score: 0, text: "0 - needs moderate or maximal assist to stand" } ] },
+          { title: "2. STANDING UNSUPPORTED", instruction: "INSTRUCTIONS: Please stand for two minutes without holding on.", options: [ { score: 4, text: "4 - able to stand safely for 2 minutes" }, { score: 3, text: "3 - able to stand 2 minutes with supervision" }, { score: 2, text: "2 - able to stand 30 seconds unsupported" }, { score: 1, text: "1 - needs several tries to stand 30 seconds unsupported" }, { score: 0, text: "0 - unable to stand 30 seconds unsupported" } ] },
+          { title: "3. SITTING WITH BACK UNSUPPORTED", instruction: "INSTRUCTIONS: Please sit with arms folded for 2 minutes.", options: [ { score: 4, text: "4 - able to sit safely and securely for 2 minutes" }, { score: 3, text: "3 - able to sit 2 minutes under supervision" }, { score: 2, text: "2 - able to sit 30 seconds" }, { score: 1, text: "1 - able to sit 10 seconds" }, { score: 0, text: "0 - unable to sit without support 10 seconds" } ] },
+          { title: "4. STANDING TO SITTING", instruction: "INSTRUCTIONS: Please sit down.", options: [ { score: 4, text: "4 - sits safely with minimal use of hands" }, { score: 3, text: "3 - controls descent by using hands" }, { score: 2, text: "2 - uses back of legs against chair to control descent" }, { score: 1, text: "1 - sits independently but has uncontrolled descent" }, { score: 0, text: "0 - needs assist to sit" } ] },
+          { title: "5. TRANSFERS", instruction: "INSTRUCTIONS: Arrange chair(s) for pivot transfer.", options: [ { score: 4, text: "4 - able to transfer safely with minor use of hands" }, { score: 3, text: "3 - able to transfer safely definite need of hands" }, { score: 2, text: "2 - able to transfer with verbal cuing and/or supervision" }, { score: 1, text: "1 - needs one person to assist" }, { score: 0, text: "0 - needs two people to assist or supervise to be safe" } ] },
+          { title: "6. STANDING UNSUPPORTED WITH EYES CLOSED", instruction: "INSTRUCTIONS: Please close your eyes and stand still for 10 seconds.", options: [ { score: 4, text: "4 - able to stand 10 seconds safely" }, { score: 3, text: "3 - able to stand 10 seconds with supervision" }, { score: 2, text: "2 - able to stand 3 seconds" }, { score: 1, text: "1 - unable to keep eyes closed 3 seconds but stays safely" }, { score: 0, text: "0 - needs help to keep from falling" } ] },
+          { title: "7. STANDING UNSUPPORTED WITH FEET TOGETHER", instruction: "INSTRUCTIONS: Place your feet together and stand without holding on.", options: [ { score: 4, text: "4 - able to place feet together independently and stand 1 minute safely" }, { score: 3, text: "3 - able to place feet together independently and stand 1 minute with supervision" }, { score: 2, text: "2 - able to place feet together independently but unable to hold for 30 seconds" }, { score: 1, text: "1 - needs help to attain position but able to stand 15 seconds feet together" }, { score: 0, text: "0 - needs help to attain position and unable to hold for 15 seconds" } ] },
+          { title: "8. REACHING FORWARD", instruction: "INSTRUCTIONS: Lift arm to 90 degrees. Stretch out your fingers and reach forward as far as you can.", options: [ { score: 4, text: "4 - can reach forward confidently 25 cm (10 inches)" }, { score: 3, text: "3 - can reach forward 12 cm (5 inches)" }, { score: 2, text: "2 - can reach forward 5 cm (2 inches)" }, { score: 1, text: "1 - reaches forward but needs supervision" }, { score: 0, text: "0 - loses balance while trying/requires external support" } ] },
+          { title: "9. PICK UP OBJECT FROM THE FLOOR", instruction: "INSTRUCTIONS: Pick up the shoe/slipper, which is place in front of your feet.", options: [ { score: 4, text: "4 - able to pick up slipper safely and easily" }, { score: 3, text: "3 - able to pick up slipper but needs supervision" }, { score: 2, text: "2 - unable to pick up but reaches 2-5 cm from slipper" }, { score: 1, text: "1 - unable to pick up and needs supervision while trying" }, { score: 0, text: "0 - unable to try/needs assist to keep from losing balance" } ] },
+          { title: "10. TURNING TO LOOK BEHIND", instruction: "INSTRUCTIONS: Turn to look directly behind you over toward the left shoulder. Repeat to the right.", options: [ { score: 4, text: "4 - looks behind from both sides and weight shifts well" }, { score: 3, text: "3 - looks behind one side only other side shows less weight shift" }, { score: 2, text: "2 - turns sideways only but maintains balance" }, { score: 1, text: "1 - needs supervision when turning" }, { score: 0, text: "0 - needs assist to keep from losing balance or falling" } ] },
+          { title: "11. TURN 360 DEGREES", instruction: "INSTRUCTIONS: Turn completely around in a full circle. Pause. Then turn a full circle in the other direction.", options: [ { score: 4, text: "4 - able to turn 360 degrees safely in 4 seconds or less" }, { score: 3, text: "3 - able to turn 360 degrees safely one side only 4 seconds or less" }, { score: 2, text: "2 - able to turn 360 degrees safely but slowly" }, { score: 1, text: "1 - needs close supervision or verbal cuing" }, { score: 0, text: "0 - needs assistance while turning" } ] },
+          { title: "12. PLACE ALTERNATE FOOT ON STEP", instruction: "INSTRUCTIONS: Place each foot alternately on the step/stool.", options: [ { score: 4, text: "4 - able to stand independently and safely and complete 8 steps in 20 seconds" }, { score: 3, text: "3 - able to stand independently and complete 8 steps in > 20 seconds" }, { score: 2, text: "2 - able to complete 4 steps without aid with supervision" }, { score: 1, text: "1 - able to complete > 2 steps needs minimal assist" }, { score: 0, text: "0 - needs assistance to keep from falling/unable to try" } ] },
+          { title: "13. STANDING UNSUPPORTED ONE FOOT IN FRONT", instruction: "INSTRUCTIONS: Place one foot directly in front of the other.", options: [ { score: 4, text: "4 - able to place foot tandem independently and hold 30 seconds" }, { score: 3, text: "3 - able to place foot ahead independently and hold 30 seconds" }, { score: 2, text: "2 - able to take small step independently and hold 30 seconds" }, { score: 1, text: "1 - needs help to step but can hold 15 seconds" }, { score: 0, text: "0 - loses balance while stepping or standing" } ] },
+          { title: "14. STANDING ON ONE LEG", instruction: "INSTRUCTIONS: Stand on one leg as long as you can without holding on.", options: [ { score: 4, text: "4 - able to lift leg independently and hold > 10 seconds" }, { score: 3, text: "3 - able to lift leg independently and hold 5-10 seconds" }, { score: 2, text: "2 - able to lift leg independently and hold ≥ 3 seconds" }, { score: 1, text: "1 - tries to lift leg unable to hold 3 seconds but remains standing" }, { score: 0, text: "0 - unable to try of needs assist to prevent fall" } ] }
+        ];
+
+        const detailedConfig = {
+          'Berg Balance Scale (BBS)': { sections: [{ title: '14-Item Tasks', items: bbsDetailedItems.map((it, i) => ({ id: `bbs_${i}`, label: it.title, instruction: it.instruction, verticalOptions: true, options: it.options.map(o => ({ val: o.score, label: o.text })) })) }] },
+          'Fugl-Meyer Assessment (Upper Limb)': { sections: [ { title: 'Reflex Activity', items: [{id:'fma_1', label:'Biceps reflex'}, {id:'fma_2', label:'Triceps reflex'}].map(i => ({...i, options: fmaOptions})) }, { title: 'Flexor Synergy', items: ['Shoulder retraction', 'Shoulder elevation', 'Shoulder abduction 90°', 'Elbow flexion', 'Forearm supination'].map((l,i) => ({id:`fma_3_${i}`, label: l, options: fmaOptions})) }, { title: 'Extensor Synergy', items: ['Shoulder adduction', 'Internal rotation', 'Elbow extension', 'Forearm pronation'].map((l,i) => ({id:`fma_4_${i}`, label: l, options: fmaOptions})) }, { title: 'Wrist & Hand', items: ['Wrist stability', 'Repeated wrist movement', 'Mass flexion', 'Hook grasp', 'Cylindrical grasp', 'Spherical grasp'].map((l,i) => ({id:`fma_5_${i}`, label: l, options: fmaOptions})) }, { title: 'Coordination', items: ['Finger-to-nose', 'Tremor', 'Dysmetria'].map((l,i) => ({id:`fma_7_${i}`, label: l, options: fmaOptions})) } ] },
+          'Motor Assessment Scale (MAS)': { sections: [{ title: 'Functional Tasks (0-6 each)', items: ['Supine → side lying', 'Supine → sitting', 'Balanced sitting', 'Sit-to-stand', 'Walking', 'Upper arm function', 'Hand movement', 'Advanced hand activities'].map((l,i) => ({id:`mas_${i}`, label:l, options: makeOptions(6)})) }] },
+          'NIH Stroke Scale': { sections: [{ title: 'Stroke Scale Items', items: ['Level of consciousness', 'Ask age and month', 'Open/close eyes and grip', 'Eye movement tracking', 'Visual field', 'Facial movement', 'Arm hold 10 sec', 'Leg hold 5 sec', 'Finger–nose test', 'Sensory testing', 'Picture naming', 'Speech clarity', 'Neglect'].map((l,i) => ({id:`nih_${i}`, label:l, options: makeOptions(4)})) }] },
+          'Montreal Cognitive Assessment (MoCA)': { sections: [{ title: 'Cognitive Domains', items: ['Trail making', 'Cube copy', 'Clock contour', 'Clock numbers', 'Clock hands', 'Name lion', 'Name rhinoceros', 'Name camel', 'Repeat numbers forward', 'Repeat numbers backward', 'Tap at letter A', 'Serial subtraction by 7', 'Sentence repetition', 'Fluency (>11 words)', 'Similarity', 'Recall 5 words', 'Orientation', 'Education ≤ 12 years (+1 pt)'].map((l,i) => ({id:`moc_${i}`, label:l, options: makeOptions(5)})) }] },
+          'ASIA Impairment Scale': { sections: [ { title: 'Motor Testing (0-5)', items: ['C5 Elbow flexion','C6 Wrist extension','C7 Elbow extension','C8 Finger flexion','T1 Finger abduction','L2 Hip flexion','L3 Knee extension','L4 Ankle dorsiflexion','L5 Great toe ext','S1 Plantarflexion'].map((l,i) => ({id:`asia_m_${i}`, label:l, options: makeOptions(5)})) }, { title: 'Sensory Testing', items: [{id:'asia_s_1', label:'Light touch'}, {id:'asia_s_2', label:'Pinprick'}].map(i => ({...i, options: makeOptions(2)})) } ], finalSelect: ['A - Complete', 'B - Sensory incomplete', 'C - Motor incomplete', 'D - Motor incomplete stronger', 'E - Normal'] },
+          'Spinal Cord Independence Measure (SCIM)': { sections: [{ title: 'Independence Areas', items: ['Feeding', 'Bathing', 'Dressing', 'Grooming', 'Respiration', 'Bladder', 'Bowel', 'Bed mobility', 'Transfers', 'Indoor', 'Outdoor', 'Stairs'].map((l,i) => ({id:`scim_${i}`, label:l, inputType: 'number'})) }] },
+          'Tinetti Test': { sections: [ { title: 'Balance Section', items: ['Sitting balance','Rising from chair','Attempts to rise','Immediate standing','Standing balance','Eyes closed','Turning 360°','Sitting down'].map((l,i)=>({id:`tin_b_${i}`, label:l, options: makeOptions(2)})) }, { title: 'Gait Section', items: ['Initiation','Step length','Step symmetry','Step continuity','Path','Trunk','Walking stance'].map((l,i)=>({id:`tin_g_${i}`, label:l, options: makeOptions(2)})) } ] },
+          'Numeric Pain Rating Scale (NPRS)': { sections: [{ title: 'Pain Rating', items: [{id:'nprs_current', label:'Current pain level', options: makeOptions(10)}] }] },
+          'Oswestry Disability Index (ODI)': { sections: [{ title: 'Disability Sections (0-5 each)', items: ['Pain Intensity', 'Personal care', 'Lifting', 'Walking', 'Sitting', 'Standing', 'Sleeping', 'Social life', 'Traveling', 'Employment'].map((l,i) => ({id:`odi_${i}`, label:l, options: makeOptions(5)})) }] },
+          'Neck Disability Index (NDI)': { sections: [{ title: 'Disability Sections (0-5 each)', items: ['Pain intensity', 'Personal care', 'Lifting', 'Reading', 'Headaches', 'Concentration', 'Work', 'Driving', 'Sleeping', 'Recreation'].map((l,i) => ({id:`ndi_${i}`, label:l, options: makeOptions(5)})) }] },
+          'Patient Specific Functional Scale (PSFS)': { sections: [{ title: 'Activity Difficulties (0-10)', items: ['Activity 1 Rating', 'Activity 2 Rating', 'Activity 3 Rating'].map((l,i) => ({id:`psfs_${i+1}`, label:l, options: makeOptions(10)})) }] },
+          'Fear Avoidance Beliefs Questionnaire (FABQ)': { sections: [ { title: 'Physical Activity Subscale (0-6)', items: ['PA makes pain worse','PA might harm my back','Should not do PA','Cannot do PA'].map((l,i)=>({id:`fabq_pa_${i}`, label:l, options: makeOptions(6)})) }, { title: 'Work Subscale (0-6)', items: ['Work aggravated pain','Claim for compensation','Work is too heavy','Work makes pain worse','Work might harm my back','Should not do normal work','Cannot do normal work'].map((l,i)=>({id:`fabq_w_${i}`, label:l, options: makeOptions(6)})) } ] },
+          'Borg Rating of Perceived Exertion': { sections: [{ title: 'Modified Borg Scale', items: [{id: 'borg_score', label: 'Perceived Exertion Level', verticalOptions: true, options: [ { val: 0, label: '0 - Nothing at all' }, { val: 0.5, label: '0.5 - Very very slight' }, { val: 1, label: '1 - Very slight' }, { val: 2, label: '2 - Slight' }, { val: 3, label: '3 - Moderate' }, { val: 4, label: '4 - Somewhat severe' }, { val: 5, label: '5 - Severe' }, { val: 7, label: '7 - Very severe' }, { val: 10, label: '10 - Maximal' } ] }] }] },
+          'mMRC Dyspnoea Scale': { sections: [{ title: 'Breathlessness Assessment', items: [{id: 'mmrc_score', label: 'Select Best Description', verticalOptions: true, options: [ { val: 0, label: 'Grade 0 - Breathless only with strenuous exercise' }, { val: 1, label: 'Grade 1 - Breathless hurrying or slight hill' }, { val: 2, label: 'Grade 2 - Walk slower than peers due to breathlessness' }, { val: 3, label: 'Grade 3 - Stop after walking ~100 m' }, { val: 4, label: 'Grade 4 - Too breathless leaving house/dressing' } ] }] }] },
+          'Chelsea Critical Care Physical Assessment (CPAx)': { sections: [{ title: 'Physical Function Domains (0-5 each)', items: ['Respiratory function', 'Cough', 'Bed mobility', 'Supine to sitting', 'Dynamic sitting', 'Sit-to-stand', 'Standing balance', 'Stepping', 'Grip strength', 'Transfer ability'].map((l,i) => ({id:`cpax_${i}`, label:l, options: makeOptions(5)})) }] },
+          'ICU Mobility Scale (IMS)': { sections: [{ title: 'Highest Mobility Achieved', items: [{id: 'ims_score', label: 'Select Mobility Level', verticalOptions: true, options: makeOptions(10).map(o => ({...o, label: `Level ${o.val}`})) }] }] },
+          'Gross Motor Function Measure (GMFM)': { sections: [ { title: 'A. Lying and Rolling', items: ['Turns head side to side','Rolls supine → prone','Rolls prone → supine'].map((l,i)=>({id:`gmfm_a_${i}`, label:l, options:gmfmOptions})) }, { title: 'B. Sitting', items: ['Sit unsupported','Reach in sitting','Rotate trunk in sitting'].map((l,i)=>({id:`gmfm_b_${i}`, label:l, options:gmfmOptions})) }, { title: 'C. Crawling & Kneeling', items: ['Four-point position','Crawl forward','Half kneeling'].map((l,i)=>({id:`gmfm_c_${i}`, label:l, options:gmfmOptions})) }, { title: 'D. Standing', items: ['Stand unsupported','Stand on one foot'].map((l,i)=>({id:`gmfm_d_${i}`, label:l, options:gmfmOptions})) }, { title: 'E. Walking / Running / Jumping', items: ['Walk forward','Run','Jump'].map((l,i)=>({id:`gmfm_e_${i}`, label:l, options:gmfmOptions})) } ] },
+          'Pediatric Balance Scale (PBS)': { sections: [{ title: '14-Item Tasks (0-4 each)', items: ['Sit to stand','Standing unsupported','Sitting unsupported','Stand to sit','Transfers','Eyes closed standing','Feet together standing','Reach forward','Pick object from floor','Turn to look behind','Turn 360°','Step onto stool','Tandem standing','Single leg standing'].map((l,i)=>({id:`pbs_${i}`, label:l, options:makeOptions(4)})) }] },
+          'Pediatric Quality of Life Inventory (PedsQL)': { sections: [ { title: 'Physical', items: ['Walking','Running','Lifting'].map((l,i)=>({id:`pedsql_p_${i}`, label:l, options:pedsqlOptions})) }, { title: 'Emotional', items: ['Feeling sad','Feeling afraid'].map((l,i)=>({id:`pedsql_e_${i}`, label:l, options:pedsqlOptions})) }, { title: 'Social', items: ['Playing with friends'].map((l,i)=>({id:`pedsql_s_${i}`, label:l, options:pedsqlOptions})) }, { title: 'School', items: ['Attention','School participation'].map((l,i)=>({id:`pedsql_sch_${i}`, label:l, options:pedsqlOptions})) } ] },
+          'Infant Neurological International Battery (INFANIB)': { sections: [{ title: 'Variable Item Scoring', items: ['Head control','Pull-to-sit','Trunk posture','Upper limb tone','Lower limb tone','Protective reactions','Primitive reflexes'].map((l,i)=>({id:`infanib_${i}`, label:l, inputType: 'number'})) }], finalSelect: ['Normal', 'Transient abnormal', 'Abnormal'] }
+        };
+
+        const getInterpretation = (type, rawScore) => {
+          let scoreText = String(rawScore);
+          let risk = 'Result Scored';
+          let implication = 'Assessment completed.';
+          const s = parseFloat(rawScore);
+
+          if (type !== 'ASIA Impairment Scale' && type !== 'Infant Neurological International Battery (INFANIB)' && isNaN(s)) return null;
+
+          switch(type) {
+            // Neurology
+            case 'Berg Balance Scale (BBS)':
+              scoreText = `${s}/56`;
+              if (s >= 41) { risk = 'Low Fall Risk'; implication = 'Patient demonstrates good static and dynamic balance with preserved postural control during functional activities. Independent mobility is likely with low fall risk; however, higher-level balance deficits may still appear during challenging community tasks.'; }
+              else if (s >= 21) { risk = 'Moderate Fall Risk'; implication = 'Patient presents with impaired balance and reduced postural control affecting transfers, turning, and dynamic activities. Increased supervision may be required during mobility due to moderate fall risk.'; }
+              else { risk = 'High Fall Risk'; implication = 'Severe balance impairment with marked postural instability and significantly increased fall risk. Patient may require physical assistance during transfers and ambulation.'; }
+              break;
+            case 'Timed Up and Go Test (TUG)':
+              scoreText = `${s} sec`;
+              if (s < 10) { risk = 'Normal'; implication = 'Functional mobility within expected range with efficient gait and transfer performance. Independent mobility is likely.'; }
+              else if (s <= 19) { risk = 'Mild'; implication = 'Mild mobility limitation with reduced efficiency during transfers and ambulation. Functional independence generally preserved.'; }
+              else if (s <= 29) { risk = 'Moderate'; implication = 'Moderate mobility impairment with increased fall risk and reduced dynamic balance during functional movement.'; }
+              else { risk = 'Severe'; implication = 'Significant mobility impairment with poor gait efficiency and dependency risk. Walking aid and supervision may be required.'; }
+              break;
+            case '10 Metre Walk Test':
+              const speed = 10 / s; scoreText = `${speed.toFixed(2)} m/s`;
+              if (speed > 1.2) { risk = 'Normal'; implication = 'Walking speed is within normal range with preserved community ambulation ability and participation.'; }
+              else if (speed >= 0.8) { risk = 'Community'; implication = 'Walking speed suggests functional community ambulation but mild gait limitations may remain during higher-level activities.'; }
+              else if (speed >= 0.4) { risk = 'Limited'; implication = 'Reduced gait speed affecting community mobility and participation in functional activities.'; }
+              else { risk = 'Household'; implication = 'Walking ability appears significantly limited and mainly restricted to household ambulation.'; }
+              break;
+            case 'Functional Reach Test':
+              scoreText = `${s} cm`;
+              if (s > 25) { risk = 'Low'; implication = 'Dynamic balance and forward stability limits appear adequate with low fall risk.'; }
+              else if (s >= 15) { risk = 'Moderate'; implication = 'Mild reduction in stability limits suggesting moderate balance impairment during reaching activities.'; }
+              else { risk = 'High'; implication = 'Markedly reduced dynamic balance with significantly increased fall risk during functional tasks.'; }
+              break;
+            case 'Fugl-Meyer Assessment (Upper Limb)':
+              scoreText = `${s}/66`;
+              if (s >= 53) { risk = 'Mild'; implication = 'Mild upper limb motor impairment with relatively preserved movement patterns and functional use.'; }
+              else if (s >= 23) { risk = 'Moderate'; implication = 'Moderate motor recovery deficit affecting coordinated upper limb activity and functional task performance.'; }
+              else { risk = 'Severe'; implication = 'Significant upper limb motor impairment with severe limitation in voluntary movement and functional use.'; }
+              break;
+            case 'Motor Assessment Scale (MAS)':
+              scoreText = `${s}/48`;
+              if (s >= 33) { risk = 'Mild'; implication = 'Functional movement largely preserved with ability to perform basic mobility tasks independently.'; }
+              else if (s >= 17) { risk = 'Moderate'; implication = 'Moderate activity limitation affecting mobility and task performance. Assistance or supervision may be required.'; }
+              else { risk = 'Severe'; implication = 'Severe functional impairment affecting mobility and basic movement tasks.'; }
+              break;
+            case 'NIH Stroke Scale':
+              scoreText = `${s}/42`;
+              if (s >= 21) { risk = 'Severe'; implication = 'Severe stroke severity with extensive neurological impairment and poor functional prognosis.'; }
+              else if (s >= 16) { risk = 'Moderate-severe'; implication = 'Significant neurological deficits with substantial impact on mobility and ADLs.'; }
+              else if (s >= 5) { risk = 'Moderate'; implication = 'Moderate stroke severity affecting motor and functional performance.'; }
+              else { risk = 'Minor'; implication = 'Mild neurological impairment with relatively preserved function.'; }
+              break;
+            case 'Montreal Cognitive Assessment (MoCA)':
+              scoreText = `${s}/30`;
+              if (s >= 26) { risk = 'Normal'; implication = 'Cognitive performance within expected range.'; }
+              else if (s >= 18) { risk = 'Mild impairment'; implication = 'Mild cognitive deficits affecting executive function, memory, or attention.'; }
+              else if (s >= 10) { risk = 'Moderate'; implication = 'Moderate cognitive dysfunction affecting functional independence and learning.'; }
+              else { risk = 'Severe'; implication = 'Severe cognitive impairment likely affecting safety and participation.'; }
+              break;
+            case 'ASIA Impairment Scale':
+              const grade = String(rawScore).charAt(0); scoreText = `Grade ${grade}`;
+              if (grade === 'A') { risk = 'Complete'; implication = 'Complete SCI: No motor or sensory function is preserved in the sacral segments S4-S5.'; }
+              else if (grade === 'B') { risk = 'Sensory Incomplete'; implication = 'Sensory incomplete SCI: Sensory but not motor function is preserved below the neurological level.'; }
+              else if (grade === 'C') { risk = 'Motor Incomplete'; implication = 'Motor incomplete SCI: Motor function preserved below neurological level (majority of key muscles < Grade 3).'; }
+              else if (grade === 'D') { risk = 'Motor Incomplete'; implication = 'Motor incomplete SCI: Motor function preserved below neurological level (majority of key muscles ≥ Grade 3).'; }
+              else { risk = 'Normal'; implication = 'Normal neurological function according to ASIA classification.'; }
+              break;
+            case 'Spinal Cord Independence Measure (SCIM)':
+              scoreText = `${s}/100`;
+              if (s >= 76) { risk = 'High independence'; implication = 'Functional independence largely preserved across self-care and mobility domains.'; }
+              else if (s >= 51) { risk = 'Moderate'; implication = 'Mild-to-moderate assistance may be required for selected functional activities.'; }
+              else if (s >= 26) { risk = 'Severe'; implication = 'Significant dependence affecting mobility and ADLs.'; }
+              else { risk = 'Dependent'; implication = 'Marked functional dependence with substantial assistance required.'; }
+              break;
+            case 'Tinetti Test':
+              scoreText = `${s}/28`;
+              if (s >= 25) { risk = 'Low'; implication = 'Balance and gait performance appear adequate with low fall risk.'; }
+              else if (s >= 19) { risk = 'Moderate'; implication = 'Mild gait and balance deficits with increased risk of falls.'; }
+              else { risk = 'High'; implication = 'Significant gait and balance impairment with high fall risk requiring intervention.'; }
+              break;
+            case 'Box and Block Test':
+              scoreText = `${s} blocks`; 
+              risk = 'Dexterity Scored';
+              implication = 'If within age norms: Gross manual dexterity appears preserved for functional activities. If below age norms: Reduced gross hand dexterity affecting object manipulation and daily functional tasks.'; 
+              break;
+            case 'Nine-Hole Peg Test':
+              scoreText = `${s} sec`; 
+              risk = 'Dexterity Scored';
+              implication = 'If within norms: Fine motor coordination and hand dexterity appear preserved. If above norms: Reduced finger dexterity and fine motor performance affecting precision tasks.'; 
+              break;
+
+            // MSK
+            case 'Numeric Pain Rating Scale (NPRS)':
+              scoreText = `${s}/10`;
+              if (s >= 7) { risk = 'Severe pain'; implication = 'Severe pain intensity reported with substantial impact on function and activity participation. Symptoms are likely limiting mobility, work performance, and activities of daily living.'; }
+              else if (s >= 4) { risk = 'Moderate pain'; implication = 'Moderate pain intensity likely contributing to activity limitation and reduced participation in daily tasks. Symptoms may affect sitting tolerance, lifting, mobility, or work-related function.'; }
+              else if (s > 0) { risk = 'Mild pain'; implication = 'Mild pain intensity reported with minimal impact on functional activities. Symptoms may be present during prolonged or higher-demand activities but daily function is generally preserved.'; }
+              else { risk = 'No pain'; implication = 'Patient reports no pain symptoms currently. Pain does not appear to contribute to functional limitation or activity restriction.'; }
+              break;
+            case 'Oswestry Disability Index (ODI)':
+              scoreText = `${s}%`;
+              if (s > 80) { risk = 'Extreme disability'; implication = 'Extreme disability level with severe limitation in most functional activities. Findings may indicate severe pathology or symptom amplification requiring comprehensive assessment.'; }
+              else if (s > 60) { risk = 'Crippled'; implication = 'Severe functional impairment with major restrictions across mobility and daily activity domains. Symptoms substantially affect quality of life and independence.'; }
+              else if (s > 40) { risk = 'Severe disability'; implication = 'Significant disability with substantial restriction in mobility and activities of daily living. Functional capacity appears markedly reduced.'; }
+              else if (s > 20) { risk = 'Moderate disability'; implication = 'Moderate disability affecting sitting, standing, lifting, walking, and daily functional activities. Symptoms may interfere with work and participation.'; }
+              else { risk = 'Minimal disability'; implication = 'Minimal low back-related disability. Patient is generally able to perform most activities independently with minor symptom-related limitation.'; }
+              break;
+            case 'Neck Disability Index (NDI)':
+              scoreText = String(rawScore);
+              if (s > 34) { risk = 'Complete disability'; implication = 'Severe disability with major activity limitation and reduced functional independence.'; }
+              else if (s >= 25) { risk = 'Severe disability'; implication = 'Significant neck-related impairment affecting multiple functional domains and participation in daily activities.'; }
+              else if (s >= 15) { risk = 'Moderate disability'; implication = 'Moderate disability affecting work activities, concentration, lifting, driving, or prolonged postural tasks.'; }
+              else if (s >= 5) { risk = 'Mild disability'; implication = 'Mild neck-related functional limitation with slight restriction during prolonged activities.'; }
+              else { risk = 'No disability'; implication = 'Neck symptoms have minimal impact on daily activities and function.'; }
+              break;
+            case 'Patient Specific Functional Scale (PSFS)':
+              scoreText = `${s}/10`;
+              if (s >= 8) { risk = 'Mild limitation'; implication = 'Patient demonstrates near pre-condition functional ability with only minor difficulty performing selected activities.'; }
+              else if (s >= 5) { risk = 'Moderate limitation'; implication = 'Moderate limitation affecting patient-identified functional activities. Symptoms appear to reduce efficiency and participation during meaningful tasks.'; }
+              else { risk = 'Severe limitation'; implication = 'Significant activity restriction affecting important patient-specific functional goals and participation.'; }
+              break;
+            case 'Fear Avoidance Beliefs Questionnaire (FABQ)':
+              const fabqW = parseInt(String(rawScore).split(',')[1] || rawScore);
+              if (fabqW > 34) { risk = 'High fear avoidance'; implication = 'High fear-avoidance beliefs identified and associated with increased risk of chronicity, prolonged disability, and reduced return-to-work potential. Evidence suggests psychosocial factors may significantly influence recovery trajectory.'; }
+              else if (fabqW >= 20) { risk = 'Moderate fear avoidance'; implication = 'Moderate fear-avoidance behavior present. Pain-related beliefs may influence activity participation and movement confidence.'; }
+              else { risk = 'Low fear avoidance'; implication = 'Minimal fear-related behavior identified. Patient appears willing to engage in movement and physical activity with low psychosocial risk.'; }
+              break;
+
+            // Cardiorespiratory
+            case 'Six Minute Walk Test (6MWT)':
+              scoreText = `${s} m`;
+              if (s > 500) { risk = 'Good'; implication = 'Patient demonstrates good functional exercise capacity with preserved endurance and ability to participate in community ambulation independently. Cardiopulmonary limitation appears minimal.'; }
+              else if (s >= 300) { risk = 'Moderate'; implication = 'Moderate exercise limitation noted with reduced endurance during prolonged activity. Patient may demonstrate fatigue during higher-level functional or community activities.'; }
+              else if (s >= 200) { risk = 'Reduced'; implication = 'Significant reduction in exercise capacity suggesting deconditioning and impaired tolerance to sustained physical activity. Functional limitation may affect daily activities and mobility.'; }
+              else { risk = 'Severe'; implication = 'Severe exercise intolerance with markedly reduced functional capacity. Findings suggest substantial limitation in ADLs and increased dependency risk.'; }
+              break;
+            case 'Two Minute Walk Test (2MWT)':
+              scoreText = `${s} m`;
+              if (s > 150) { risk = 'Good'; implication = 'Functional endurance appears adequate for frail or medically compromised populations with preserved mobility tolerance.'; }
+              else if (s >= 100) { risk = 'Mild'; implication = 'Mild reduction in endurance observed with slight limitation during prolonged mobility tasks.'; }
+              else if (s >= 50) { risk = 'Moderate'; implication = 'Moderate endurance impairment affecting mobility efficiency and activity tolerance. Patient may require pacing strategies during functional activity.'; }
+              else { risk = 'Severe'; implication = 'Severe endurance limitation indicating substantial deconditioning and functional impairment.'; }
+              break;
+            case 'Borg Rating of Perceived Exertion':
+              scoreText = `${s}/10`;
+              if (s >= 7) { risk = 'Very hard'; implication = 'Very high exertion level indicating near maximal effort. Careful monitoring may be required due to increased physiological stress.'; }
+              else if (s >= 5) { risk = 'Hard'; implication = 'High exercise intensity with increasing cardiorespiratory demand. Symptoms should be monitored during activity progression.'; }
+              else if (s >= 3) { risk = 'Moderate'; implication = 'Moderate exercise intensity reported. Physiological response appears within acceptable training levels.'; }
+              else { risk = 'Light'; implication = 'Patient perceives exercise intensity as minimal with adequate exercise tolerance and symptom control.'; }
+              break;
+            case 'mMRC Dyspnoea Scale':
+              scoreText = `Grade ${s}`;
+              if (s >= 4) { risk = 'Very severe'; implication = 'Severe dyspnoea affecting basic ADLs and limiting ability to leave home or perform self-care activities independently.'; }
+              else if (s === 3) { risk = 'Severe'; implication = 'Significant breathlessness affecting mobility and community participation. Rest breaks may be required during activity.'; }
+              else if (s === 2) { risk = 'Moderate'; implication = 'Breathlessness affects walking speed and activity pacing. Functional limitation begins affecting participation.'; }
+              else { risk = 'Mild'; implication = 'Breathlessness appears minimal and primarily associated with strenuous activity or rapid walking. Functional limitation is low.'; }
+              break;
+            case 'Incremental Shuttle Walk Test (ISWT)':
+              scoreText = `${s} m`;
+              if (s > 400) { risk = 'Good'; implication = 'Good aerobic exercise capacity with preserved functional mobility and endurance.'; }
+              else if (s >= 250) { risk = 'Moderate'; implication = 'Moderate limitation in exercise performance suggesting reduced aerobic capacity.'; }
+              else { risk = 'Severe'; implication = 'Markedly reduced exercise capacity suggesting substantial cardiopulmonary limitation.'; }
+              break;
+            case 'Chelsea Critical Care Physical Assessment (CPAx)':
+              scoreText = `${s}/50`;
+              if (s >= 40) { risk = 'Mild'; implication = 'Mild ICU-acquired weakness with relatively preserved physical function and reduced assistance requirements.'; }
+              else if (s >= 20) { risk = 'Moderate'; implication = 'Moderate physical impairment affecting mobility and functional independence in ICU settings.'; }
+              else { risk = 'Severe'; implication = 'Severe ICU-acquired weakness with substantial dependence and functional limitation.'; }
+              break;
+            case 'ICU Mobility Scale (IMS)':
+              scoreText = `${s}/10`;
+              if (s >= 8) { risk = 'High mobility'; implication = 'Patient demonstrates high functional mobility level with ability to mobilize independently or with minimal assistance.'; }
+              else if (s >= 4) { risk = 'Moderate mobility'; implication = 'Moderate mobility level with ability to perform transfers, standing, or limited ambulation activities.'; }
+              else { risk = 'Low mobility'; implication = 'Patient remains highly dependent with mobility limited to bed-level activities or sitting activities only.'; }
+              break;
+
+            // Pediatric
+            case 'Gross Motor Function Measure (GMFM)':
+              scoreText = `${s}%`; 
+              if (s >= 80) { risk = 'High function'; implication = 'Gross motor function appears largely preserved with ability to perform age-appropriate movement activities independently.'; }
+              else if (s >= 60) { risk = 'Mild limitation'; implication = 'Mild gross motor limitation observed with slight reduction in advanced motor skills and mobility performance.'; }
+              else if (s >= 40) { risk = 'Moderate limitation'; implication = 'Moderate gross motor impairment affecting mobility and participation in age-appropriate physical activities.'; }
+              else { risk = 'Severe limitation'; implication = 'Significant gross motor dysfunction affecting functional mobility and developmental milestones.'; }
+              break;
+            case 'Pediatric Balance Scale (PBS)':
+              scoreText = `${s}/56`; 
+              if (s >= 41) { risk = 'Low impairment'; implication = 'Child demonstrates adequate static and dynamic balance with low risk of balance-related functional limitation.'; }
+              else if (s >= 21) { risk = 'Moderate impairment'; implication = 'Balance deficits observed during dynamic activities and may affect mobility and play participation.'; }
+              else { risk = 'Severe impairment'; implication = 'Significant balance dysfunction affecting functional mobility and safety during movement activities.'; }
+              break;
+            case 'Pediatric Quality of Life Inventory (PedsQL)':
+              scoreText = `${s}/100`; 
+              if (s >= 80) { risk = 'Good QoL'; implication = 'Child demonstrates good perceived quality of life across physical, emotional, social, and school domains.'; }
+              else if (s >= 60) { risk = 'Mild reduction'; implication = 'Mild reduction in quality of life with minor impact on functional participation.'; }
+              else if (s >= 40) { risk = 'Moderate reduction'; implication = 'Moderate impact across multiple domains affecting participation and well-being.'; }
+              else { risk = 'Severe reduction'; implication = 'Significant reduction in quality of life affecting multiple aspects of daily functioning and participation.'; }
+              break;
+            case 'Infant Neurological International Battery (INFANIB)':
+              scoreText = String(rawScore);
+              risk = String(rawScore);
+              implication = risk === 'Normal' ? 'Appropriate neurological development for age.' : risk === 'Transient abnormal' ? 'Neurological signs present requiring close monitoring.' : 'Abnormal findings indicating high neurological risk.';
+              break;
+
+            default: break;
+          }
+
+          return { scoreText: String(scoreText), risk: String(risk), implication: String(implication) };
+        };
+
+        const getRiskColorClass = (risk) => {
+          if (!risk || typeof risk !== 'string') return 'text-slate-800';
+          const r = risk.toLowerCase();
+          
+          if (r.includes('high mobility') || r.includes('high independence') || r.includes('high function')) return 'text-emerald-600';
+          
+          if (r.includes('high') || r.includes('severe') || r.includes('abnormal') || r.includes('crippled') || r.includes('extreme') || r.includes('dependent') || r.includes('very hard') || r.includes('complete')) return 'text-red-600';
+          
+          if (r.includes('moderate') || r.includes('transient') || r.includes('reduced') || r.includes('variable') || r.includes('mild') || r.includes('limited') || r.includes('hard') || r.includes('sensory')) return 'text-amber-600';
+          
+          if (r.includes('low') || r.includes('normal') || r.includes('independent') || r.includes('good') || r.includes('community') || r.includes('none') || r.includes('no pain') || r.includes('no disability') || r.includes('minimal') || r.includes('light')) return 'text-emerald-600';
+          
+          return 'text-blue-600';
+        };
+
+        function App() {
+          const [currentView, setCurrentView] = useState('dashboard');
+          const [patientDetails, setPatientDetails] = useState({ id: '', age: '', gender: '', diagnosis: '', ward: '' });
+          const [assessmentType, setAssessmentType] = useState('Berg Balance Scale (BBS)');
+          const [genericScore, setGenericScore] = useState('');
+          const [detailedScores, setDetailedScores] = useState({});
+          const [report, setReport] = useState(null);
+          const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+          const [searchQuery, setSearchQuery] = useState('');
+          const [validationError, setValidationError] = useState('');
+
+          const handleStartAssessment = (type) => {
+            setAssessmentType(type);
+            setGenericScore('');
+            setDetailedScores({});
+            setReport(null);
+            setIsDropdownOpen(false);
+            setSearchQuery('');
+            setValidationError('');
+            setCurrentView('assessment');
+          };
+
+          const handleDetailedChange = (id, val) => {
+            setDetailedScores(prev => ({ ...prev, [id]: val }));
+            setValidationError('');
+          };
+
+          const generateReport = () => {
+            const config = detailedConfig[assessmentType];
+
+            // VALIDATION
+            if (config) {
+              let requiredItemCount = 0;
+              let answeredItemCount = 0;
+
+              config.sections.forEach(sec => {
+                sec.items.forEach(item => {
+                  requiredItemCount++;
+                  if (detailedScores[item.id] !== undefined && detailedScores[item.id] !== '') {
+                    answeredItemCount++;
+                  }
+                });
+              });
+
+              if (config.finalSelect) {
+                requiredItemCount++;
+                if (detailedScores['final_class'] && detailedScores['final_class'] !== '') {
+                  answeredItemCount++;
+                }
+              }
+
+              if (answeredItemCount < requiredItemCount) {
+                setValidationError(`Please complete all fields. You have answered ${answeredItemCount} out of ${requiredItemCount} items.`);
+                return;
+              }
+            } else {
+              if (genericScore === '' || isNaN(parseFloat(genericScore))) {
+                setValidationError('Please enter a valid numerical result before calculating.');
+                return; 
+              }
+            }
+
+            // PROCEED WITH CALCULATION
+            let scoreToProcess = genericScore;
+
+            if (config) {
+              if (assessmentType === 'ASIA Impairment Scale' || assessmentType === 'Infant Neurological International Battery (INFANIB)') {
+                scoreToProcess = detailedScores['final_class'] || '';
+              } else {
+                let sum = 0;
+                Object.keys(detailedScores).forEach(k => { if (k !== 'final_class') sum += parseFloat(detailedScores[k] || 0); });
+                
+                if (assessmentType === 'Oswestry Disability Index (ODI)' || assessmentType === 'Neck Disability Index (NDI)') {
+                  scoreToProcess = ((sum / 50) * 100).toFixed(1);
+                } else if (assessmentType === 'Pediatric Quality of Life Inventory (PedsQL)') {
+                   let pSum = 0, count = 0;
+                   Object.keys(detailedScores).forEach(k => {
+                     const v = detailedScores[k];
+                     pSum += (v === 0 ? 100 : v === 1 ? 75 : v === 2 ? 50 : v === 3 ? 25 : 0);
+                     count++;
+                   });
+                   scoreToProcess = count > 0 ? (pSum / count).toFixed(1) : 0;
+                } else if (assessmentType === 'Gross Motor Function Measure (GMFM)') {
+                   scoreToProcess = ((sum / 42) * 100).toFixed(1);
+                } else if (assessmentType === 'Fear Avoidance Beliefs Questionnaire (FABQ)') {
+                   let pa = 0, w = 0;
+                   Object.keys(detailedScores).forEach(k => { 
+                     if (k.startsWith('fabq_pa_')) pa += (detailedScores[k] || 0);
+                     if (k.startsWith('fabq_w_')) w += (detailedScores[k] || 0);
+                   });
+                   scoreToProcess = `${pa},${w}`;
+                } else {
+                  scoreToProcess = sum;
+                }
+              }
+            }
+
+            const result = getInterpretation(assessmentType, scoreToProcess);
+            if (result) setReport({ type: assessmentType, ...result });
+          };
+
+          const renderAssessment = () => {
+            const data = neurologyMeasuresData[assessmentType] || mskMeasuresData[assessmentType] || cardioMeasuresData[assessmentType] || paediatricMeasuresData[assessmentType];
+            const config = detailedConfig[assessmentType];
+            const evidence = clinicalEvidence[assessmentType];
+            
+            const cats = [
+              { l: '1. Neurology', i: Object.keys(neurologyMeasuresData) },
+              { l: '2. Musculoskeletal', i: Object.keys(mskMeasuresData) },
+              { l: '3. Cardiopulmonary', i: Object.keys(cardioMeasuresData) },
+              { l: '4. Paediatric', i: Object.keys(paediatricMeasuresData) }
+            ];
+            const filtered = cats.map(c => ({ ...c, i: c.i.filter(x => x.toLowerCase().includes(searchQuery.toLowerCase())) })).filter(c => c.i.length > 0);
+
+            return (
+              <div className="space-y-6 pb-20">
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col lg:flex-row justify-between items-center gap-4 relative z-20">
+                  <div><h2 className="text-2xl font-bold text-slate-800 tracking-tight">Outcome Assessment</h2><p className="text-slate-500 text-sm mt-1">Search or select a clinical measure.</p></div>
+                  <div className="relative w-full lg:w-96">
+                    <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="bg-slate-50 border border-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl cursor-pointer flex justify-between items-center hover:bg-blue-50 transition shadow-sm">
+                      <span className="truncate">{String(assessmentType)}</span>
+                      <ChevronRight className={`transform transition-transform text-slate-400 ${isDropdownOpen ? 'rotate-90' : ''}`} size={18} />
+                    </div>
+                    {isDropdownOpen && (
+                      <><div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)}></div>
+                      <div className="absolute right-0 top-full mt-2 w-full lg:w-[450px] bg-white border border-slate-200 rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden">
+                        <div className="p-3 border-b border-slate-100 bg-slate-50"><input type="text" className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700" placeholder="Search..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} autoFocus /></div>
+                        <div className="overflow-y-auto max-h-[60vh] p-3 custom-scrollbar">
+                          {filtered.map(c => (
+                            <div key={c.l} className="mb-4">
+                              <div className="text-[10px] font-black text-blue-800 bg-blue-50 py-1 px-3 rounded uppercase tracking-widest mb-2">{String(c.l)}</div>
+                              <div className="space-y-1">{c.i.map(item => (<div key={item} className={`px-3 py-2 text-sm rounded-lg cursor-pointer font-semibold ${assessmentType === item ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`} onClick={() => { setAssessmentType(item); setReport(null); setDetailedScores({}); setIsDropdownOpen(false); setSearchQuery(''); setValidationError(''); }}>{String(item)}</div>))}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div></>
+                    )}
+                  </div>
+                </div>
+
+                {evidence && (
+                  <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white p-6 rounded-2xl shadow-lg">
+                    <div className="flex items-center gap-2 mb-4 border-b border-white/20 pb-2">
+                      <Info size={20} />
+                      <h3 className="font-bold uppercase tracking-wider text-xs">Suitability Based on Evidence</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div><p className="text-[10px] uppercase font-black text-blue-200 mb-1">Suitable Population</p><p className="text-sm font-semibold">{String(evidence.population)}</p></div>
+                      <div><p className="text-[10px] uppercase font-black text-blue-200 mb-1">Evidence-Based Findings</p><p className="text-sm italic">"{String(evidence.findings)}"</p></div>
+                    </div>
+                    {evidence.citation && (
+                      <div className="mt-4 pt-2 border-t border-white/10"><p className="text-[10px] text-blue-200 leading-tight italic">{String(evidence.citation)}</p></div>
+                    )}
+                  </div>
+                )}
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div><label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">MRN</label><input type="text" value={patientDetails.id} onChange={e => setPatientDetails({...patientDetails, id: e.target.value})} className="w-full p-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="MRN..." /></div>
+                  <div><label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Age / Gender</label><div className="flex gap-2"><input type="number" value={patientDetails.age} onChange={e => setPatientDetails({...patientDetails, age: e.target.value})} className="w-1/2 p-2 border border-slate-200 rounded-lg outline-none" placeholder="Age" /><select value={patientDetails.gender} onChange={e => setPatientDetails({...patientDetails, gender: e.target.value})} className="w-1/2 p-2 border border-slate-200 rounded-lg outline-none"><option value="">M/F</option><option value="Male">M</option><option value="Female">F</option></select></div></div>
+                  <div><label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Ward/Clinic</label><input type="text" value={patientDetails.ward} onChange={e => setPatientDetails({...patientDetails, ward: e.target.value})} className="w-full p-2 border border-slate-200 rounded-lg outline-none" placeholder="Location" /></div>
+                  <div><label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Diagnosis</label><input type="text" value={patientDetails.diagnosis} onChange={e => setPatientDetails({...patientDetails, diagnosis: e.target.value})} className="w-full p-2 border border-slate-200 rounded-lg outline-none" placeholder="Diagnosis..." /></div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                    <h3 className="text-lg font-bold text-slate-800 border-b pb-2 mb-4">{String(assessmentType)}</h3>
+                    
+                    <div className="bg-blue-50 p-5 rounded-xl border border-blue-100 text-sm mb-6 space-y-4">
+                      <div>
+                        <h4 className="font-bold text-blue-900 uppercase text-[10px] tracking-wider mb-1">Equipment Needed</h4>
+                        <p className="text-blue-800 font-semibold leading-relaxed">
+                          {data?.equip ? String(data.equip) : ''}
+                        </p>
+                      </div>
+                      <div className="border-t border-blue-200/60 pt-4">
+                        <h4 className="font-bold text-blue-900 uppercase text-[10px] tracking-wider mb-1">How to Perform</h4>
+                        <div className="text-blue-800 leading-relaxed">
+                          {data?.proc ? String(data.proc).split(/(?=\b\d+\.\s)/).map((step, i) => (
+                            <p key={i} className={`mb-1.5 ${step.trim().match(/^\d+\./) ? 'pl-4 -indent-4' : ''}`}>
+                              {step.trim()}
+                            </p>
+                          )) : ''}
+                        </div>
+                      </div>
+                    </div>
+
+                    {config ? (
+                      <div className="flex-1 overflow-y-auto max-h-[450px] pr-2 custom-scrollbar space-y-6">
+                        {config.sections.map((sec, si) => (
+                          <div key={si} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 className="font-bold text-slate-800 mb-3 text-xs uppercase">{String(sec.title)}</h4>
+                            <div className="space-y-2">
+                              {sec.items.map(item => (
+                                <div key={item.id} className="bg-white p-3 rounded-lg border border-slate-100">
+                                  <div className="text-sm font-semibold text-slate-700 mb-2">{String(item.label)}</div>
+                                  {item.instruction && <p className="text-[10px] text-slate-500 mb-2">{String(item.instruction)}</p>}
+                                  {item.options ? (
+                                    <div className={`flex flex-wrap gap-2 ${item.verticalOptions ? 'flex-col' : ''}`}>
+                                      {item.options.map(o => (
+                                        <label key={o.val} className="flex items-start space-x-2 cursor-pointer bg-slate-50 px-2 py-1.5 rounded hover:bg-blue-50 transition">
+                                          <input type="radio" name={item.id} checked={detailedScores[item.id] === o.val} onChange={() => handleDetailedChange(item.id, o.val)} className="mt-0.5" />
+                                          <span className="text-[11px] font-bold text-slate-600">{String(o.label)}</span>
+                                        </label>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <input type="number" className="w-full p-2 border border-slate-200 rounded" value={detailedScores[item.id] || ''} onChange={e => handleDetailedChange(item.id, parseFloat(e.target.value))} />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                        {config.finalSelect && (
+                          <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 mt-4"><h4 className="font-bold text-blue-900 mb-2 text-xs uppercase">Final Classification</h4><select className="w-full p-2 border border-blue-300 rounded" value={detailedScores['final_class'] || ''} onChange={e => handleDetailedChange('final_class', e.target.value)}><option value="">Select...</option>{config.finalSelect.map(o => <option key={o} value={o}>{String(o)}</option>)}</select></div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex-1">
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Enter Result ({data?.unit ? String(data.unit) : ''})</label>
+                        <input type="number" value={genericScore} onChange={e => {setGenericScore(e.target.value); setValidationError('');}} className="w-full text-4xl font-black text-slate-800 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="0" />
+                      </div>
+                    )}
+
+                    {/* Validation Error Message */}
+                    {validationError && (
+                      <div className="mt-4 bg-red-50 text-red-600 p-3 rounded-lg border border-red-200 text-sm font-bold flex items-center shadow-sm">
+                        <AlertTriangle size={18} className="mr-2 shrink-0" />
+                        {validationError}
+                      </div>
+                    )}
+
+                    <button onClick={generateReport} className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-lg transition">Calculate Interpretation</button>
+                  </div>
+
+                  <div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-6 text-slate-200 flex flex-col">
+                    <div className="flex items-center space-x-2 border-b border-slate-700 pb-4 mb-4"><Activity size={20} className="text-blue-400" /><h3 className="text-lg font-bold text-white tracking-tight">Clinical Interpretation</h3></div>
+                    {!report ? (
+                      <div className="flex-1 flex flex-col items-center justify-center text-slate-500 text-center"><ClipboardList size={48} className="opacity-20 mb-4" /><p className="text-xs">Select or complete assessment to see detailed findings.</p></div>
+                    ) : (
+                      <div className="flex-1 space-y-6 overflow-y-auto custom-scrollbar">
+                        <div className="bg-slate-800 p-4 rounded-xl flex justify-between items-start">
+                          <div><p className="text-[10px] font-bold text-slate-400 uppercase mb-1">Result</p><h4 className="text-2xl font-black text-white">{String(report.scoreText)}</h4></div>
+                          <div className={`px-3 py-1 rounded-full text-[10px] font-bold border ${getRiskColorClass(report.risk).replace('text-', 'bg-').replace('600', '900/50')} ${getRiskColorClass(report.risk).replace('text-', 'border-').replace('600', '800')} ${getRiskColorClass(report.risk).replace('600', '400')}`}>{String(report.risk)}</div>
+                        </div>
+                        <div><p className="text-[10px] font-bold text-slate-400 uppercase mb-1">Clinical Interpretation / Finding</p><p className="text-sm leading-relaxed text-slate-300">{String(report.implication)}</p></div>
+                        <button onClick={() => setCurrentView('report')} className="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-bold flex justify-center items-center"><FileText className="mr-2" size={18} /> View Formal Report</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          };
+
+          const renderReport = () => (
+            <div className="max-w-4xl mx-auto bg-white p-12 rounded-xl border border-slate-200 print:shadow-none print:border-none print:p-0">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100 no-print">
+                <button onClick={() => setCurrentView('assessment')} className="text-slate-500 hover:text-blue-600 font-bold text-sm flex items-center"><ChevronRight size={16} className="rotate-180 mr-1" /> Back</button>
+                <button onClick={() => window.print()} className="bg-slate-900 text-white px-5 py-2 rounded-lg font-bold text-sm flex items-center"><Printer size={16} className="mr-2" /> Print Official Report</button>
+              </div>
+              <div className="text-center border-b-2 border-black pb-4 mb-6">
+                <h1 className="text-xl font-black uppercase tracking-widest">KEMENTERIAN KESIHATAN MALAYSIA</h1>
+                <h2 className="text-sm font-bold uppercase tracking-widest mt-1">PHYSIOTHERAPY DEPARTMENT</h2>
+                <h3 className="text-lg font-bold mt-4 uppercase">Automated Outcome Measure Report</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-y-2 mb-8 text-sm">
+                <div className="flex"><span className="w-32 font-bold">MRN:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.id)}</span></div>
+                <div className="flex"><span className="w-32 font-bold">Age / Gender:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.age)} years / {String(patientDetails.gender)}</span></div>
+                <div className="flex"><span className="w-32 font-bold">Ward/Clinic:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.ward)}</span></div>
+                <div className="flex"><span className="w-32 font-bold">Diagnosis:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.diagnosis)}</span></div>
+              </div>
+              <div className="border border-black mb-6">
+                <div className="bg-slate-100 p-2 border-b border-black font-bold uppercase text-xs">1. Result of the Outcome Measure: {String(assessmentType)}</div>
+                <div className="p-4 grid grid-cols-2 gap-4">
+                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Result / Scoring</p><div className="text-3xl font-black">{report ? String(report.scoreText) : ''}</div></div>
+                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Risk Categorisation</p><div className={`text-xl font-bold uppercase ${getRiskColorClass(report?.risk)}`}>{report ? String(report.risk) : ''}</div></div>
+                </div>
+              </div>
+              <div className="space-y-6 mb-10">
+                <div><h4 className="font-bold border-b border-black mb-2 uppercase text-xs tracking-wider">2. Clinical Interpretation / Finding</h4><p className="text-sm leading-relaxed">{report ? String(report.implication) : ''}</p></div>
+              </div>
+              <div className="mt-8 border-t border-black pt-4">
+                <h4 className="font-bold border-b border-black mb-2 uppercase text-xs">3. Progress Tracking / Reassessment Log</h4>
+                <table className="w-full border-collapse border border-black text-xs text-left">
+                  <thead><tr className="bg-slate-100 border-b border-black"><th className="border-r border-black p-2 w-24">Date</th><th className="border-r border-black p-2 w-32">Score / Result</th><th className="border-r border-black p-2">Clinical Notes / Progression</th><th className="p-2 w-32 text-center">Sign / Stamp</th></tr></thead>
+                  <tbody>{[0, 1, 2, 3, 4, 5].map(r => (<tr key={r} className="border-b border-black h-16"><td className="border-r border-black p-2 align-top">{r === 0 && report ? new Date().toLocaleDateString('en-GB') : ''}</td><td className="border-r border-black p-2 align-top font-bold text-center">{r === 0 && report ? report.scoreText : ''}</td><td className="border-r border-black p-2 align-top">{r === 0 && report ? `Initial Assessment — Risk Categorisation: ${report.risk}` : ''}</td><td className="p-2"></td></tr>))}</tbody>
+                </table>
+              </div>
+              <div className="mt-12 flex justify-between text-xs font-bold border-t border-black pt-4">
+                <div className="text-center w-64"><br/><br/>__________________________________<br/>Assessing Physiotherapist / Stamp</div>
+                <div className="text-right w-64">Date: {new Date().toLocaleDateString('en-GB')}<br/><br/><span className="italic font-normal text-slate-400">System Generated: PhysioMeasure</span></div>
+              </div>
+            </div>
+          );
+
+          return (
+            <div className="min-h-screen bg-slate-50 font-sans flex flex-col text-slate-900 print:bg-white print:block print:h-auto print:overflow-visible">
+              
+              {/* Top Navbar */}
+              <nav className="bg-blue-900 text-white p-4 sticky top-0 z-50 no-print flex flex-wrap justify-between items-center shadow-lg w-full">
+                  <div className="flex items-center space-x-3">
+                      <div className="bg-white text-blue-900 px-3 py-1 rounded font-black italic text-sm shadow-sm">KKM</div>
+                      <div>
+                          <h1 className="text-lg font-bold leading-none">PhysioMeasure</h1>
+                          <p className="text-[10px] text-blue-200 tracking-widest uppercase font-semibold">Developed by HSA Physio Department</p>
+                      </div>
+                  </div>
+                  <div className="flex space-x-4 mt-4 sm:mt-0">
+                      <button onClick={() => setCurrentView('dashboard')} className={`font-bold text-sm px-3 py-1 rounded transition ${currentView === 'dashboard' ? 'bg-blue-800 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-800'}`}>Dashboard</button>
+                      <button onClick={() => setCurrentView('assessment')} className={`font-bold text-sm px-3 py-1 rounded transition ${currentView === 'assessment' ? 'bg-blue-800 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-800'}`}>Assessment</button>
+                      <button onClick={() => setCurrentView('report')} className={`font-bold text-sm px-3 py-1 rounded transition ${currentView === 'report' ? 'bg-blue-800 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-800'}`}>Report</button>
+                  </div>
+              </nav>
+
+              <main className="flex-1 p-4 md:p-8 print:m-0 print:p-0 print:bg-white overflow-y-auto">
+                <div className="max-w-6xl mx-auto">{currentView === 'dashboard' ? (
+                  <div className="space-y-6 pt-6"><h2 className="text-3xl font-black text-slate-800 tracking-tight">Clinical Dashboard</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <div className="bg-white rounded-3xl border border-slate-100 p-12 flex flex-col items-center text-center shadow-sm">
+                        <div className="bg-blue-50 p-6 rounded-full mb-6 text-blue-600"><Plus size={48}/></div>
+                        <h3 className="text-xl font-bold mb-2">New Patient Session</h3>
+                        <p className="text-slate-500 text-sm mb-6 max-w-xs">Start a fresh session to record clinical outcome measures.</p>
+                        <button onClick={() => handleStartAssessment('Berg Balance Scale (BBS)')} className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-2xl font-black transition shadow-lg">Start Now</button>
+                      </div>
+                      <div className="bg-white rounded-3xl border border-slate-100 p-12 shadow-sm flex flex-col"><h3 className="text-xl font-bold mb-6">Quick Shortcuts</h3>
+                        <div className="space-y-3">{['Berg Balance Scale (BBS)', 'Timed Up and Go Test (TUG)', 'Six Minute Walk Test (6MWT)'].map(t => (<button key={t} onClick={() => handleStartAssessment(t)} className="w-full flex justify-between items-center p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-slate-700 hover:border-blue-500 transition"><span className="text-sm">{String(t)}</span><ArrowRight size={16}/></button>))}</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : currentView === 'assessment' ? renderAssessment() : renderReport()}</div>
+              </main>
+
+              <footer className="mt-16 border-t border-slate-200 pt-8 pb-4 text-center no-print">
+                <p className="text-sm font-semibold text-slate-600 mb-1">Having issues with the app?</p>
+                <div className="flex flex-col items-center justify-center text-xs text-slate-500 space-y-1">
+                  <p>Please contact <span className="font-bold text-slate-700">Kamaruddin Wasli</span> for support.</p>
+                  <a href="mailto:kamaruddin.w@moh.gov.my" className="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline transition font-semibold">
+                    <Mail size={12} className="mr-1" />
+                    kamaruddin.w@moh.gov.my
+                  </a>
+                </div>
+              </footer>
+
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root')); 
+        root.render(<App />);
+    </script>
+</body>
+</html>
