@@ -11,17 +11,17 @@
     <!-- FontAwesome for stable browser icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- React & ReactDOM (UMD versions for browser) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- React & ReactDOM (Stable UMD versions from cdnjs) -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     
     <!-- Babel standalone to compile JSX in the browser -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.4/babel.min.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react,env">
         // Extract React Hooks
         const { useState } = React;
         
@@ -73,7 +73,7 @@
           '10 Metre Walk Test': {
             population: 'Stroke, SCI, Parkinson disease, post-neurological gait impairment',
             findings: 'Suitable for gait speed and ambulatory classification. Walking speed strongly predicts community participation.',
-            citation: 'Perry, J., Garrett, M., Gronley, J. K., & Mulroy, S. J. (1995). Stroke, 26(6), 982–989.'
+            citation: 'Perry, J., Garrett, M., ... & Mulroy, S. J. (1995). Stroke, 26(6), 982–989.'
           },
           'Functional Reach Test': {
             population: 'Elderly falls, stroke, vestibular dysfunction, Parkinson disease',
@@ -145,12 +145,27 @@
           'Patient Specific Functional Scale (PSFS)': {
             population: 'General MSK conditions, individualized functional limitations, sports injury',
             findings: 'Sensitive to functional changes and patient-centered goals.',
-            citation: 'Stratford, P., Gill, C., Westaway, M., & Binkley, J. (1995). Physiotherapy Canada, 47, 258–263.'
+            citation: 'Stratford, P., ... & Binkley, J. (1995). Physiotherapy Canada, 47, 258–263.'
           },
           'Fear Avoidance Beliefs Questionnaire (FABQ)': {
             population: 'Chronic low back pain, persistent pain, psychosocial assessment',
             findings: 'High scores correlate with chronic disability and delayed return to activity/work.',
             citation: 'Waddell, G., Newton, M., Henderson, I., et al. (1993). Pain, 52, 157–168.'
+          },
+          'Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC)': {
+            population: 'Hip and/or knee osteoarthritis, lower limb joint disorders, post-total joint arthroplasty (TJA)',
+            findings: 'Excellent validity and responsiveness for assessing pain, joint stiffness, and physical function limitations associated with lower limb osteoarthritis.',
+            citation: 'Bellamy, N., Buchanan, W. W., Goldsmith, C. H., Campbell, J., & Stitt, L. W. (1988). The Journal of Rheumatology, 15(12), 1833-1840.'
+          },
+          'Knee Injury and Osteoarthritis Outcome Score (KOOS)': {
+            population: 'Knee injury, knee osteoarthritis (OA), anterior cruciate ligament (ACL) tear, meniscus injury, post-knee surgery.',
+            findings: 'KOOS is a highly valid, reliable, and responsive instrument for evaluating patient-relevant outcomes regarding knee pain, symptoms, and functional limitations.',
+            citation: 'Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., & Beynnon, B. D. (1998). Journal of Orthopaedic & Sports Physical Therapy, 28(2), 88-96.'
+          },
+          'Disabilities of the Arm, Shoulder and Hand (DASH)': {
+            population: 'Upper limb musculoskeletal conditions, shoulder pain, hand injuries, rotator cuff disorders, carpal tunnel syndrome, post-operative upper extremity rehabilitation',
+            findings: 'DASH is a highly validated, patient-reported outcome measure designed to evaluate physical function and symptoms in patients with upper extremity disorders.',
+            citation: 'Hudak, P. L., Amadio, P. C., & Bombardier, C. (1996). American Journal of Industrial Medicine, 29(6), 602-608.'
           },
 
           // Cardiorespiratory
@@ -164,9 +179,19 @@
             findings: 'Useful alternative when 6MWT is too physically demanding.',
             citation: 'Brooks, D., Parsons, J., Hunter, J. P., et al. (2001). Arch Phys Med Rehabil, 82, 1478–1483.'
           },
-          'Borg Rating of Perceived Exertion': {
+          'Borg RPE (6-20 Category Scale)': {
             population: 'Pulmonary rehab, exercise prescription, cardiac rehab, ICU',
-            findings: 'Strong correlation with physiological exercise intensity and symptom monitoring.',
+            findings: 'Strong correlation with physiological exercise intensity. Originally developed to correlate with exercise heart rates.',
+            citation: 'Borg, G. A. V. (1982). Med Sci Sports Exerc, 14, 377–381.'
+          },
+          'Borg RPE (0-10 CR Scale)': {
+            population: 'Pulmonary rehab, exercise prescription, cardiac rehab, ICU',
+            findings: 'Category-ratio scale used to subjectively rate level of exertion from central cardiovascular and respiratory functions.',
+            citation: 'Borg, G. A. V. (1982). Med Sci Sports Exerc, 14, 377–381.'
+          },
+          'Modified Borg Dyspnoea Scale': {
+            population: 'Pulmonary rehab, COPD, chronic respiratory disease, ICU',
+            findings: 'Specifically used to record symptomatic breathlessness and rate the difficulty of breathing.',
             citation: 'Borg, G. A. V. (1982). Med Sci Sports Exerc, 14, 377–381.'
           },
           'mMRC Dyspnoea Scale': {
@@ -209,7 +234,7 @@
           'Infant Neurological International Battery (INFANIB)': {
             population: 'Infants aged 3–18 months with prematurity, developmental delay, neurological risk, hypoxic ischemic encephalopathy, high-risk infant follow-up',
             findings: 'INFANIB demonstrates predictive validity for identifying infants at risk of neuromotor abnormalities and developmental delay.',
-            citation: 'Ellison, P. H., Horn, J. L., & Browning, C. A. (1985). Physical Therapy, 65(9), 1326–1331. Recent: Tsai, M. W., et al. (2004).'
+            citation: 'Ellison, P. H., Horn, J. L., & Browning, C. A. (1985). Physical Therapy, 65(9), 1326–1331. Recent: Tsai, M. w., et al. (2004).'
           }
         };
 
@@ -234,7 +259,7 @@
           },
           'Functional Reach Test': {
             equip: 'Measuring tape/ruler mounted on wall',
-            proc: '1. Stand beside wall. 2. Raise arm 90°. 3. Reach forward maximally without taking a step. 4. Measure reach distance.',
+            proc: '1. Stand beside wall. 2. Raise arm 90°. 3. Reaching forward maximally without taking a step. 4. Measure reach distance.',
             unit: 'Reach in cm',
             inputType: 'number'
           },
@@ -302,14 +327,14 @@
             inputType: 'detailed'
           },
           'Oswestry Disability Index (ODI)': {
-            equip: 'ODI Questionnaire',
-            proc: '10 sections: Pain, Lifting, Sitting, Walking, Standing, etc. Select one statement per section. Formula: (Patient score / Total possible score) x 100',
+            equip: 'ODI Questionnaire Form, Pen',
+            proc: '10 sections: Pain intensity, Personal care, Lifting, Walking, Sitting, Standing, Sleeping, Sex life (if applicable), Social life, and Travelling. For each section, select the ONE option that best describes your condition.',
             unit: 'Percentage (%)',
             inputType: 'detailed'
           },
           'Neck Disability Index (NDI)': {
-            equip: 'NDI Questionnaire',
-            proc: '10 sections: Pain intensity, Personal care, Lifting, Reading, Headaches, Concentration, Work, Driving, Sleeping, Recreation. Choose one statement per section.',
+            equip: 'NDI Questionnaire Form, Pen',
+            proc: '10 sections covering neck-related pain and limitations. For each section, select the ONE statement that best applies to your condition.',
             unit: 'Score / 50 (%)',
             inputType: 'detailed'
           },
@@ -320,9 +345,27 @@
             inputType: 'detailed'
           },
           'Fear Avoidance Beliefs Questionnaire (FABQ)': {
-            equip: 'FABQ Questionnaire',
-            proc: 'Two domains: Physical Activity (4 items) and Work (7 items). Score 0 (completely disagree) to 6 (completely agree).',
+            equip: 'FABQ Questionnaire Form, Pen',
+            proc: 'Assesses fear-avoidance beliefs for Physical Activity (4 items) and Work (7 items). Select standard agreement options from 0 to 6.',
             unit: 'Subscale Scores',
+            inputType: 'detailed'
+          },
+          'Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC)': {
+            equip: 'WOMAC Questionnaire Sheet, Pen',
+            proc: 'Assess 24 items across 3 subscales: Pain (5 items), Stiffness (2 items), and Physical Function (17 items). Rate each activity on a difficulty scale: 0 = None, 1 = Slight, 2 = Moderate, 3 = Very, 4 = Extremely. Formula: (Total Summed Score / 96) * 100.',
+            unit: 'Percentage (%)',
+            inputType: 'detailed'
+          },
+          'Knee Injury and Osteoarthritis Outcome Score (KOOS)': {
+            equip: 'KOOS Questionnaire Form, Pen',
+            proc: 'Assess 42 items across 5 subscales: Symptoms, Pain, Activities of Daily Living (ADL), Sport and Recreation Function, and Knee-related Quality of Life. Final scores represent average percentage of knee health (0 = Extreme problems, 100 = No problems).',
+            unit: 'Percentage (%)',
+            inputType: 'detailed'
+          },
+          'Disabilities of the Arm, Shoulder and Hand (DASH)': {
+            equip: 'DASH Questionnaire Form, Pen',
+            proc: 'Assess upper limb disability and symptoms over the last week across 30 items. Scoring: Each item rated from 1 to 5. Formula: ((Sum of completed responses / Number of responses) - 1) * 25.',
+            unit: 'Percentage (%)',
             inputType: 'detailed'
           }
         };
@@ -340,9 +383,21 @@
             unit: 'Distance in meters',
             inputType: 'number'
           },
-          'Borg Rating of Perceived Exertion': {
-            equip: 'Modified Borg 0-10 Scale chart',
-            proc: 'Ask: "How hard are you working right now?" Assesses breathlessness, fatigue, and exercise intensity.',
+          'Borg RPE (6-20 Category Scale)': {
+            equip: 'Borg 6-20 Scale chart',
+            proc: 'Ask the patient to rate their perceived exertion during activity. 6 is no exertion at all, 20 is maximal exertion.',
+            unit: 'Score (6-20)',
+            inputType: 'detailed'
+          },
+          'Borg RPE (0-10 CR Scale)': {
+            equip: 'Borg Category-Ratio (0-10) Scale chart',
+            proc: 'Ask: "How hard are you working right now?" Assesses overall perceived exertion, breathlessness, and fatigue.',
+            unit: 'Score (0-10)',
+            inputType: 'detailed'
+          },
+          'Modified Borg Dyspnoea Scale': {
+            equip: 'Modified Borg Dyspnoea Scale chart',
+            proc: 'Patient Instructions: "This is a scale that asks you to rate the difficulty of your breathing. It starts at number 0 where your breathing is causing you no difficulty at all and progresses through to number 10 where your breathing difficulty is maximal. How much difficulty is your breathing causing you right now?"',
             unit: 'Score (0-10)',
             inputType: 'detailed'
           },
@@ -399,10 +454,566 @@
           }
         };
 
+        // --- HELPER CONSTANTS & CONFIGS ---
         const makeOptions = (max) => Array.from({length: max + 1}, (_, i) => ({ val: i, label: i.toString() }));
         const fmaOptions = [ { val: 0, label: '0 - Cannot perform' }, { val: 1, label: '1 - Performs partially' }, { val: 2, label: '2 - Performs fully' } ];
         const gmfmOptions = [ { val: 0, label: '0 - Does not initiate' }, { val: 1, label: '1 - Initiates (<10%)' }, { val: 2, label: '2 - Partially completes' }, { val: 3, label: '3 - Completes task' } ];
         const pedsqlOptions = [ { val: 0, label: '0 - Never (100)' }, { val: 1, label: '1 - Almost never (75)' }, { val: 2, label: '2 - Sometimes (50)' }, { val: 3, label: '3 - Often (25)' }, { val: 4, label: '4 - Almost always (0)' } ];
+        const womacOptions = [
+          { val: 0, label: '0 - None' },
+          { val: 1, label: '1 - Slight' },
+          { val: 2, label: '2 - Moderate' },
+          { val: 3, label: '3 - Very' },
+          { val: 4, label: '4 - Extremely' }
+        ];
+
+        // KOOS Options
+        const koosPainFreqOptions = [
+          {val: 0, label: "0 - Never"}, {val: 1, label: "1 - Monthly"}, {val: 2, label: "2 - Weekly"}, {val: 3, label: "3 - Daily"}, {val: 4, label: "4 - Always"}
+        ];
+        const koosFreqOptions1 = [
+          {val: 0, label: "0 - Never"}, {val: 1, label: "1 - Rarely"}, {val: 2, label: "2 - Sometimes"}, {val: 3, label: "3 - Often"}, {val: 4, label: "4 - Always"}
+        ];
+        const koosFreqOptions2 = [ // Reversed for S4, S5
+          {val: 0, label: "0 - Always"}, {val: 1, label: "1 - Often"}, {val: 2, label: "2 - Sometimes"}, {val: 3, label: "3 - Rarely"}, {val: 4, label: "4 - Never"}
+        ];
+        const koosSevOptions = [
+          {val: 0, label: "0 - None"}, {val: 1, label: "1 - Mild"}, {val: 2, label: "2 - Moderate"}, {val: 3, label: "3 - Severe"}, {val: 4, label: "4 - Extreme"}
+        ];
+        const koosQ1Options = [
+          {val: 0, label: "0 - Never"}, {val: 1, label: "1 - Monthly"}, {val: 2, label: "2 - Weekly"}, {val: 3, label: "3 - Daily"}, {val: 4, label: "4 - Constantly"}
+        ];
+        const koosQ2Options = [
+          {val: 0, label: "0 - Not at all"}, {val: 1, label: "1 - Mildly"}, {val: 2, label: "2 - Moderately"}, {val: 3, label: "3 - Severely"}, {val: 4, label: "4 - Totally"}
+        ];
+        const koosQ3Options = [
+          {val: 0, label: "0 - Not at all"}, {val: 1, label: "1 - Mildly"}, {val: 2, label: "2 - Moderately"}, {val: 3, label: "3 - Severely"}, {val: 4, label: "4 - Extremely"}
+        ];
+
+        // --- EXPLICIT RATING DICTIONARIES FOR CLARITY ---
+        const asiaMotorOptions = [
+          { val: 0, label: "0 - No active muscle contraction" },
+          { val: 1, label: "1 - Visible/palpable muscle contraction without joint movement" },
+          { val: 2, label: "2 - Active movement through full range of motion, gravity eliminated" },
+          { val: 3, label: "3 - Active movement through full range of motion against gravity" },
+          { val: 4, label: "4 - Active movement against gravity and moderate resistance" },
+          { val: 5, label: "5 - Normal power against full resistance" }
+        ];
+
+        const asiaSensoryOptions = [
+          { val: 0, label: "0 - Absent" },
+          { val: 1, label: "1 - Altered / Impaired" },
+          { val: 2, label: "2 - Normal" }
+        ];
+
+        const fabqAgreementOptions = [
+          { val: 0, label: "0 - Completely disagree" },
+          { val: 1, label: "1 - Disagree" },
+          { val: 2, label: "2 - Slightly disagree" },
+          { val: 3, label: "3 - Unsure / Neutral" },
+          { val: 4, label: "4 - Slightly agree" },
+          { val: 5, label: "5 - Agree" },
+          { val: 6, label: "6 - Completely agree" }
+        ];
+
+        const psfsAnchorOptions = [
+          { val: 0, label: "0 - Unable to perform activity" },
+          { val: 1, label: "1" },
+          { val: 2, label: "2" },
+          { val: 3, label: "3" },
+          { val: 4, label: "4" },
+          { val: 5, label: "5 - Moderate difficulty" },
+          { val: 6, label: "6" },
+          { val: 7, label: "7" },
+          { val: 8, label: "8" },
+          { val: 9, label: "9" },
+          { val: 10, label: "10 - Able to perform at pre-injury level" }
+        ];
+
+        const cpaxGradeOptions = [
+          { val: 0, label: "0 - Fully dependent / Unable to perform" },
+          { val: 1, label: "1 - Requires assistance of 2 or more therapists" },
+          { val: 2, label: "2 - Requires assistance of 1 therapist" },
+          { val: 3, label: "3 - Requires active supervision or verbal prompting" },
+          { val: 4, label: "4 - Minimal physical assistance / Uses walking aid" },
+          { val: 5, label: "5 - Fully independent / Age-appropriate normal" }
+        ];
+
+        const imsLevelsOptions = [
+          { val: 0, label: "0 - Passive in bed (lying, passive rolling only)" },
+          { val: 1, label: "1 - Sitting in bed, active or passive exercises" },
+          { val: 2, label: "2 - Passively transferred to a chair (hoist or sliding, no standing)" },
+          { val: 3, label: "3 - Sitting on the edge of the bed (trunk control without physical support)" },
+          { val: 4, label: "4 - Standing beside the bed (bearing weight with assist of 1 or more)" },
+          { val: 5, label: "5 - Transferring bed to chair (active standing pivot transfer)" },
+          { val: 6, label: "6 - Marching in place (active high stepping beside bed)" },
+          { val: 7, label: "7 - Walking with assistance of 2 or more people" },
+          { val: 8, label: "8 - Walking with assistance of 1 person" },
+          { val: 9, label: "9 - Walking independently with an assistive device" },
+          { val: 10, label: "10 - Walking independently without any device or help" }
+        ];
+
+        const pbsGradeOptions = [
+          { val: 4, label: "4 - Normal performance / fully independent" },
+          { val: 3, label: "3 - Safe performance with slight supervision / slight limitation" },
+          { val: 2, label: "2 - Moderate difficulty / requires constant supervision" },
+          { val: 1, label: "1 - Marked impairment / requires physical assistance" },
+          { val: 0, label: "0 - Severely impaired / unable to attempt safely" }
+        ];
+
+        // --- BORG SPECIFIC RATING DICTIONARIES ---
+        const borg620Options = [
+          { val: 6, label: "6" },
+          { val: 7, label: "7 - Very, very light" },
+          { val: 8, label: "8" },
+          { val: 9, label: "9 - Very light" },
+          { val: 10, label: "10" },
+          { val: 11, label: "11 - Fairly light" },
+          { val: 12, label: "12" },
+          { val: 13, label: "13 - Somewhat hard" },
+          { val: 14, label: "14" },
+          { val: 15, label: "15 - Hard" },
+          { val: 16, label: "16" },
+          { val: 17, label: "17 - Very hard" },
+          { val: 18, label: "18" },
+          { val: 19, label: "19 - Very, very hard" },
+          { val: 20, label: "20" }
+        ];
+
+        const borgCROptions = [
+          { val: 0, label: "0 - Nothing at all" },
+          { val: 0.3, label: "0.3" },
+          { val: 0.5, label: "0.5 - Extremely weak (Just noticeable)" },
+          { val: 0.7, label: "0.7" },
+          { val: 1, label: "1 - Very weak" },
+          { val: 1.5, label: "1.5" },
+          { val: 2, label: "2 - Weak (Light)" },
+          { val: 2.5, label: "2.5" },
+          { val: 3, label: "3 - Moderate" },
+          { val: 4, label: "4" },
+          { val: 5, label: "5 - Strong (Heavy)" },
+          { val: 6, label: "6" },
+          { val: 7, label: "7 - Very strong" },
+          { val: 8, label: "8" },
+          { val: 9, label: "9" },
+          { val: 10, label: "10 - Extremely strong (\"Maximal\")" },
+          { val: 11, label: "11 - Absolute maximum (Highest Possible)" }
+        ];
+
+        const borgDyspnoeaOptions = [
+          { val: 0, label: "0 - Nothing at all" },
+          { val: 0.5, label: "0.5 - Very, very slight (just noticeable)" },
+          { val: 1, label: "1 - Very slight" },
+          { val: 2, label: "2 - Slight" },
+          { val: 3, label: "3 - Moderate" },
+          { val: 4, label: "4 - Somewhat severe" },
+          { val: 5, label: "5 - Severe" },
+          { val: 6, label: "6" },
+          { val: 7, label: "7 - Very severe" },
+          { val: 8, label: "8" },
+          { val: 9, label: "9 - Very, very severe (almost maximal)" },
+          { val: 10, label: "10 - Maximal" }
+        ];
+
+        // --- DASH SPECIFIC RATING DICTIONARIES ---
+        const dashDiffOptions = [
+          { val: 1, label: "1 - No difficulty" },
+          { val: 2, label: "2 - Mild difficulty" },
+          { val: 3, label: "3 - Moderate difficulty" },
+          { val: 4, label: "4 - Severe difficulty" },
+          { val: 5, label: "5 - Unable" }
+        ];
+
+        const dashSocialOptions = [
+          { val: 1, label: "1 - Not at all" },
+          { val: 2, label: "2 - Slightly" },
+          { val: 3, label: "3 - Moderately" },
+          { val: 4, label: "4 - Quite a bit" },
+          { val: 5, label: "5 - Extremely" }
+        ];
+
+        const dashWorkOptions = [
+          { val: 1, label: "1 - Not limited at all" },
+          { val: 2, label: "2 - Slightly limited" },
+          { val: 3, label: "3 - Moderately limited" },
+          { val: 4, label: "4 - Very limited" },
+          { val: 5, label: "5 - Unable" }
+        ];
+
+        const dashSymptomOptions = [
+          { val: 1, label: "1 - None" },
+          { val: 2, label: "2 - Mild" },
+          { val: 3, label: "3 - Moderate" },
+          { val: 4, label: "4 - Severe" },
+          { val: 5, label: "5 - Extreme" }
+        ];
+
+        const dashSleepOptions = [
+          { val: 1, label: "1 - No difficulty" },
+          { val: 2, label: "2 - Mild difficulty" },
+          { val: 3, label: "3 - Moderate difficulty" },
+          { val: 4, label: "4 - Severe difficulty" },
+          { val: 5, label: "5 - Difficulty that I can't sleep" }
+        ];
+
+        const dashPsychOptions = [
+          { val: 1, label: "1 - Strongly disagree" },
+          { val: 2, label: "2 - Disagree" },
+          { val: 3, label: "3 - Neither agree nor disagree" },
+          { val: 4, label: "4 - Agree" },
+          { val: 5, label: "5 - Strongly agree" }
+        ];
+
+        // --- SPECIFIC DETAILED COGNITIVE / FUNCTIONAL ARRAYS ---
+        const odiDetailedItems = [
+          {
+            title: "1. Pain Intensity",
+            options: [
+              { val: 0, text: "0 - I have no pain at the moment." },
+              { val: 1, text: "1 - The pain is very mild at the moment." },
+              { val: 2, text: "2 - The pain is moderate at the moment." },
+              { val: 3, text: "3 - The pain is fairly severe at the moment." },
+              { val: 4, text: "4 - The pain is very severe at the moment." },
+              { val: 5, text: "5 - The pain is the worst imaginable at the moment." }
+            ]
+          },
+          {
+            title: "2. Personal Care (washing, dressing, etc.)",
+            options: [
+              { val: 0, text: "0 - I can look after myself normally without causing extra pain." },
+              { val: 1, text: "1 - I can look after myself normally but it causes extra pain." },
+              { val: 2, text: "2 - It is painful to look after myself and I am slow and careful." },
+              { val: 3, text: "3 - I need some help but manage most of my personal care." },
+              { val: 4, text: "4 - I need help every day in most aspects of self-care." },
+              { val: 5, text: "5 - I do not get dressed, I wash with difficulty and stay in bed." }
+            ]
+          },
+          {
+            title: "3. Lifting",
+            options: [
+              { val: 0, text: "0 - I can lift heavy weights without extra pain." },
+              { val: 1, text: "1 - I can lift heavy weights but it gives extra pain." },
+              { val: 2, text: "2 - Pain prevents me from lifting heavy weights off the floor, but I can manage if they are conveniently placed, e.g. on a table." },
+              { val: 3, text: "3 - Pain prevents me from lifting heavy weights, but I can manage light to medium weights if they are conveniently positioned." },
+              { val: 4, text: "4 - I can lift very light weights." },
+              { val: 5, text: "5 - I cannot lift or carry anything at all." }
+            ]
+          },
+          {
+            title: "4. Walking",
+            options: [
+              { val: 0, text: "0 - Pain does not prevent me walking any distance." },
+              { val: 1, text: "1 - Pain prevents me from walking more than 1 mile." },
+              { val: 2, text: "2 - Pain prevents me from walking more than ½ mile." },
+              { val: 3, text: "3 - Pain prevents me from walking more than 100 yards." },
+              { val: 4, text: "4 - I can only walk using a stick or crutches I am in bed most of the time." }
+            ]
+          },
+          {
+            title: "5. Sitting",
+            options: [
+              { val: 0, text: "0 - I can sit in any chair as long as I like." },
+              { val: 1, text: "1 - I can only sit in my favorite chair as long as I like." },
+              { val: 2, text: "2 - Pain prevents me sitting more than one hour." },
+              { val: 3, text: "3 - Pain prevents me from sitting more than 30 minutes." },
+              { val: 4, text: "4 - Pain prevents me from sitting more than 10 minutes." },
+              { val: 5, text: "5 - Pain prevents me from sitting at all." }
+            ]
+          },
+          {
+            title: "6. Standing",
+            options: [
+              { val: 0, text: "0 - I can stand as long as I want without extra pain." },
+              { val: 1, text: "1 - I can stand as long as I want but it gives me extra pain." },
+              { val: 2, text: "2 - Pain prevents me from standing for more than 1 hour." },
+              { val: 3, text: "3 - Pain prevents me from standing for more than 30 minutes." },
+              { val: 4, text: "4 - Pain prevents me from standing for more than 10 minutes." },
+              { val: 5, text: "5 - Pain prevents me from standing at all." }
+            ]
+          },
+          {
+            title: "7. Sleeping",
+            options: [
+              { val: 0, text: "0 - My sleep is never disturbed by pain." },
+              { val: 1, text: "1 - My sleep is occasionally disturbed by pain." },
+              { val: 2, text: "2 - Because of pain I have less than 6 hours sleep." },
+              { val: 3, text: "3 - Because of pain I have less than 4 hours sleep." },
+              { val: 4, text: "4 - Because of pain I have less than 2 hours sleep." },
+              { val: 5, text: "5 - Pain prevents me from sleeping at all." }
+            ]
+          },
+          {
+            title: "8. Sex Life (if applicable)",
+            options: [
+              { val: 0, text: "0 - My sex life is normal and causes no extra pain." },
+              { val: 1, text: "1 - My sex life is normal but causes some extra pain." },
+              { val: 2, text: "2 - My sex life is nearly normal but is very painful." },
+              { val: 3, text: "3 - My sex life is severely restricted by pain." },
+              { val: 4, text: "4 - My sex life is nearly absent because of pain." },
+              { val: 5, text: "5 - Pain prevents any sex life at all." }
+            ]
+          },
+          {
+            title: "9. Social Life",
+            options: [
+              { val: 0, text: "0 - My social life is normal and gives me no extra pain." },
+              { val: 1, text: "1 - My social life is normal but increases the degree of pain." },
+              { val: 2, text: "2 - Pain has no significant effect on my social life apart from limiting my more energetic interests (e.g., sports)." },
+              { val: 3, text: "3 - Pain has restricted my social life and I do not go out as often." },
+              { val: 4, text: "4 - Pain has restricted my social life to my home." },
+              { val: 5, text: "5 - I have no social life because of pain." }
+            ]
+          },
+          {
+            title: "10. Travelling",
+            options: [
+              { val: 0, text: "0 - I can travel anywhere without pain." },
+              { val: 1, text: "1 - I can travel anywhere but it gives me extra pain." },
+              { val: 2, text: "2 - Pain is bad but I manage journeys over two hours." },
+              { val: 3, text: "3 - Pain restricts me to journeys of less than one hour." },
+              { val: 4, text: "4 - Pain restricts me to short necessary journeys under 30 minutes." },
+              { val: 5, text: "5 - Pain prevents me from travelling except to receive treatment." }
+            ]
+          }
+        ];
+
+        const ndiDetailedItems = [
+          {
+            title: "1. Pain Intensity",
+            options: [
+              { val: 0, text: "0 - I have no pain at the moment." },
+              { val: 1, text: "1 - The pain is very mild at the moment." },
+              { val: 2, text: "2 - The pain is moderate at the moment." },
+              { val: 3, text: "3 - The pain is fairly severe at the moment." },
+              { val: 4, text: "4 - The pain is very severe at the moment." },
+              { val: 5, text: "5 - The pain is the worst imaginable at the moment." }
+            ]
+          },
+          {
+            title: "2. Personal Care (washing, dressing, etc.)",
+            options: [
+              { val: 0, text: "0 - I can look after myself normally without causing extra pain." },
+              { val: 1, text: "1 - I can look after myself normally but it causes extra pain." },
+              { val: 2, text: "2 - It is painful to look after myself and I am slow and careful." },
+              { val: 3, text: "3 - I need some help but manage most of my personal care." },
+              { val: 4, text: "4 - I need help every day in most aspects of self-care." },
+              { val: 5, text: "5 - I do not get dressed, wash with difficulty and stay in bed." }
+            ]
+          },
+          {
+            title: "3. Lifting",
+            options: [
+              { val: 0, text: "0 - I can lift heavy weights without extra pain." },
+              { val: 1, text: "1 - I can lift heavy weights but it gives extra pain." },
+              { val: 2, text: "2 - Pain prevents me from lifting heavy weights off the floor, but I can manage if they are conveniently placed, e.g. on a table." },
+              { val: 3, text: "3 - Pain prevents me from lifting heavy weights, but I can manage light to medium weights if they are conveniently positioned." },
+              { val: 4, text: "4 - I can lift very light weights." },
+              { val: 5, text: "5 - I cannot lift or carry anything at all." }
+            ]
+          },
+          {
+            title: "4. Reading",
+            options: [
+              { val: 0, text: "0 - I can read as much as I want with no pain in my neck." },
+              { val: 1, text: "1 - I can read as much as I want with slight pain in my neck." },
+              { val: 2, text: "2 - I can read as much as I want with moderate pain in my neck." },
+              { val: 3, text: "3 - I cannot read as much as I want because of moderate pain in my neck." },
+              { val: 4, text: "4 - I can hardly read at all because of severe pain in my neck." },
+              { val: 5, text: "5 - I cannot read at all." }
+            ]
+          },
+          {
+            title: "5. Headaches",
+            options: [
+              { val: 0, text: "0 - I have no headaches at all." },
+              { val: 1, text: "1 - I have slight headaches which come infrequently." },
+              { val: 2, text: "2 - I have moderate headaches which come infrequently." },
+              { val: 3, text: "3 - I have moderate headaches which come frequently." },
+              { val: 4, text: "4 - I have severe headaches which come frequently." },
+              { val: 5, text: "5 - I have headaches almost all the time." }
+            ]
+          },
+          {
+            title: "6. Concentration",
+            options: [
+              { val: 0, text: "0 - I can concentrate fully when I want to with no difficulty." },
+              { val: 1, text: "1 - I can concentrate fully when I want to with slight difficulty." },
+              { val: 2, text: "2 - I have a fair degree of difficulty in concentrating when I want to." },
+              { val: 3, text: "3 - I have a lot of difficulty in concentrating when I want to." },
+              { val: 4, text: "4 - I have a great deal of difficulty in concentrating when I want to." },
+              { val: 5, text: "5 - I cannot concentrate at all." }
+            ]
+          },
+          {
+            title: "7. Work",
+            options: [
+              { val: 0, text: "0 - I can do as much work as I want to." },
+              { val: 1, text: "1 - I can only do my usual work, but no more." },
+              { val: 2, text: "2 - I can do most of my usual work, but no more." },
+              { val: 3, text: "3 - I cannot do my usual work." },
+              { val: 4, text: "4 - I can hardly do any work at all." },
+              { val: 5, text: "5 - I cannot do any work at all." }
+            ]
+          },
+          {
+            title: "8. Driving",
+            options: [
+              { val: 0, text: "0 - I can drive my car without any neck pain." },
+              { val: 1, text: "1 - I can drive my car as long as I want with slight neck pain." },
+              { val: 2, text: "2 - I can drive my car as long as I want with moderate neck pain." },
+              { val: 3, text: "3 - I cannot drive my car as long as I want because of moderate neck pain." },
+              { val: 4, text: "4 - I can hardly drive at all because of severe neck pain." },
+              { val: 5, text: "5 - I cannot drive my car at all." }
+            ]
+          },
+          {
+            title: "9. Sleeping",
+            options: [
+              { val: 0, text: "0 - My sleep is never disturbed by pain." },
+              { val: 1, text: "1 - My sleep is occasionally disturbed by pain." },
+              { val: 2, text: "2 - Because of pain I have less than 6 hours sleep." },
+              { val: 3, text: "3 - Because of pain I have less than 4 hours sleep." },
+              { val: 4, text: "4 - Because of pain I have less than 2 hours sleep." },
+              { val: 5, text: "5 - Pain prevents me from sleeping at all." }
+            ]
+          },
+          {
+            title: "10. Recreation",
+            options: [
+              { val: 0, text: "0 - I am able to engage in all my recreation activities with no neck pain at all." },
+              { val: 1, text: "1 - I am able to engage in all my recreation activities with some pain in my neck." },
+              { val: 2, text: "2 - I am able to engage in most, but not all, of my usual recreation activities because of neck pain." },
+              { val: 3, text: "3 - I am able to engage in a few of my usual recreation activities because of neck pain." },
+              { val: 4, text: "4 - I can hardly do any recreation activities because of neck pain." },
+              { val: 5, text: "5 - I cannot do any recreation activities at all." }
+            ]
+          }
+        ];
+
+        const masDetailedItems = [
+          {
+            title: "1. Supine to Side Lying onto Intact Side",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Pulls active knee up, rolls with arm assist" },
+              { val: 2, text: "2 - Reaches with hemiplegic arm across body, opposite leg rolls body" },
+              { val: 3, text: "3 - Rolls to side within 3 seconds without hand assist" },
+              { val: 4, text: "4 - Rolls to side and holds stable side-lying position" },
+              { val: 5, text: "5 - Rolls to side and returns smoothly under control" },
+              { val: 6, text: "6 - Performs task independently, smoothly and safely" }
+            ]
+          },
+          {
+            title: "2. Supine to Sitting on Edge of Bed",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Assisted to side-lying, rolls and swings legs with assist" },
+              { val: 2, text: "2 - Moves independently from supine to side-lying, swings legs" },
+              { val: 3, text: "3 - Sits up on side of bed independently from side-lying" },
+              { val: 4, text: "4 - Moves independently from supine to sitting on edge of bed" },
+              { val: 5, text: "5 - Performs transitions quickly and under total control" },
+              { val: 6, text: "6 - Sits up smoothly, maintaining dynamic trunk symmetry" }
+            ]
+          },
+          {
+            title: "3. Balanced Sitting",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Sits with physical support or assistance" },
+              { val: 2, text: "2 - Sits unsupported for 10 seconds (no arm assist)" },
+              { val: 3, text: "3 - Sits unsupported and rotates head/trunk to look behind" },
+              { val: 4, text: "4 - Sits unsupported and reaches forward to touch floor, returns" },
+              { val: 5, text: "5 - Sits unsupported and reaches sideways to pick object" },
+              { val: 6, text: "6 - Sits on stool, lifts opposite leg off floor without tipping" }
+            ]
+          },
+          {
+            title: "4. Sit-to-Stand",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Stands up with assistance" },
+              { val: 2, text: "2 - Stands up using hands on knees or support" },
+              { val: 3, text: "3 - Stands up independently without use of hands" },
+              { val: 4, text: "4 - Stands up independently and holds standing for 10 seconds" },
+              { val: 5, text: "5 - Stands up and performs immediate weight-shift" },
+              { val: 6, text: "6 - Performs sit-to-stand smoothly with equal bilateral loading" }
+            ]
+          },
+          {
+            title: "5. Walking",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Stands on hemiplegic leg and steps forward with intact leg with help" },
+              { val: 2, text: "2 - Walks with assistance of one person" },
+              { val: 3, text: "3 - Walks 10 meters independently but slowly with aid/walker" },
+              { val: 4, text: "4 - Walks 10 meters independently on flat surface without aid" },
+              { val: 5, text: "5 - Walks 10 meters, turns, walks back in under 15 seconds" },
+              { val: 6, text: "6 - Walks up and down 4 steps independently with or without rail" }
+            ]
+          },
+          {
+            title: "6. Upper Arm Function",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Lying supine: elevates arm 90° with assistance" },
+              { val: 2, text: "2 - Lying supine: elevates arm 90° independently, holds 2s" },
+              { val: 3, text: "3 - Sitting: abducts shoulder 90°, holds 2 seconds" },
+              { val: 4, text: "4 - Sitting: elevates arm fully overhead, holds 2 seconds" },
+              { val: 5, text: "5 - Sitting: reaches forward, flexes elbow, touches hand to opposite shoulder" },
+              { val: 6, text: "6 - Sitting: performs rapid pronation/supination of forearm smoothly" }
+            ]
+          },
+          {
+            title: "7. Hand Movement",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Extension of wrist with assistance" },
+              { val: 2, text: "2 - Extension of wrist independently, fingers flexed" },
+              { val: 3, text: "3 - Extension of wrist with active finger extension" },
+              { val: 4, text: "4 - Holds tennis ball with cylindrical grasp, lifts from table" },
+              { val: 5, text: "5 - Releases tennis ball onto table under control" },
+              { val: 6, text: "6 - Picks up small object (pincer grasp) and releases precisely" }
+            ]
+          },
+          {
+            title: "8. Advanced Hand Activities",
+            options: [
+              { val: 0, text: "0 - Cannot perform" },
+              { val: 1, text: "1 - Reaches out and picks up pen, places down" },
+              { val: 2, text: "2 - Opens jar/lid using both hands" },
+              { val: 3, text: "3 - Draws lines on paper using ruler and pen" },
+              { val: 4, text: "4 - Deals 5 playing cards sequentially onto table" },
+              { val: 5, text: "5 - Threads large needle or ties shoelaces" },
+              { val: 6, text: "6 - Writes name legibly using a standard pen" }
+            ]
+          }
+        ];
+
+        const tinettiBalanceItems = [
+          { title: "1. Sitting Balance", options: [ { val: 0, text: "0 - Slides or slumps in chair" }, { val: 1, text: "1 - Safe, stable, upright" } ] },
+          { title: "2. Rising from Chair", options: [ { val: 0, text: "0 - Unable without help" }, { val: 1, text: "1 - Able, but uses arms to help" }, { val: 2, text: "2 - Able to rise without use of arms" } ] },
+          { title: "3. Attempts to Rise", options: [ { val: 0, text: "0 - Unable without help" }, { val: 1, text: "1 - Able, but requires > 1 attempt" }, { val: 2, text: "2 - Able to rise with 1 attempt" } ] },
+          { title: "4. Immediate Standing Balance (first 5 sec)", options: [ { val: 0, text: "0 - Unsteady (staggers, moves feet, marked trunk sway)" }, { val: 1, text: "1 - Steady but uses walker/cane or other support" }, { val: 2, text: "2 - Steady without walker, cane, or other support" } ] },
+          { title: "5. Standing Balance", options: [ { val: 0, text: "0 - Unsteady" }, { val: 1, text: "1 - Steady but wide stance (feet > 4 in apart) or uses support" }, { val: 2, text: "2 - Narrow stance (feet together) without support" } ] },
+          { title: "6. Nudged (Sternum Push)", options: [ { val: 0, text: "0 - Begins to fall / loses balance" }, { val: 1, text: "1 - Staggers, grabs, but catches self" }, { val: 2, text: "2 - Steady, withstands pressure" } ] },
+          { title: "7. Eyes Closed Standing", options: [ { val: 0, text: "0 - Unsteady" }, { val: 1, text: "1 - Steady" } ] },
+          { title: "8. Turning 360 Degrees - Steps", options: [ { val: 0, text: "0 - Discontinuous steps" }, { val: 1, text: "1 - Continuous steps" } ] },
+          { title: "8b. Turning 360 Degrees - Stability", options: [ { val: 0, text: "0 - Unsteady (grabs, sways)" }, { val: 1, text: "1 - Steady" } ] },
+          { title: "9. Sitting Down", options: [ { val: 0, text: "0 - Unsafe (misjudges distance, falls into chair)" }, { val: 1, text: "1 - Uses arms or has non-smooth motion" }, { val: 2, text: "2 - Safe, smooth motion" } ] }
+        ];
+
+        const tinettiGaitItems = [
+          { title: "1. Initiation of Gait", options: [ { val: 0, text: "0 - Any hesitancy or multiple attempts to start" }, { val: 1, text: "1 - No hesitancy, starts smoothly" } ] },
+          { title: "2. Step Length - Right Swing", options: [ { val: 0, text: "0 - Does not pass left stance foot" }, { val: 1, text: "1 - Passes left stance foot" } ] },
+          { title: "2b. Step Height - Right Foot Clearance", options: [ { val: 0, text: "0 - Does not clear floor completely (drags)" }, { val: 1, text: "1 - Foot completely clears floor" } ] },
+          { title: "3. Step Length - Left Swing", options: [ { val: 0, text: "0 - Does not pass right stance foot" }, { val: 1, text: "1 - Passes right stance foot" } ] },
+          { title: "3b. Step Height - Left Foot Clearance", options: [ { val: 0, text: "0 - Does not clear floor completely (drags)" }, { val: 1, text: "1 - Foot completely clears floor" } ] },
+          { title: "4. Step Symmetry", options: [ { val: 0, text: "0 - Right and left step lengths appear unequal" }, { val: 1, text: "1 - Right and left step lengths appear equal" } ] },
+          { title: "5. Step Continuity", options: [ { val: 0, text: "0 - Stopping or discontinuity between steps" }, { val: 1, text: "1 - Steps appear continuous" } ] },
+          { title: "6. Path Deviation", options: [ { val: 0, text: "0 - Marked deviation/swerving from straight line" }, { val: 1, text: "1 - Mild/moderate deviation or uses walking aid" }, { val: 2, text: "2 - Straight path without support or aid" } ] },
+          { title: "7. Trunk Stability", options: [ { val: 0, text: "0 - Marked sway or uses walking aid" }, { val: 1, text: "1 - No sway but flexes knees/back or spreads arms" }, { val: 2, text: "2 - No sway, no flexion, no arms spread, no aid" } ] },
+          { title: "8. Walking Stance Width", options: [ { val: 0, text: "0 - Feet deviate wide apart during walking" }, { val: 1, text: "1 - Feet close together/nearly touch during walking" } ] }
+        ];
 
         const bbsDetailedItems = [
           { title: "1. SITTING TO STANDING", instruction: "INSTRUCTIONS: Please stand up. Try not to use your hand for support.", options: [ { score: 4, text: "4 - able to stand without using hands and stabilize independently" }, { score: 3, text: "3 - able to stand independently using hands" }, { score: 2, text: "2 - able to stand using hands after several tries" }, { score: 1, text: "1 - needs minimal aid to stand or stabilize" }, { score: 0, text: "0 - needs moderate or maximal assist to stand" } ] },
@@ -424,27 +1035,296 @@
         const detailedConfig = {
           'Berg Balance Scale (BBS)': { sections: [{ title: '14-Item Tasks', items: bbsDetailedItems.map((it, i) => ({ id: `bbs_${i}`, label: it.title, instruction: it.instruction, verticalOptions: true, options: it.options.map(o => ({ val: o.score, label: o.text })) })) }] },
           'Fugl-Meyer Assessment (Upper Limb)': { sections: [ { title: 'Reflex Activity', items: [{id:'fma_1', label:'Biceps reflex'}, {id:'fma_2', label:'Triceps reflex'}].map(i => ({...i, options: fmaOptions})) }, { title: 'Flexor Synergy', items: ['Shoulder retraction', 'Shoulder elevation', 'Shoulder abduction 90°', 'Elbow flexion', 'Forearm supination'].map((l,i) => ({id:`fma_3_${i}`, label: l, options: fmaOptions})) }, { title: 'Extensor Synergy', items: ['Shoulder adduction', 'Internal rotation', 'Elbow extension', 'Forearm pronation'].map((l,i) => ({id:`fma_4_${i}`, label: l, options: fmaOptions})) }, { title: 'Wrist & Hand', items: ['Wrist stability', 'Repeated wrist movement', 'Mass flexion', 'Hook grasp', 'Cylindrical grasp', 'Spherical grasp'].map((l,i) => ({id:`fma_5_${i}`, label: l, options: fmaOptions})) }, { title: 'Coordination', items: ['Finger-to-nose', 'Tremor', 'Dysmetria'].map((l,i) => ({id:`fma_7_${i}`, label: l, options: fmaOptions})) } ] },
-          'Motor Assessment Scale (MAS)': { sections: [{ title: 'Functional Tasks (0-6 each)', items: ['Supine → side lying', 'Supine → sitting', 'Balanced sitting', 'Sit-to-stand', 'Walking', 'Upper arm function', 'Hand movement', 'Advanced hand activities'].map((l,i) => ({id:`mas_${i}`, label:l, options: makeOptions(6)})) }] },
+          'Motor Assessment Scale (MAS)': { 
+            sections: [
+              { 
+                title: 'Functional Motor Evaluation Sections (0-6)', 
+                items: masDetailedItems.map((it, i) => ({
+                  id: `mas_${i}`,
+                  label: it.title,
+                  verticalOptions: true,
+                  options: it.options.map(o => ({ val: o.val, label: o.text }))
+                }))
+              }
+            ] 
+          },
           'NIH Stroke Scale': { sections: [{ title: 'Stroke Scale Items', items: ['Level of consciousness', 'Ask age and month', 'Open/close eyes and grip', 'Eye movement tracking', 'Visual field', 'Facial movement', 'Arm hold 10 sec', 'Leg hold 5 sec', 'Finger–nose test', 'Sensory testing', 'Picture naming', 'Speech clarity', 'Neglect'].map((l,i) => ({id:`nih_${i}`, label:l, options: makeOptions(4)})) }] },
           'Montreal Cognitive Assessment (MoCA)': { sections: [{ title: 'Cognitive Domains', items: ['Trail making', 'Cube copy', 'Clock contour', 'Clock numbers', 'Clock hands', 'Name lion', 'Name rhinoceros', 'Name camel', 'Repeat numbers forward', 'Repeat numbers backward', 'Tap at letter A', 'Serial subtraction by 7', 'Sentence repetition', 'Fluency (>11 words)', 'Similarity', 'Recall 5 words', 'Orientation', 'Education ≤ 12 years (+1 pt)'].map((l,i) => ({id:`moc_${i}`, label:l, options: makeOptions(5)})) }] },
-          'ASIA Impairment Scale': { sections: [ { title: 'Motor Testing (0-5)', items: ['C5 Elbow flexion','C6 Wrist extension','C7 Elbow extension','C8 Finger flexion','T1 Finger abduction','L2 Hip flexion','L3 Knee extension','L4 Ankle dorsiflexion','L5 Great toe ext','S1 Plantarflexion'].map((l,i) => ({id:`asia_m_${i}`, label:l, options: makeOptions(5)})) }, { title: 'Sensory Testing', items: [{id:'asia_s_1', label:'Light touch'}, {id:'asia_s_2', label:'Pinprick'}].map(i => ({...i, options: makeOptions(2)})) } ], finalSelect: ['A - Complete', 'B - Sensory incomplete', 'C - Motor incomplete', 'D - Motor incomplete stronger', 'E - Normal'] },
+          'ASIA Impairment Scale': { 
+            sections: [ 
+              { 
+                title: 'Motor Testing (0-5 standard MRC Grades)', 
+                items: ['C5 Elbow flexion','C6 Wrist extension','C7 Elbow extension','C8 Finger flexion','T1 Finger abduction','L2 Hip flexion','L3 Knee extension','L4 Ankle dorsiflexion','L5 Great toe ext','S1 Plantarflexion'].map((l,i) => ({id:`asia_m_${i}`, label:l, verticalOptions: true, options: asiaMotorOptions})) 
+              }, 
+              { 
+                title: 'Sensory Testing', 
+                items: [{id:'asia_s_1', label:'Light touch (Key Dermatomes)'}, {id:'asia_s_2', label:'Pinprick (Key Dermatomes)'}].map(i => ({...i, verticalOptions: true, options: asiaSensoryOptions})) 
+              } 
+            ], 
+            finalSelect: ['A - Complete', 'B - Sensory incomplete', 'C - Motor incomplete', 'D - Motor incomplete stronger', 'E - Normal'] 
+          },
           'Spinal Cord Independence Measure (SCIM)': { sections: [{ title: 'Independence Areas', items: ['Feeding', 'Bathing', 'Dressing', 'Grooming', 'Respiration', 'Bladder', 'Bowel', 'Bed mobility', 'Transfers', 'Indoor', 'Outdoor', 'Stairs'].map((l,i) => ({id:`scim_${i}`, label:l, inputType: 'number'})) }] },
-          'Tinetti Test': { sections: [ { title: 'Balance Section', items: ['Sitting balance','Rising from chair','Attempts to rise','Immediate standing','Standing balance','Eyes closed','Turning 360°','Sitting down'].map((l,i)=>({id:`tin_b_${i}`, label:l, options: makeOptions(2)})) }, { title: 'Gait Section', items: ['Initiation','Step length','Step symmetry','Step continuity','Path','Trunk','Walking stance'].map((l,i)=>({id:`tin_g_${i}`, label:l, options: makeOptions(2)})) } ] },
-          'Numeric Pain Rating Scale (NPRS)': { sections: [{ title: 'Pain Rating', items: [{id:'nprs_current', label:'Current pain level', options: makeOptions(10)}] }] },
-          'Oswestry Disability Index (ODI)': { sections: [{ title: 'Disability Sections (0-5 each)', items: ['Pain Intensity', 'Personal care', 'Lifting', 'Walking', 'Sitting', 'Standing', 'Sleeping', 'Social life', 'Traveling', 'Employment'].map((l,i) => ({id:`odi_${i}`, label:l, options: makeOptions(5)})) }] },
-          'Neck Disability Index (NDI)': { sections: [{ title: 'Disability Sections (0-5 each)', items: ['Pain intensity', 'Personal care', 'Lifting', 'Reading', 'Headaches', 'Concentration', 'Work', 'Driving', 'Sleeping', 'Recreation'].map((l,i) => ({id:`ndi_${i}`, label:l, options: makeOptions(5)})) }] },
-          'Patient Specific Functional Scale (PSFS)': { sections: [{ title: 'Activity Difficulties (0-10)', items: ['Activity 1 Rating', 'Activity 2 Rating', 'Activity 3 Rating'].map((l,i) => ({id:`psfs_${i+1}`, label:l, options: makeOptions(10)})) }] },
-          'Fear Avoidance Beliefs Questionnaire (FABQ)': { sections: [ { title: 'Physical Activity Subscale (0-6)', items: ['PA makes pain worse','PA might harm my back','Should not do PA','Cannot do PA'].map((l,i)=>({id:`fabq_pa_${i}`, label:l, options: makeOptions(6)})) }, { title: 'Work Subscale (0-6)', items: ['Work aggravated pain','Claim for compensation','Work is too heavy','Work makes pain worse','Work might harm my back','Should not do normal work','Cannot do normal work'].map((l,i)=>({id:`fabq_w_${i}`, label:l, options: makeOptions(6)})) } ] },
-          'Borg Rating of Perceived Exertion': { sections: [{ title: 'Modified Borg Scale', items: [{id: 'borg_score', label: 'Perceived Exertion Level', verticalOptions: true, options: [ { val: 0, label: '0 - Nothing at all' }, { val: 0.5, label: '0.5 - Very very slight' }, { val: 1, label: '1 - Very slight' }, { val: 2, label: '2 - Slight' }, { val: 3, label: '3 - Moderate' }, { val: 4, label: '4 - Somewhat severe' }, { val: 5, label: '5 - Severe' }, { val: 7, label: '7 - Very severe' }, { val: 10, label: '10 - Maximal' } ] }] }] },
+          'Tinetti Test': { 
+            sections: [ 
+              { 
+                title: 'Balance Section (Max 16)', 
+                items: tinettiBalanceItems.map((it, i) => ({ id: `tin_b_${i}`, label: it.title, verticalOptions: true, options: it.options })) 
+              }, 
+              { 
+                title: 'Gait Section (Max 12)', 
+                items: tinettiGaitItems.map((it, i) => ({ id: `tin_g_${i}`, label: it.title, verticalOptions: true, options: it.options })) 
+              } 
+            ] 
+          },
+          'Numeric Pain Rating Scale (NPRS)': { sections: [{ title: 'Pain Rating', items: [{id:'nprs_current', label:'Current pain level (0=No pain to 10=Worst imaginable)', options: makeOptions(10)}] }] },
+          'Oswestry Disability Index (ODI)': { 
+            sections: [
+              { 
+                title: 'Oswestry Low Back Pain Disability Sections (0-5)', 
+                items: odiDetailedItems.map((it, i) => ({ 
+                  id: `odi_${i}`, 
+                  label: it.title, 
+                  verticalOptions: true, 
+                  options: it.options.map(o => ({ val: o.val, label: o.text })) 
+                })) 
+              }
+            ] 
+          },
+          'Neck Disability Index (NDI)': { 
+            sections: [
+              { 
+                title: 'Neck Disability Index Sections (0-5)', 
+                items: ndiDetailedItems.map((it, i) => ({ 
+                  id: `ndi_${i}`, 
+                  label: it.title, 
+                  verticalOptions: true, 
+                  options: it.options.map(o => ({ val: o.val, label: o.text })) 
+                })) 
+              }
+            ] 
+          },
+          'Patient Specific Functional Scale (PSFS)': { 
+            sections: [
+              { 
+                title: 'Patient-Identified Activities Rating (0-10 scale)', 
+                items: ['Activity 1 Rating', 'Activity 2 Rating', 'Activity 3 Rating'].map((l,i) => ({id:`psfs_${i+1}`, label:l, verticalOptions: true, options: psfsAnchorOptions})) 
+              }
+            ] 
+          },
+          'Fear Avoidance Beliefs Questionnaire (FABQ)': { 
+            sections: [ 
+              { 
+                title: 'Physical Activity Subscale (0-6 Agreement scale)', 
+                items: ['PA makes pain worse','PA might harm my back','Should not do PA','Cannot do PA'].map((l,i)=>({id:`fabq_pa_${i}`, label:l, verticalOptions: true, options: fabqAgreementOptions})) 
+              }, 
+              { 
+                title: 'Work Subscale (0-6 Agreement scale)', 
+                items: ['Work aggravated pain','Claim for compensation','Work is too heavy','Work makes pain worse','Work might harm my back','Should not do normal work','Cannot do normal work'].map((l,i)=>({id:`fabq_w_${i}`, label:l, verticalOptions: true, options: fabqAgreementOptions})) 
+              } 
+            ] 
+          },
+          'Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC)': {
+            sections: [
+              {
+                title: 'Pain Subscale (0-4 difficulty)',
+                items: [
+                  { id: 'womac_p_1', label: '1. Walking on flat surface', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_p_2', label: '2. Going up or down stairs', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_p_3', label: '3. Nocturnal (while in bed)', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_p_4', label: '4. Rest (sitting or lying)', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_p_5', label: '5. Weight bearing (standing upright)', verticalOptions: true, options: womacOptions }
+                ]
+              },
+              {
+                title: 'Stiffness Subscale (0-4 difficulty)',
+                items: [
+                  { id: 'womac_s_1', label: '1. Morning stiffness after first waking', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_s_2', label: '2. Stiffness occurring later in the day after resting', verticalOptions: true, options: womacOptions }
+                ]
+              },
+              {
+                title: 'Physical Function Subscale (0-4 difficulty)',
+                items: [
+                  { id: 'womac_f_1', label: '1. Descending stairs', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_2', label: '2. Ascending stairs', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_3', label: '3. Rising from sitting', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_4', label: '4. Standing', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_5', label: '5. Bending to floor', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_6', label: '6. Walking on flat surface', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_7', label: '7. Getting in / out of car', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_8', label: '8. Going shopping', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_9', label: '9. Putting on socks', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_10', label: '10. Lying in bed', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_11', label: '11. Taking off socks', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_12', label: '12. Rising from bed', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_13', label: '13. Getting in/out of bath', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_14', label: '14. Sitting', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_15', label: '15. Getting on/off toilet', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_16', label: '16. Heavy domestic duties', verticalOptions: true, options: womacOptions },
+                  { id: 'womac_f_17', label: '17. Light domestic duties', verticalOptions: true, options: womacOptions }
+                ]
+              }
+            ]
+          },
+          'Disabilities of the Arm, Shoulder and Hand (DASH)': {
+            sections: [
+              {
+                title: 'Daily Activities (Items 1-21)',
+                items: [
+                  { id: 'dash_1', label: '1. Open a tight or new jar.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_2', label: '2. Write.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_3', label: '3. Turn a key.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_4', label: '4. Prepare a meal.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_5', label: '5. Push open a heavy door.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_6', label: '6. Place an object on a shelf above your head.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_7', label: '7. Do heavy household chores (e.g., wash walls, wash floors).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_8', label: '8. Garden or do yard work.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_9', label: '9. Make a bed.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_10', label: '10. Carry a shopping bag or briefcase.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_11', label: '11. Carry a heavy object (over 10 lbs).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_12', label: '12. Change a lightbulb overhead.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_13', label: '13. Wash or blow dry your hair.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_14', label: '14. Wash your back.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_15', label: '15. Put on a pullover sweater.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_16', label: '16. Use a knife to cut food.', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_17', label: '17. Recreational activities which require little effort (e.g., cardplaying, knitting, etc.).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_18', label: '18. Recreational activities in which you take some force or impact through your arm, shoulder or hand (e.g., golf, hammering, tennis, etc.).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_19', label: '19. Recreational activities in which you move your arm freely (e.g., playing frisbee, badminton, etc.).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_20', label: '20. Manage transportation needs (getting from one place to another).', verticalOptions: true, options: dashDiffOptions },
+                  { id: 'dash_21', label: '21. Sexual activities.', verticalOptions: true, options: dashDiffOptions }
+                ]
+              },
+              {
+                title: 'Social & Work Participation (Items 22-23)',
+                items: [
+                  { id: 'dash_22', label: '22. During the past week, to what extent has your arm, shoulder or hand problem interfered with your normal social activities with family, friends, neighbours or groups?', verticalOptions: true, options: dashSocialOptions },
+                  { id: 'dash_23', label: '23. During the past week, were you limited in your work or other regular daily activities as a result of your arm, shoulder or hand problem?', verticalOptions: true, options: dashWorkOptions }
+                ]
+              },
+              {
+                title: 'Symptom Severity (Items 24-28)',
+                items: [
+                  { id: 'dash_24', label: '24. Arm, shoulder or hand pain.', verticalOptions: true, options: dashSymptomOptions },
+                  { id: 'dash_25', label: '25. Arm, shoulder or hand pain when you performed any specific activity.', verticalOptions: true, options: dashSymptomOptions },
+                  { id: 'dash_26', label: '26. Tingling (pins and needles) in your arm, shoulder or hand.', verticalOptions: true, options: dashSymptomOptions },
+                  { id: 'dash_27', label: '27. Weakness in your arm, shoulder or hand.', verticalOptions: true, options: dashSymptomOptions },
+                  { id: 'dash_28', label: '28. Stiffness in your arm, shoulder or hand.', verticalOptions: true, options: dashSymptomOptions }
+                ]
+              },
+              {
+                title: 'Sleep & Impact (Items 29-30)',
+                items: [
+                  { id: 'dash_29', label: '29. During the past week, how much difficulty have you had sleeping because of the pain in your arm, shoulder or hand?', verticalOptions: true, options: dashSleepOptions },
+                  { id: 'dash_30', label: '30. I feel less capable, less confident or less useful because of my arm, shoulder or hand problem.', verticalOptions: true, options: dashPsychOptions }
+                ]
+              }
+            ]
+          },
+          'Knee Injury and Osteoarthritis Outcome Score (KOOS)': {
+            sections: [
+              {
+                title: 'I. Symptoms (Last Week)',
+                items: [
+                  { id: 'koos_s1', label: 'S1. Do you have swelling in your knee?', verticalOptions: true, options: koosFreqOptions1 },
+                  { id: 'koos_s2', label: 'S2. Do you feel grinding, hear clicking, or any other type of noise when your knee moves?', verticalOptions: true, options: koosFreqOptions1 },
+                  { id: 'koos_s3', label: 'S3. Does your knee catch or hang up when moving?', verticalOptions: true, options: koosFreqOptions1 },
+                  { id: 'koos_s4', label: 'S4. Can you straighten your knee fully?', verticalOptions: true, options: koosFreqOptions2 },
+                  { id: 'koos_s5', label: 'S5. Can you bend your knee fully?', verticalOptions: true, options: koosFreqOptions2 },
+                  { id: 'koos_s6', label: 'S6. How severe is your knee joint stiffness after first wakening in the morning?', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_s7', label: 'S7. How severe is your knee joint stiffness after sitting, lying, or resting later in the day?', verticalOptions: true, options: koosSevOptions }
+                ]
+              },
+              {
+                title: 'II. Pain (Last Week)',
+                items: [
+                  { id: 'koos_p1', label: 'P1. How often do you experience knee pain?', verticalOptions: true, options: koosPainFreqOptions },
+                  { id: 'koos_p2', label: 'P2. Twisting/pivoting on your knee', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p3', label: 'P3. Straightening knee fully', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p4', label: 'P4. Bending knee fully', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p5', label: 'P5. Walking on flat surface', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p6', label: 'P6. Going up or down stairs', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p7', label: 'P7. At night while in bed', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p8', label: 'P8. Sitting or lying', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_p9', label: 'P9. Standing upright', verticalOptions: true, options: koosSevOptions }
+                ]
+              },
+              {
+                title: 'III. Function, Daily Living (ADL)',
+                items: [
+                  { id: 'koos_a1', label: 'A1. Descending stairs', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a2', label: 'A2. Ascending stairs', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a3', label: 'A3. Rising from sitting', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a4', label: 'A4. Standing', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a5', label: 'A5. Bending to the floor/pick up an object', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a6', label: 'A6. Walking on a flat surface', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a7', label: 'A7. Getting in/out of car', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a8', label: 'A8. Going shopping', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a9', label: 'A9. Putting on socks/stockings', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a10', label: 'A10. Rising from bed', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a11', label: 'A11. Taking off socks/stockings', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a12', label: 'A12. Lying in bed (turning over, maintaining knee position)', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a13', label: 'A13. Getting in/out of bath', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a14', label: 'A14. Sitting', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a15', label: 'A15. Getting on/off toilet', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a16', label: 'A16. Heavy domestic duties (moving heavy boxes, scrubbing floors, etc)', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_a17', label: 'A17. Light domestic duties (cooking, dusting, etc)', verticalOptions: true, options: koosSevOptions }
+                ]
+              },
+              {
+                title: 'IV. Function, Sports and Recreational Activities',
+                items: [
+                  { id: 'koos_sp1', label: 'SP1. Squatting', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_sp2', label: 'SP2. Running', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_sp3', label: 'SP3. Jumping', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_sp4', label: 'SP4. Twisting/pivoting on your injured knee', verticalOptions: true, options: koosSevOptions },
+                  { id: 'koos_sp5', label: 'SP5. Kneeling', verticalOptions: true, options: koosSevOptions }
+                ]
+              },
+              {
+                title: 'V. Quality of Life',
+                items: [
+                  { id: 'koos_q1', label: 'Q1. How often are you aware of your knee problem?', verticalOptions: true, options: koosQ1Options },
+                  { id: 'koos_q2', label: 'Q2. Have you modified your life style to avoid activities potentially damaging to your knee?', verticalOptions: true, options: koosQ2Options },
+                  { id: 'koos_q3', label: 'Q3. How much are you troubled with lack of confidence in your knee?', verticalOptions: true, options: koosQ3Options },
+                  { id: 'koos_q4', label: 'Q4. In general, how much difficulty do you have with your knee?', verticalOptions: true, options: koosSevOptions }
+                ]
+              }
+            ]
+          },
+          'Borg RPE (6-20 Category Scale)': { sections: [{ title: 'Borg Category Scale (6-20)', items: [{id: 'borg_620_score', label: 'Perceived Exertion Level', verticalOptions: true, options: borg620Options }] }] },
+          'Borg RPE (0-10 CR Scale)': { sections: [{ title: 'Borg Category-Ratio Scale (0-10)', items: [{id: 'borg_cr_score', label: 'Perceived Exertion Level', verticalOptions: true, options: borgCROptions }] }] },
+          'Modified Borg Dyspnoea Scale': { sections: [{ title: 'Modified Borg Dyspnoea Scale', items: [{id: 'borg_dyspnoea_score', label: 'Select Difficulty of Breathing', verticalOptions: true, options: borgDyspnoeaOptions }] }] },
           'mMRC Dyspnoea Scale': { sections: [{ title: 'Breathlessness Assessment', items: [{id: 'mmrc_score', label: 'Select Best Description', verticalOptions: true, options: [ { val: 0, label: 'Grade 0 - Breathless only with strenuous exercise' }, { val: 1, label: 'Grade 1 - Breathless hurrying or slight hill' }, { val: 2, label: 'Grade 2 - Walk slower than peers due to breathlessness' }, { val: 3, label: 'Grade 3 - Stop after walking ~100 m' }, { val: 4, label: 'Grade 4 - Too breathless leaving house/dressing' } ] }] }] },
-          'Chelsea Critical Care Physical Assessment (CPAx)': { sections: [{ title: 'Physical Function Domains (0-5 each)', items: ['Respiratory function', 'Cough', 'Bed mobility', 'Supine to sitting', 'Dynamic sitting', 'Sit-to-stand', 'Standing balance', 'Stepping', 'Grip strength', 'Transfer ability'].map((l,i) => ({id:`cpax_${i}`, label:l, options: makeOptions(5)})) }] },
-          'ICU Mobility Scale (IMS)': { sections: [{ title: 'Highest Mobility Achieved', items: [{id: 'ims_score', label: 'Select Mobility Level', verticalOptions: true, options: makeOptions(10).map(o => ({...o, label: `Level ${o.val}`})) }] }] },
+          'Chelsea Critical Care Physical Assessment (CPAx)': { 
+            sections: [
+              { 
+                title: 'Physical Function Domains (0-5 standard scale)', 
+                items: ['Respiratory function', 'Cough', 'Bed mobility', 'Supine to sitting', 'Dynamic sitting', 'Sit-to-stand', 'Standing balance', 'Stepping', 'Grip strength', 'Transfer ability'].map((l,i) => ({id:`cpax_${i}`, label:l, verticalOptions: true, options: cpaxGradeOptions})) 
+              }
+            ] 
+          },
+          'ICU Mobility Scale (IMS)': { 
+            sections: [
+              { 
+                title: 'Highest Mobility Level Achieved', 
+                items: [{id: 'ims_score', label: 'Select Milestone achieved', verticalOptions: true, options: imsLevelsOptions }] 
+              }
+            ] 
+          },
           'Gross Motor Function Measure (GMFM)': { sections: [ { title: 'A. Lying and Rolling', items: ['Turns head side to side','Rolls supine → prone','Rolls prone → supine'].map((l,i)=>({id:`gmfm_a_${i}`, label:l, options:gmfmOptions})) }, { title: 'B. Sitting', items: ['Sit unsupported','Reach in sitting','Rotate trunk in sitting'].map((l,i)=>({id:`gmfm_b_${i}`, label:l, options:gmfmOptions})) }, { title: 'C. Crawling & Kneeling', items: ['Four-point position','Crawl forward','Half kneeling'].map((l,i)=>({id:`gmfm_c_${i}`, label:l, options:gmfmOptions})) }, { title: 'D. Standing', items: ['Stand unsupported','Stand on one foot'].map((l,i)=>({id:`gmfm_d_${i}`, label:l, options:gmfmOptions})) }, { title: 'E. Walking / Running / Jumping', items: ['Walk forward','Run','Jump'].map((l,i)=>({id:`gmfm_e_${i}`, label:l, options:gmfmOptions})) } ] },
-          'Pediatric Balance Scale (PBS)': { sections: [{ title: '14-Item Tasks (0-4 each)', items: ['Sit to stand','Standing unsupported','Sitting unsupported','Stand to sit','Transfers','Eyes closed standing','Feet together standing','Reach forward','Pick object from floor','Turn to look behind','Turn 360°','Step onto stool','Tandem standing','Single leg standing'].map((l,i)=>({id:`pbs_${i}`, label:l, options:makeOptions(4)})) }] },
+          'Pediatric Balance Scale (PBS)': { 
+            sections: [
+              { 
+                title: '14-Item Balance Evaluation tasks (0-4 difficulty scale)', 
+                items: ['Sit to stand','Standing unsupported','Sitting unsupported','Stand to sit','Transfers','Eyes closed standing','Feet together standing','Reach forward','Pick object from floor','Turn to look behind','Turn 360°','Step onto stool','Tandem standing','Single leg standing'].map((l,i)=>({id:`pbs_${i}`, label:l, verticalOptions: true, options: pbsGradeOptions})) 
+              }
+            ] 
+          },
           'Pediatric Quality of Life Inventory (PedsQL)': { sections: [ { title: 'Physical', items: ['Walking','Running','Lifting'].map((l,i)=>({id:`pedsql_p_${i}`, label:l, options:pedsqlOptions})) }, { title: 'Emotional', items: ['Feeling sad','Feeling afraid'].map((l,i)=>({id:`pedsql_e_${i}`, label:l, options:pedsqlOptions})) }, { title: 'Social', items: ['Playing with friends'].map((l,i)=>({id:`pedsql_s_${i}`, label:l, options:pedsqlOptions})) }, { title: 'School', items: ['Attention','School participation'].map((l,i)=>({id:`pedsql_sch_${i}`, label:l, options:pedsqlOptions})) } ] },
           'Infant Neurological International Battery (INFANIB)': { sections: [{ title: 'Variable Item Scoring', items: ['Head control','Pull-to-sit','Trunk posture','Upper limb tone','Lower limb tone','Protective reactions','Primitive reflexes'].map((l,i)=>({id:`infanib_${i}`, label:l, inputType: 'number'})) }], finalSelect: ['Normal', 'Transient abnormal', 'Abnormal'] }
         };
 
+        // --- INTERPRETATION ENGINE ---
         const getInterpretation = (type, rawScore) => {
           let scoreText = String(rawScore);
           let risk = 'Result Scored';
@@ -549,11 +1429,11 @@
               break;
             case 'Oswestry Disability Index (ODI)':
               scoreText = `${s}%`;
-              if (s > 80) { risk = 'Extreme disability'; implication = 'Extreme disability level with severe limitation in most functional activities. Findings may indicate severe pathology or symptom amplification requiring comprehensive assessment.'; }
-              else if (s > 60) { risk = 'Crippled'; implication = 'Severe functional impairment with major restrictions across mobility and daily activity domains. Symptoms substantially affect quality of life and independence.'; }
-              else if (s > 40) { risk = 'Severe disability'; implication = 'Significant disability with substantial restriction in mobility and activities of daily living. Functional capacity appears markedly reduced.'; }
-              else if (s > 20) { risk = 'Moderate disability'; implication = 'Moderate disability affecting sitting, standing, lifting, walking, and daily functional activities. Symptoms may interfere with work and participation.'; }
-              else { risk = 'Minimal disability'; implication = 'Minimal low back-related disability. Patient is generally able to perform most activities independently with minor symptom-related limitation.'; }
+              if (s > 80) { risk = 'Extreme disability'; implication = 'These patients are either bed-bound or exaggerating their symptoms. Findings represent severe pathologic limitations or extreme physical disability levels.'; }
+              else if (s > 60) { risk = 'Crippled'; implication = 'Back pain impinges on all aspects of the patient\'s life. Positive intervention and deep secondary investigation are required.'; }
+              else if (s > 40) { risk = 'Severe disability'; implication = 'Pain remains the main problem in this group, but activities of daily living are heavily affected. These patients require a detailed investigation.'; }
+              else if (s > 20) { risk = 'Moderate disability'; implication = 'The patient experiences more pain and difficulty with sitting, lifting and standing. Travel and social life are more difficult, and they may be disabled from work. Personal care, sexual activity and sleeping are not grossly affected, and the patient can usually be managed by conservative means.'; }
+              else { risk = 'Minimal disability'; implication = 'The patient can cope with most living activities. Usually no treatment is indicated apart from advice on lifting, sitting and exercise.'; }
               break;
             case 'Neck Disability Index (NDI)':
               scoreText = String(rawScore);
@@ -575,6 +1455,30 @@
               else if (fabqW >= 20) { risk = 'Moderate fear avoidance'; implication = 'Moderate fear-avoidance behavior present. Pain-related beliefs may influence activity participation and movement confidence.'; }
               else { risk = 'Low fear avoidance'; implication = 'Minimal fear-related behavior identified. Patient appears willing to engage in movement and physical activity with low psychosocial risk.'; }
               break;
+            case 'Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC)':
+              scoreText = `${s}%`;
+              if (s > 80) { risk = 'Extreme Limitation'; implication = 'Extreme osteoarthritis-related pain, joint stiffness, and profound physical function impairment. Patient experiences near-complete functional dependency in Activities of Daily Living (ADLs) and vital mobility tasks.'; }
+              else if (s > 60) { risk = 'Severe Limitation'; implication = 'Significant osteoarthritis-related disability. Severe pain, joint stiffness, and major limitations across multiple domains of physical mobility and self-care.'; }
+              else if (s > 40) { risk = 'Moderate Limitation'; implication = 'Moderate osteoarthritis symptoms with clear activity restrictions during weight bearing, stair negotiation, and dynamic transfers.'; }
+              else if (s > 20) { risk = 'Mild Limitation'; implication = 'Mild osteoarthritis symptoms. Dynamic lower-limb joint pain and stiffness are present during prolonged or higher-demand tasks, but general functional independence is preserved.'; }
+              else { risk = 'Minimal Limitation'; implication = 'Excellent or near-normal functional status with minimal joint pain, joint stiffness, or dynamic functional limitations in lower-limb tasks.'; }
+              break;
+            case 'Disabilities of the Arm, Shoulder and Hand (DASH)':
+              scoreText = `${s}%`;
+              if (s > 80) { risk = 'Extreme Disability'; implication = 'Extreme upper limb functional impairment. Pronounced pain, weakness, and complete limitation during essential personal care, dynamic transportation, and work activities.'; }
+              else if (s > 60) { risk = 'Severe Disability'; implication = 'Significant upper extremity impairment with severe impact across household, work, and recreational activities. Substantial pain and dynamic range limitations present.'; }
+              else if (s > 40) { risk = 'Moderate Disability'; implication = 'Moderate disability. Hand, wrist, or shoulder deficits restrict overhead tasks, carrying heavy items, and complex manual coordination.'; }
+              else if (s > 20) { risk = 'Mild Disability'; implication = 'Mild upper extremity limitation. Functional independence is largely preserved, with slight difficulties in heavy dynamic load-bearing or overhead activities.'; }
+              else { risk = 'Minimal Disability'; implication = 'Minimal upper extremity functional limitation. Upper limb dexterity, strength, and range of motion are preserved for everyday activities.'; }
+              break;
+            case 'Knee Injury and Osteoarthritis Outcome Score (KOOS)':
+              scoreText = `${s}%`; // For KOOS, 100% is best!
+              if (s >= 80) { risk = 'Minimal Limitation'; implication = 'Excellent knee health with minimal to no symptoms or functional limitations. Quality of life and sports participation are highly preserved.'; }
+              else if (s >= 60) { risk = 'Mild Limitation'; implication = 'Mild knee symptoms and functional limitations. Patient can participate in most daily and recreational activities with only slight discomfort.'; }
+              else if (s >= 40) { risk = 'Moderate Limitation'; implication = 'Moderate impairment affecting daily functions and sports. Frequent pain and stiffness are present, reducing knee-related quality of life.'; }
+              else if (s >= 20) { risk = 'Severe Limitation'; implication = 'Severe symptoms and functional impairment. Daily activities are significantly restricted, and sports participation is likely impossible.'; }
+              else { risk = 'Extreme Limitation'; implication = 'Profound knee disability with constant pain and severe restriction in all functional domains. Extreme impact on quality of life.'; }
+              break;
 
             // Cardiorespiratory
             case 'Six Minute Walk Test (6MWT)':
@@ -591,12 +1495,26 @@
               else if (s >= 50) { risk = 'Moderate'; implication = 'Moderate endurance impairment affecting mobility efficiency and activity tolerance. Patient may require pacing strategies during functional activity.'; }
               else { risk = 'Severe'; implication = 'Severe endurance limitation indicating substantial deconditioning and functional impairment.'; }
               break;
-            case 'Borg Rating of Perceived Exertion':
+            case 'Borg RPE (6-20 Category Scale)':
+              scoreText = `${s}/20`;
+              if (s >= 17) { risk = 'Very hard'; implication = 'Very high exertion level indicating near maximal effort. Careful monitoring may be required due to increased physiological stress.'; }
+              else if (s >= 13) { risk = 'Somewhat hard to Hard'; implication = 'Moderate to high exercise intensity. Physiological response appears within acceptable training levels for aerobic conditioning.'; }
+              else if (s >= 9) { risk = 'Very light to Light'; implication = 'Light exercise intensity reported. Patient perceives exercise intensity as minimal with adequate exercise tolerance and symptom control.'; }
+              else { risk = 'Resting'; implication = 'Patient reports little to no exertion.'; }
+              break;
+            case 'Borg RPE (0-10 CR Scale)':
               scoreText = `${s}/10`;
               if (s >= 7) { risk = 'Very hard'; implication = 'Very high exertion level indicating near maximal effort. Careful monitoring may be required due to increased physiological stress.'; }
               else if (s >= 5) { risk = 'Hard'; implication = 'High exercise intensity with increasing cardiorespiratory demand. Symptoms should be monitored during activity progression.'; }
               else if (s >= 3) { risk = 'Moderate'; implication = 'Moderate exercise intensity reported. Physiological response appears within acceptable training levels.'; }
               else { risk = 'Light'; implication = 'Patient perceives exercise intensity as minimal with adequate exercise tolerance and symptom control.'; }
+              break;
+            case 'Modified Borg Dyspnoea Scale':
+              scoreText = `${s}/10`;
+              if (s >= 7) { risk = 'Very severe dyspnoea'; implication = 'Severe breathlessness reported. Patient is experiencing near maximal difficulty in breathing. Intervention or rest is highly indicated.'; }
+              else if (s >= 4) { risk = 'Severe dyspnoea'; implication = 'Significant breathlessness that is somewhat severe to severe. This level of dyspnoea limits exercise tolerance and requires monitoring.'; }
+              else if (s >= 2) { risk = 'Moderate dyspnoea'; implication = 'Slight to moderate breathlessness. Patient is aware of breathing difficulty but it is generally well tolerated during current activity levels.'; }
+              else { risk = 'Minimal dyspnoea'; implication = 'Patient reports minimal to no difficulty with breathing at this time.'; }
               break;
             case 'mMRC Dyspnoea Scale':
               scoreText = `Grade ${s}`;
@@ -662,6 +1580,9 @@
           const r = risk.toLowerCase();
           
           if (r.includes('high mobility') || r.includes('high independence') || r.includes('high function')) return 'text-emerald-600';
+          
+          // FOR KOOS AND POSITIVE SCORES
+          if (r.includes('minimal limitation')) return 'text-emerald-600';
           
           if (r.includes('high') || r.includes('severe') || r.includes('abnormal') || r.includes('crippled') || r.includes('extreme') || r.includes('dependent') || r.includes('very hard') || r.includes('complete')) return 'text-red-600';
           
@@ -746,6 +1667,29 @@
                 
                 if (assessmentType === 'Oswestry Disability Index (ODI)' || assessmentType === 'Neck Disability Index (NDI)') {
                   scoreToProcess = ((sum / 50) * 100).toFixed(1);
+                } else if (assessmentType === 'Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC)') {
+                   scoreToProcess = ((sum / 96) * 100).toFixed(1);
+                } else if (assessmentType === 'Disabilities of the Arm, Shoulder and Hand (DASH)') {
+                   scoreToProcess = (((sum / 30) - 1) * 25).toFixed(1);
+                } else if (assessmentType === 'Knee Injury and Osteoarthritis Outcome Score (KOOS)') {
+                   // Calculate 5 subscales independently then get the average score
+                   let symSum = 0, painSum = 0, adlSum = 0, sportSum = 0, qolSum = 0;
+                   Object.keys(detailedScores).forEach(k => {
+                     const v = parseFloat(detailedScores[k] || 0);
+                     if (k.startsWith('koos_s')) symSum += v;
+                     if (k.startsWith('koos_p')) painSum += v;
+                     if (k.startsWith('koos_a')) adlSum += v;
+                     if (k.startsWith('koos_sp')) sportSum += v;
+                     if (k.startsWith('koos_q')) qolSum += v;
+                   });
+                   const symScore = 100 - (symSum * 100 / 28);
+                   const painScore = 100 - (painSum * 100 / 36);
+                   const adlScore = 100 - (adlSum * 100 / 68);
+                   const sportScore = 100 - (sportSum * 100 / 20);
+                   const qolScore = 100 - (qolSum * 100 / 16);
+                   
+                   // Average the transformed percentages for a single reporting metric
+                   scoreToProcess = ((symScore + painScore + adlScore + sportScore + qolScore) / 5).toFixed(1);
                 } else if (assessmentType === 'Pediatric Quality of Life Inventory (PedsQL)') {
                    let pSum = 0, count = 0;
                    Object.keys(detailedScores).forEach(k => {
@@ -863,22 +1807,43 @@
                         {config.sections.map((sec, si) => (
                           <div key={si} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h4 className="font-bold text-slate-800 mb-3 text-xs uppercase">{String(sec.title)}</h4>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                               {sec.items.map(item => (
-                                <div key={item.id} className="bg-white p-3 rounded-lg border border-slate-100">
-                                  <div className="text-sm font-semibold text-slate-700 mb-2">{String(item.label)}</div>
-                                  {item.instruction && <p className="text-[10px] text-slate-500 mb-2">{String(item.instruction)}</p>}
+                                <div key={item.id} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                  <div className="text-sm font-bold text-slate-800 mb-2">{String(item.label)}</div>
+                                  {item.instruction && <p className="text-[11px] text-slate-500 mb-3 italic leading-relaxed">{String(item.instruction)}</p>}
                                   {item.options ? (
-                                    <div className={`flex flex-wrap gap-2 ${item.verticalOptions ? 'flex-col' : ''}`}>
-                                      {item.options.map(o => (
-                                        <label key={o.val} className="flex items-start space-x-2 cursor-pointer bg-slate-50 px-2 py-1.5 rounded hover:bg-blue-50 transition">
-                                          <input type="radio" name={item.id} checked={detailedScores[item.id] === o.val} onChange={() => handleDetailedChange(item.id, o.val)} className="mt-0.5" />
-                                          <span className="text-[11px] font-bold text-slate-600">{String(o.label)}</span>
-                                        </label>
-                                      ))}
+                                    <div className="space-y-2 mt-2">
+                                      {item.options.map(o => {
+                                        const isSelected = detailedScores[item.id] === o.val;
+                                        return (
+                                          <label 
+                                            key={o.val} 
+                                            className={`flex items-start space-x-3 p-2.5 rounded-lg border transition cursor-pointer text-xs font-semibold ${
+                                              isSelected 
+                                                ? 'bg-blue-50 border-blue-400 text-blue-900 shadow-sm' 
+                                                : 'bg-slate-50 border-slate-100 text-slate-700 hover:bg-slate-100'
+                                            }`}
+                                          >
+                                            <input 
+                                              type="radio" 
+                                              name={item.id} 
+                                              checked={isSelected} 
+                                              onChange={() => handleDetailedChange(item.id, o.val)} 
+                                              className="mt-0.5 text-blue-600 focus:ring-blue-500" 
+                                            />
+                                            <span className="leading-tight">{String(o.label || o.text || '')}</span>
+                                          </label>
+                                        );
+                                      })}
                                     </div>
                                   ) : (
-                                    <input type="number" className="w-full p-2 border border-slate-200 rounded" value={detailedScores[item.id] || ''} onChange={e => handleDetailedChange(item.id, parseFloat(e.target.value))} />
+                                    <input 
+                                      type="number" 
+                                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                                      value={detailedScores[item.id] || ''} 
+                                      onChange={e => handleDetailedChange(item.id, parseFloat(e.target.value))} 
+                                    />
                                   )}
                                 </div>
                               ))}
@@ -886,7 +1851,17 @@
                           </div>
                         ))}
                         {config.finalSelect && (
-                          <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 mt-4"><h4 className="font-bold text-blue-900 mb-2 text-xs uppercase">Final Classification</h4><select className="w-full p-2 border border-blue-300 rounded" value={detailedScores['final_class'] || ''} onChange={e => handleDetailedChange('final_class', e.target.value)}><option value="">Select...</option>{config.finalSelect.map(o => <option key={o} value={o}>{String(o)}</option>)}</select></div>
+                          <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 mt-4">
+                            <h4 className="font-bold text-blue-900 mb-2 text-xs uppercase">Final Classification</h4>
+                            <select 
+                              className="w-full p-2.5 bg-white border border-blue-300 rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500" 
+                              value={detailedScores['final_class'] || ''} 
+                              onChange={e => handleDetailedChange('final_class', e.target.value)}
+                            >
+                              <option value="">Select final rating grade...</option>
+                              {config.finalSelect.map(o => <option key={o} value={o}>{String(o)}</option>)}
+                            </select>
+                          </div>
                         )}
                       </div>
                     ) : (
@@ -928,42 +1903,42 @@
           };
 
           const renderReport = () => (
-            <div className="max-w-4xl mx-auto bg-white p-12 rounded-xl border border-slate-200 print:shadow-none print:border-none print:p-0">
+            <div className="max-w-4xl mx-auto bg-white p-12 print:p-0 rounded-xl border border-slate-200 print:shadow-none print:border-none print:w-full">
               <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100 no-print">
                 <button onClick={() => setCurrentView('assessment')} className="text-slate-500 hover:text-blue-600 font-bold text-sm flex items-center"><ChevronRight size={16} className="rotate-180 mr-1" /> Back</button>
                 <button onClick={() => window.print()} className="bg-slate-900 text-white px-5 py-2 rounded-lg font-bold text-sm flex items-center"><Printer size={16} className="mr-2" /> Print Official Report</button>
               </div>
-              <div className="text-center border-b-2 border-black pb-4 mb-6">
-                <h1 className="text-xl font-black uppercase tracking-widest">KEMENTERIAN KESIHATAN MALAYSIA</h1>
-                <h2 className="text-sm font-bold uppercase tracking-widest mt-1">PHYSIOTHERAPY DEPARTMENT</h2>
-                <h3 className="text-lg font-bold mt-4 uppercase">Automated Outcome Measure Report</h3>
+              <div className="text-center border-b-2 border-black pb-4 print:pb-2 mb-6 print:mb-3">
+                <h1 className="text-xl print:text-lg font-black uppercase tracking-widest">KEMENTERIAN KESIHATAN MALAYSIA</h1>
+                <h2 className="text-sm print:text-xs font-bold uppercase tracking-widest mt-1">PHYSIOTHERAPY DEPARTMENT</h2>
+                <h3 className="text-lg print:text-base font-bold mt-4 print:mt-1 uppercase">Automated Outcome Measure Report</h3>
               </div>
-              <div className="grid grid-cols-2 gap-y-2 mb-8 text-sm">
+              <div className="grid grid-cols-2 gap-y-2 mb-8 print:mb-4 text-sm print:text-xs">
                 <div className="flex"><span className="w-32 font-bold">MRN:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.id)}</span></div>
                 <div className="flex"><span className="w-32 font-bold">Age / Gender:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.age)} years / {String(patientDetails.gender)}</span></div>
                 <div className="flex"><span className="w-32 font-bold">Ward/Clinic:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.ward)}</span></div>
                 <div className="flex"><span className="w-32 font-bold">Diagnosis:</span> <span className="border-b border-dotted border-black flex-1">{String(patientDetails.diagnosis)}</span></div>
               </div>
-              <div className="border border-black mb-6">
+              <div className="border border-black mb-6 print:mb-4">
                 <div className="bg-slate-100 p-2 border-b border-black font-bold uppercase text-xs">1. Result of the Outcome Measure: {String(assessmentType)}</div>
-                <div className="p-4 grid grid-cols-2 gap-4">
-                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Result / Scoring</p><div className="text-3xl font-black">{report ? String(report.scoreText) : ''}</div></div>
-                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Risk Categorisation</p><div className={`text-xl font-bold uppercase ${getRiskColorClass(report?.risk)}`}>{report ? String(report.risk) : ''}</div></div>
+                <div className="p-4 print:p-2 grid grid-cols-2 gap-4">
+                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Result / Scoring</p><div className="text-3xl print:text-2xl font-black">{report ? String(report.scoreText) : ''}</div></div>
+                  <div><p className="text-[10px] font-bold text-slate-500 uppercase">Risk Categorisation</p><div className={`text-xl print:text-base font-bold uppercase ${getRiskColorClass(report?.risk)}`}>{report ? String(report.risk) : ''}</div></div>
                 </div>
               </div>
-              <div className="space-y-6 mb-10">
-                <div><h4 className="font-bold border-b border-black mb-2 uppercase text-xs tracking-wider">2. Clinical Interpretation / Finding</h4><p className="text-sm leading-relaxed">{report ? String(report.implication) : ''}</p></div>
+              <div className="space-y-6 print:space-y-2 mb-10 print:mb-4">
+                <div><h4 className="font-bold border-b border-black mb-2 print:mb-1 uppercase text-xs tracking-wider">2. Clinical Interpretation / Finding</h4><p className="text-sm print:text-xs leading-relaxed">{report ? String(report.implication) : ''}</p></div>
               </div>
-              <div className="mt-8 border-t border-black pt-4">
-                <h4 className="font-bold border-b border-black mb-2 uppercase text-xs">3. Progress Tracking / Reassessment Log</h4>
+              <div className="mt-8 print:mt-4 border-t border-black pt-4 print:pt-2">
+                <h4 className="font-bold border-b border-black mb-2 print:mb-1 uppercase text-xs">3. Progress Tracking / Reassessment Log</h4>
                 <table className="w-full border-collapse border border-black text-xs text-left">
-                  <thead><tr className="bg-slate-100 border-b border-black"><th className="border-r border-black p-2 w-24">Date</th><th className="border-r border-black p-2 w-32">Score / Result</th><th className="border-r border-black p-2">Clinical Notes / Progression</th><th className="p-2 w-32 text-center">Sign / Stamp</th></tr></thead>
-                  <tbody>{[0, 1, 2, 3, 4, 5].map(r => (<tr key={r} className="border-b border-black h-16"><td className="border-r border-black p-2 align-top">{r === 0 && report ? new Date().toLocaleDateString('en-GB') : ''}</td><td className="border-r border-black p-2 align-top font-bold text-center">{r === 0 && report ? report.scoreText : ''}</td><td className="border-r border-black p-2 align-top">{r === 0 && report ? `Initial Assessment — Risk Categorisation: ${report.risk}` : ''}</td><td className="p-2"></td></tr>))}</tbody>
+                  <thead><tr className="bg-slate-100 border-b border-black"><th className="border-r border-black p-2 print:p-1 w-24">Date</th><th className="border-r border-black p-2 print:p-1 w-32">Score / Result</th><th className="border-r border-black p-2 print:p-1">Clinical Notes / Progression</th><th className="p-2 print:p-1 w-32 text-center">Sign / Stamp</th></tr></thead>
+                  <tbody>{[0, 1, 2, 3, 4, 5].map(r => (<tr key={r} className="border-b border-black h-16 print:h-10"><td className="border-r border-black p-2 print:p-1 align-top">{r === 0 && report ? new Date().toLocaleDateString('en-GB') : ''}</td><td className="border-r border-black p-2 print:p-1 align-top font-bold text-center">{r === 0 && report ? report.scoreText : ''}</td><td className="border-r border-black p-2 print:p-1 align-top">{r === 0 && report ? `Initial Assessment — Risk Categorisation: ${report.risk}` : ''}</td><td className="p-2 print:p-1"></td></tr>))}</tbody>
                 </table>
               </div>
-              <div className="mt-12 flex justify-between text-xs font-bold border-t border-black pt-4">
+              <div className="mt-12 print:mt-6 flex justify-between text-xs font-bold border-t border-black pt-4 print:pt-2">
                 <div className="text-center w-64"><br/><br/>__________________________________<br/>Assessing Physiotherapist / Stamp</div>
-                <div className="text-right w-64">Date: {new Date().toLocaleDateString('en-GB')}<br/><br/><span className="italic font-normal text-slate-400">System Generated: PhysioMeasure</span></div>
+                <div className="text-right w-64">Date: {new Date().toLocaleDateString('en-GB')}<br/><br/><span className="italic font-normal text-slate-400 print:text-black">System Generated: PhysioMeasure</span></div>
               </div>
             </div>
           );
@@ -1020,8 +1995,23 @@
           );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root')); 
-        root.render(<App />);
+        // Render React 18 Application safely
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+          const root = ReactDOM.createRoot(rootElement);
+          root.render(<App />);
+        }
     </script>
+    <style>
+      @media print { 
+        @page { margin: 10mm; size: A4 portrait; }
+        body, html, #root { height: 100% !important; display: block !important; background: white !important; }
+        .no-print { display: none !important; } 
+        .custom-scrollbar { overflow: visible !important; max-height: none !important; } 
+      } 
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; } 
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; } 
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
 </body>
 </html>
