@@ -1014,7 +1014,7 @@
                 
                 <div className="bg-slate-900 p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 flex flex-col lg:flex-row justify-between items-center gap-6 relative z-20">
                   <div className="text-center lg:text-left">
-                    <h2 className="text-3xl font-extrabold text-white tracking-tight">Outcome Assessment</h2>
+                    <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Outcome Assessment</h2>
                     <p className="text-slate-400 text-sm mt-2 font-medium">Search or select a clinical measure below to begin.</p>
                   </div>
                   
@@ -1026,7 +1026,7 @@
                     
                     {isDropdownOpen && (
                       <><div className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm transition-opacity" onClick={() => setIsDropdownOpen(false)}></div>
-                      <div className="absolute right-0 top-full mt-3 w-full lg:w-[480px] bg-slate-800 border border-slate-700 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] z-50 flex flex-col overflow-hidden animate-slide-up">
+                      <div className="absolute left-0 right-0 lg:left-auto lg:right-0 top-full mt-3 w-full lg:w-[480px] bg-slate-800 border border-slate-700 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] z-50 flex flex-col overflow-hidden animate-slide-up">
                         <div className="p-4 border-b border-slate-700 bg-slate-800/80 backdrop-blur-md">
                           <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -1053,7 +1053,7 @@
                 </div>
 
                 {evidence && (
-                  <div className="bg-gradient-to-br from-violet-700 via-fuchsia-700 to-orange-600 text-white p-8 rounded-3xl shadow-xl shadow-fuchsia-900/20 relative overflow-hidden">
+                  <div className="bg-gradient-to-br from-violet-700 via-fuchsia-700 to-orange-600 text-white p-6 md:p-8 rounded-3xl shadow-xl shadow-fuchsia-900/20 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/20 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4"></div>
                     
@@ -1082,7 +1082,7 @@
                   </div>
                 )}
 
-                <div className="bg-slate-900 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-6 relative overflow-hidden">
+                <div className="bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-fuchsia-500"></div>
                   <div>
                     <label className="block text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2 ml-1">MRN Number</label>
@@ -1111,12 +1111,12 @@
 
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 relative">
                   
-                  <div className="xl:col-span-8 bg-slate-900 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 flex flex-col min-h-[600px] relative overflow-hidden">
+                  <div className="xl:col-span-8 bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 flex flex-col min-h-[600px] relative overflow-hidden">
                     <div className="absolute -bottom-10 -right-10 text-[15rem] text-slate-800 opacity-[0.4] pointer-events-none select-none rotate-12">
                        <i className={`fa-solid ${categoryIcon}`}></i>
                     </div>
 
-                    <h3 className="text-xl font-extrabold text-white border-b-2 border-slate-800 pb-4 mb-6 flex items-center gap-3 relative z-10">
+                    <h3 className="text-lg md:text-xl font-extrabold text-white border-b-2 border-slate-800 pb-4 mb-6 flex items-center gap-3 relative z-10">
                       <span className="bg-fuchsia-900/30 text-fuchsia-400 p-2 rounded-lg border border-fuchsia-800/50"><ClipboardList size={20} /></span>
                       {String(assessmentType)}
                     </h3>
@@ -1147,7 +1147,7 @@
                     </div>
 
                     {config ? (
-                      <div className="flex-1 space-y-8 pr-2 custom-scrollbar relative z-10">
+                      <div className="flex-1 space-y-8 pr-1 md:pr-2 custom-scrollbar relative z-10">
                         <div className="sticky top-0 z-30 bg-slate-900/95 backdrop-blur-md pb-4 pt-2 mb-6 border-b border-slate-800">
                           <div className="flex justify-between items-end mb-2">
                             <span className="text-xs font-black uppercase tracking-widest text-slate-400">Assessment Progress</span>
@@ -1166,13 +1166,13 @@
                             </h4>
                             <div className="space-y-4">
                               {sec.items.map((item, ii) => (
-                                <div key={item.id} className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm hover:border-fuchsia-500/50 transition-colors group relative overflow-hidden">
-                                  <div className="flex gap-4 relative z-10">
+                                <div key={item.id} className="bg-slate-800 p-5 sm:p-6 rounded-2xl border border-slate-700 shadow-sm hover:border-fuchsia-500/50 transition-colors group relative overflow-hidden">
+                                  <div className="flex gap-3 sm:gap-4 relative z-10">
                                     <div className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-slate-400 font-bold text-xs group-hover:bg-fuchsia-900/30 group-hover:text-fuchsia-400 transition-colors border border-slate-700">
                                       {ii + 1}
                                     </div>
-                                    <div className="flex-1">
-                                      <div className="text-[15px] font-bold text-white mb-1 leading-snug">{String(item.label)}</div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-sm sm:text-[15px] font-bold text-white mb-1 leading-snug">{String(item.label)}</div>
                                       {item.instruction && <p className="text-xs text-slate-400 font-medium mb-4 italic">{String(item.instruction)}</p>}
                                       
                                       <div className="mt-4">
@@ -1193,7 +1193,7 @@
                                                       {isSelected && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
                                                   </div>
                                                   <input type="radio" name={item.id} checked={isSelected} onChange={() => handleDetailedChange(item.id, o.val)} className="absolute opacity-0 w-0 h-0" />
-                                                  <span className="leading-relaxed flex-1">{String(o.label || o.text || '')}</span>
+                                                  <span className="leading-relaxed flex-1 whitespace-normal break-words">{String(o.label || o.text || '')}</span>
                                                 </label>
                                               );
                                             })}
@@ -1262,7 +1262,7 @@
                     </div>
                   </div>
 
-                  <div className="xl:col-span-4 bg-gradient-to-b from-slate-900 to-slate-950 rounded-3xl shadow-2xl shadow-black/50 border border-slate-800 p-8 flex flex-col relative overflow-hidden">
+                  <div className="xl:col-span-4 bg-gradient-to-b from-slate-900 to-slate-950 rounded-3xl shadow-2xl shadow-black/50 border border-slate-800 p-6 sm:p-8 flex flex-col relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-fuchsia-600/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-violet-600/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
 
@@ -1285,7 +1285,7 @@
                       <div className="flex-1 flex flex-col relative z-10 animate-fade-in-up">
                         <div className="bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700 mb-6 text-center shadow-lg">
                           <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Final Score</p>
-                          <h4 className="text-5xl font-black text-white mb-2 drop-shadow-md">{String(report.scoreText)}</h4>
+                          <h4 className="text-4xl sm:text-5xl font-black text-white mb-2 drop-shadow-md">{String(report.scoreText)}</h4>
                           
                           <RiskGauge riskColorClass={getRiskColorClass(report.risk)} />
                           
@@ -1336,14 +1336,14 @@
               </div>
 
               {/* REPORT PAPER (Kept dark on screen but forces WHITE on print) */}
-              <div className="bg-slate-800 p-12 sm:p-16 rounded-3xl border border-slate-700 shadow-2xl print:bg-white print:shadow-none print:border-none print:p-0 print:w-full print:h-full flex flex-col justify-between text-slate-200 print:text-slate-900">
+              <div className="bg-slate-800 p-6 sm:p-12 md:p-16 rounded-3xl border border-slate-700 shadow-2xl print:bg-white print:shadow-none print:border-none print:p-0 print:w-full print:h-full flex flex-col justify-between text-slate-200 print:text-slate-900">
                 <div className="text-center border-b-[3px] border-slate-600 print:border-slate-800 pb-6 print:pb-3 mb-8 print:mb-4">
                   <h1 className="text-2xl print:text-xl font-black uppercase tracking-[0.2em] text-white print:text-slate-900">Kementerian Kesihatan Malaysia</h1>
                   <h2 className="text-sm print:text-xs font-bold uppercase tracking-[0.3em] text-slate-400 print:text-slate-500 mt-2 print:mt-1">Physiotherapy Department</h2>
                   <h3 className="text-lg print:text-sm font-bold mt-6 print:mt-3 uppercase bg-slate-900 print:bg-slate-100 inline-block px-4 py-1 print:py-0.5 rounded-md text-slate-300 print:text-slate-800">Automated Outcome Measure Report</h3>
                 </div>
 
-                <div className="grid grid-cols-2 gap-y-4 print:gap-y-2 gap-x-8 mb-10 print:mb-4 text-sm print:text-[11px] font-medium">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 print:gap-y-2 gap-x-8 mb-10 print:mb-4 text-sm print:text-[11px] font-medium">
                   <div className="flex items-end"><span className="w-32 font-bold text-slate-500 uppercase tracking-wider text-[10px] print:text-[9px]">MRN:</span> <span className="border-b-2 border-dotted border-slate-600 print:border-slate-300 flex-1 pb-1 font-bold text-white print:text-slate-900 text-base print:text-sm">{String(patientDetails.id || '-')}</span></div>
                   <div className="flex items-end"><span className="w-32 font-bold text-slate-500 uppercase tracking-wider text-[10px] print:text-[9px]">Age / Gender:</span> <span className="border-b-2 border-dotted border-slate-600 print:border-slate-300 flex-1 pb-1 font-bold text-white print:text-slate-900 text-base print:text-sm">{String(patientDetails.age || '-')} / {String(patientDetails.gender || '-')}</span></div>
                   <div className="flex items-end"><span className="w-32 font-bold text-slate-500 uppercase tracking-wider text-[10px] print:text-[9px]">Ward/Clinic:</span> <span className="border-b-2 border-dotted border-slate-600 print:border-slate-300 flex-1 pb-1 font-bold text-white print:text-slate-900 text-base print:text-sm">{String(patientDetails.ward || '-')}</span></div>
@@ -1352,14 +1352,14 @@
 
                 <div className="border-2 border-slate-600 print:border-slate-800 rounded-xl print:rounded-lg overflow-hidden mb-10 print:mb-4 bg-slate-900 print:bg-slate-50">
                   <div className="bg-slate-950 print:bg-slate-800 text-slate-300 print:text-white p-3 print:p-2 font-black uppercase text-xs print:text-[10px] tracking-widest border-b border-slate-700 print:border-none">1. Outcome Measure: {String(assessmentType)}</div>
-                  <div className="p-8 print:p-4 grid grid-cols-2 gap-8 print:gap-4">
+                  <div className="p-6 sm:p-8 print:p-4 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 print:gap-4">
                     <div>
                       <p className="text-[11px] print:text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 print:mb-1">Final Score / Result</p>
-                      <div className="text-5xl print:text-3xl font-black text-fuchsia-400 print:text-fuchsia-700">{report ? String(report.scoreText) : 'N/A'}</div>
+                      <div className="text-4xl sm:text-5xl print:text-3xl font-black text-fuchsia-400 print:text-fuchsia-700">{report ? String(report.scoreText) : 'N/A'}</div>
                     </div>
                     <div>
                       <p className="text-[11px] print:text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 print:mb-1">Risk Categorisation</p>
-                      <div className="text-2xl print:text-lg font-bold uppercase text-white print:text-slate-800 mt-2 print:mt-0">{report ? String(report.risk) : 'N/A'}</div>
+                      <div className="text-xl sm:text-2xl print:text-lg font-bold uppercase text-white print:text-slate-800 mt-2 print:mt-0">{report ? String(report.risk) : 'N/A'}</div>
                     </div>
                   </div>
                 </div>
@@ -1373,8 +1373,8 @@
 
                 <div className="mt-8 print:mt-4">
                   <h4 className="font-black border-b-2 border-slate-700 print:border-slate-200 pb-2 mb-4 print:mb-2 uppercase text-sm print:text-xs tracking-widest text-white print:text-slate-800 flex items-center gap-2"><TrendingUp size={16} className="text-fuchsia-500 print:text-primary-600 print:w-3 print:h-3"/> 3. Progress Tracking / Reassessment Log</h4>
-                  <div className="border rounded-xl print:rounded-lg overflow-hidden border-slate-700 print:border-slate-300">
-                    <table className="w-full text-sm print:text-[10px] text-left">
+                  <div className="overflow-x-auto border rounded-xl print:rounded-lg border-slate-700 print:border-slate-300">
+                    <table className="w-full min-w-[600px] text-sm print:text-[10px] text-left">
                       <thead>
                         <tr className="bg-slate-900 print:bg-slate-100 border-b border-slate-700 print:border-slate-300 text-slate-400 print:text-slate-600 font-black uppercase tracking-wider text-[10px] print:text-[8px]">
                           <th className="border-r border-slate-700 print:border-slate-300 p-3 print:p-1.5 w-28 print:w-20">Date</th>
@@ -1397,14 +1397,14 @@
                   </div>
                 </div>
 
-                <div className="mt-16 print:mt-6 flex justify-between text-sm print:text-[10px] font-medium border-t-2 border-slate-600 print:border-slate-800 pt-8 print:pt-4">
-                  <div className="text-center w-72 print:w-48">
+                <div className="mt-16 print:mt-6 flex flex-col sm:flex-row justify-between gap-8 text-sm print:text-[10px] font-medium border-t-2 border-slate-600 print:border-slate-800 pt-8 print:pt-4">
+                  <div className="text-center w-full sm:w-72 print:w-48 order-2 sm:order-1">
                     <div className="border-b border-slate-500 print:border-slate-400 h-16 print:h-10 mb-2"></div>
                     <span className="font-bold text-slate-300 print:text-slate-800 uppercase text-xs print:text-[9px] tracking-wider">Assessing Physiotherapist / Stamp</span>
                   </div>
-                  <div className="text-right w-64 print:w-48 flex flex-col justify-end">
+                  <div className="text-left sm:text-right w-full sm:w-64 print:w-48 flex flex-col justify-end order-1 sm:order-2">
                     <p className="mb-4 print:mb-2"><span className="font-bold text-slate-500 uppercase text-[10px] print:text-[8px] tracking-wider">Date generated:</span> <br/> <span className="font-bold text-slate-200 print:text-slate-900 text-base print:text-xs">{new Date().toLocaleDateString('en-GB')}</span></p>
-                    <span className="italic font-semibold text-slate-500 print:text-slate-500 bg-slate-900 print:bg-slate-100 py-1 px-3 print:px-2 print:py-0.5 rounded-md inline-block">System Generated: PhysioMeasure</span>
+                    <span className="italic font-semibold text-slate-500 print:text-slate-500 bg-slate-900 print:bg-slate-100 py-1 px-3 print:px-2 print:py-0.5 rounded-md inline-block self-start sm:self-end">System Generated: PhysioMeasure</span>
                   </div>
                 </div>
               </div>
@@ -1436,7 +1436,7 @@
             return (
               <div className="space-y-8 pb-24 max-w-7xl mx-auto animate-fade-in">
                 {selectedLibMeasure ? (
-                    <div className="bg-slate-900 p-8 md:p-12 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 relative overflow-hidden animate-slide-up">
+                    <div className="bg-slate-900 p-6 sm:p-8 md:p-12 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 relative overflow-hidden animate-slide-up">
                         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
                         <div className="absolute -bottom-20 -right-20 text-[20rem] text-slate-800 opacity-[0.4] pointer-events-none select-none rotate-12">
                             <i className={`fa-solid ${selectedLibMeasure.icon}`}></i>
@@ -1450,9 +1450,9 @@
                                 <div className="flex items-center gap-3 mb-2">
                                     <span className="bg-fuchsia-900/30 text-fuchsia-400 border border-fuchsia-800/50 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest">{selectedLibMeasure.category}</span>
                                 </div>
-                                <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">{selectedLibMeasure.name}</h2>
+                                <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight">{selectedLibMeasure.name}</h2>
                             </div>
-                            <button onClick={() => { handleStartAssessment(selectedLibMeasure.name); }} className="shrink-0 bg-violet-600 hover:bg-violet-500 text-white py-4 px-8 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg hover:shadow-violet-500/30 transform hover:-translate-y-1 flex items-center gap-2">
+                            <button onClick={() => { handleStartAssessment(selectedLibMeasure.name); }} className="w-full md:w-auto shrink-0 bg-violet-600 hover:bg-violet-500 text-white py-4 px-8 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg hover:shadow-violet-500/30 transform hover:-translate-y-1 flex items-center justify-center gap-2">
                                 Use this Assessment <ArrowRight size={18}/>
                             </button>
                         </div>
@@ -1460,13 +1460,13 @@
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
                             {/* Evidence Column */}
                             <div className="lg:col-span-2 space-y-6">
-                                <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                                <div className="bg-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-700">
                                     <h3 className="font-extrabold text-white text-sm uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                                         <i className="fa-solid fa-users text-fuchsia-500"></i> Target Population
                                     </h3>
                                     <p className="text-slate-300 font-medium leading-relaxed">{selectedLibMeasure.evidence.population}</p>
                                 </div>
-                                <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                                <div className="bg-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-700">
                                     <h3 className="font-extrabold text-white text-sm uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                                         <i className="fa-solid fa-book-open text-fuchsia-500"></i> Clinical Findings
                                     </h3>
@@ -1481,13 +1481,13 @@
 
                             {/* Procedure Column */}
                             <div className="space-y-6">
-                                <div className="bg-indigo-950/30 p-8 rounded-2xl border border-indigo-900">
+                                <div className="bg-indigo-950/30 p-6 sm:p-8 rounded-2xl border border-indigo-900">
                                     <h3 className="font-extrabold text-indigo-300 text-sm uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-indigo-900 pb-3">
                                         <i className="fa-solid fa-stethoscope text-indigo-400"></i> Equipment
                                     </h3>
                                     <p className="text-indigo-200 font-medium text-sm leading-relaxed">{selectedLibMeasure.procedure?.equip || 'No special equipment required.'}</p>
                                 </div>
-                                <div className="bg-indigo-950/30 p-8 rounded-2xl border border-indigo-900">
+                                <div className="bg-indigo-950/30 p-6 sm:p-8 rounded-2xl border border-indigo-900">
                                     <h3 className="font-extrabold text-indigo-300 text-sm uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-indigo-900 pb-3">
                                         <i className="fa-solid fa-list-check text-fuchsia-400"></i> Procedure
                                     </h3>
@@ -1597,14 +1597,14 @@
                 ) : (
                     // --- LIBRARY GRID VIEW ---
                     <>
-                        <div className="bg-slate-900 rounded-[2rem] p-10 flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl shadow-black/20 border border-slate-800 relative overflow-hidden">
+                        <div className="bg-slate-900 rounded-[2rem] p-6 sm:p-10 flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl shadow-black/20 border border-slate-800 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 blur-3xl -translate-y-1/2 translate-x-1/3"></div>
                             
                             <div className="relative z-10 text-center md:text-left">
-                                <h2 className="text-3xl font-black text-white tracking-tight mb-2 flex items-center gap-3">
+                                <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight mb-2 flex items-center justify-center md:justify-start gap-3">
                                     <i className="fa-solid fa-book-medical text-fuchsia-400"></i> Clinical Library
                                 </h2>
-                                <p className="text-slate-400 font-medium">Explore standardized procedures, evidence, and target populations.</p>
+                                <p className="text-slate-400 font-medium text-sm md:text-base">Explore standardized procedures, evidence, and target populations.</p>
                             </div>
 
                             <div className="relative w-full md:w-96 z-10">
@@ -1632,15 +1632,17 @@
                                 
                                 return (
                                     <div key={category.id} className="animate-fade-in-up">
-                                        <div className="flex items-center gap-4 mb-6 border-b border-slate-800 pb-4">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${category.bg} ${category.color} shadow-sm`}>
+                                        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6 border-b border-slate-800 pb-4 text-center sm:text-left">
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${category.bg} ${category.color} shadow-sm shrink-0 mx-auto sm:mx-0`}>
                                                 <i className={`fa-solid ${category.icon} text-xl`}></i>
                                             </div>
-                                            <h3 className="text-2xl font-black text-white tracking-tight">{category.title}</h3>
-                                            <span className="bg-slate-800 border border-slate-700 text-slate-300 py-1 px-3 rounded-full text-xs font-bold shadow-sm">{catMeasures.length} Measures</span>
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full justify-between sm:justify-start">
+                                              <h3 className="text-2xl font-black text-white tracking-tight">{category.title}</h3>
+                                              <span className="bg-slate-800 border border-slate-700 text-slate-300 py-1 px-3 rounded-full text-xs font-bold shadow-sm self-center sm:self-auto">{catMeasures.length} Measures</span>
+                                            </div>
                                         </div>
                                         
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                             {catMeasures.map((measure, idx) => (
                                                 <div 
                                                     key={idx} 
@@ -1686,75 +1688,79 @@
 
           return (
             <div className="min-h-screen bg-slate-950 font-sans flex flex-col text-slate-200 print:bg-white print:block print:h-auto print:overflow-visible overflow-x-hidden">
-              <nav className="bg-slate-900 border-b border-slate-800 px-6 py-4 sticky top-0 z-50 no-print flex flex-wrap justify-between items-center shadow-sm w-full">
-                  <div className="flex items-center space-x-4 cursor-pointer" onClick={() => setCurrentView('dashboard')}>
-                      <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-3 py-1.5 rounded-lg font-black italic text-sm shadow-md shadow-fuchsia-900/50">KKM</div>
-                      <div>
-                          <h1 className="text-xl font-extrabold text-white tracking-tight leading-none">Physio<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Measure</span></h1>
-                          <p className="text-[10px] text-slate-400 tracking-widest uppercase font-bold mt-0.5">Developed by HSA Physio Department</p>
+              <nav className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-4 sticky top-0 z-50 no-print flex flex-col sm:flex-row justify-between items-center shadow-sm w-full gap-4 sm:gap-0">
+                  <div className="flex items-center space-x-4 cursor-pointer w-full sm:w-auto justify-between sm:justify-start" onClick={() => setCurrentView('dashboard')}>
+                      <div className="flex items-center space-x-3">
+                          <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-3 py-1.5 rounded-lg font-black italic text-sm shadow-md shadow-fuchsia-900/50">KKM</div>
+                          <div>
+                              <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight leading-none">Physio<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Measure</span></h1>
+                              <p className="text-[9px] sm:text-[10px] text-slate-400 tracking-widest uppercase font-bold mt-0.5">Developed by HSA Physio Department</p>
+                          </div>
                       </div>
                   </div>
-                  <div className="flex space-x-2 mt-4 sm:mt-0 bg-slate-800 p-1 rounded-xl">
-                      <button onClick={() => setCurrentView('dashboard')} className={`font-bold text-sm px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'dashboard' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Dashboard</button>
-                      <button onClick={() => setCurrentView('library')} className={`font-bold text-sm px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'library' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Library</button>
-                      <button onClick={() => setCurrentView('assessment')} className={`font-bold text-sm px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'assessment' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Assessment</button>
-                      <button onClick={() => setCurrentView('report')} className={`font-bold text-sm px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'report' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Report</button>
+                  
+                  {/* Horizontally scrollable menu on mobile */}
+                  <div className="flex space-x-2 bg-slate-800 p-1 rounded-xl w-full sm:w-auto overflow-x-auto flex-nowrap scrollbar-hide shrink-0">
+                      <button onClick={() => setCurrentView('dashboard')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'dashboard' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Dashboard</button>
+                      <button onClick={() => setCurrentView('library')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'library' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Library</button>
+                      <button onClick={() => setCurrentView('assessment')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'assessment' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Assessment</button>
+                      <button onClick={() => setCurrentView('report')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'report' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Report</button>
                   </div>
               </nav>
 
               <main className="flex-1 p-4 md:p-8 print:m-0 print:p-0 print:bg-white overflow-y-auto">
                 <div className="max-w-7xl mx-auto w-full">
                   {currentView === 'dashboard' ? (
-                  <div className="space-y-8 pt-8 animate-fade-in-up">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
-                      <h2 className="text-4xl font-black text-white tracking-tight mb-4">Welcome back, Physios!</h2>
-                      <p className="text-slate-400 text-lg font-medium">Streamline your workflow with instant, standardized clinical outcome evaluations.</p>
+                  <div className="space-y-8 pt-4 sm:pt-8 animate-fade-in-up">
+                    <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+                      <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-4">Welcome back, Physios!</h2>
+                      <p className="text-slate-400 text-base sm:text-lg font-medium">Streamline your workflow with instant, standardized clinical outcome evaluations.</p>
                     </div>
                     
                     {/* 3 Main Cards Layout */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
                       {/* New Session Card */}
-                      <div className="bg-gradient-to-br from-violet-700 to-indigo-800 rounded-[2rem] border border-violet-600 p-10 flex flex-col items-center text-center shadow-[0_12px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_15px_50px_rgba(99,102,241,0.5)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => handleStartAssessment('Berg Balance Scale (BBS)')}>
-                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="bg-white/10 group-hover:bg-white/20 transition-colors w-28 h-28 rounded-full mb-8 border border-white/10 flex items-center justify-center text-white shadow-inner relative z-10 mx-auto">
-                          <Plus size={48} className="transform group-hover:scale-110 group-hover:rotate-90 transition-transform duration-500"/>
+                      <div className="bg-slate-900 rounded-[2rem] border border-slate-800 p-8 sm:p-10 flex flex-col items-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgb(192,38,211,0.15)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => handleStartAssessment('Berg Balance Scale (BBS)')}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="bg-slate-800 group-hover:bg-gradient-to-br group-hover:from-violet-900 group-hover:to-fuchsia-900 transition-colors w-20 h-20 sm:w-24 sm:h-24 rounded-full mb-6 border-2 border-violet-900/50 group-hover:border-transparent flex items-center justify-center text-violet-400 group-hover:text-white shadow-sm relative z-10 mx-auto">
+                          <Plus size={36} className="transform group-hover:scale-110 group-hover:rotate-90 transition-transform duration-500"/>
                         </div>
-                        <h3 className="text-2xl font-black mb-3 text-white relative z-10">New Session</h3>
-                        <p className="text-indigo-100 text-sm font-medium mb-8 relative z-10 flex-1">Record and evaluate clinical outcome measures for your patient.</p>
-                        <button className="bg-slate-900 border border-slate-800 hover:bg-slate-950 text-white px-8 py-4 rounded-xl font-black transition-all duration-300 shadow-xl transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
+                        <h3 className="text-xl font-black mb-3 text-white relative z-10">New Session</h3>
+                        <p className="text-slate-400 text-sm font-medium mb-8 relative z-10 flex-1">Record and evaluate clinical outcome measures for your patient.</p>
+                        <button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white px-8 py-3 rounded-xl font-black transition-all duration-300 shadow-xl shadow-fuchsia-900/50 transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
                           Start New Session <ArrowRight size={16} />
                         </button>
                       </div>
 
                       {/* Clinical Library Card */}
-                      <div className="bg-gradient-to-br from-violet-700 to-indigo-800 rounded-[2rem] border border-violet-600 p-10 flex flex-col items-center text-center shadow-[0_12px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_15px_50px_rgba(99,102,241,0.5)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => setCurrentView('library')}>
+                      <div className="bg-gradient-to-br from-violet-700 to-indigo-800 rounded-[2rem] border border-violet-600 p-8 sm:p-10 flex flex-col items-center text-center shadow-[0_12px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_15px_50px_rgba(99,102,241,0.4)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => setCurrentView('library')}>
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="bg-white/10 group-hover:bg-white/20 transition-colors w-28 h-28 rounded-full mb-8 border border-white/10 flex items-center justify-center text-white shadow-inner relative z-10 mx-auto">
-                          <BookOpen size={48} className="transform group-hover:scale-110 transition-transform duration-500" />
+                        <div className="bg-white/10 group-hover:bg-white/20 transition-colors w-20 h-20 sm:w-24 sm:h-24 rounded-full mb-6 flex items-center justify-center text-white shadow-inner border border-white/10 relative z-10 mx-auto">
+                          <BookOpen size={40} className="transform group-hover:scale-110 transition-transform duration-500" />
                         </div>
                         <h3 className="text-2xl font-black mb-3 text-white relative z-10">Clinical Library</h3>
                         <p className="text-indigo-100 text-sm font-medium mb-8 relative z-10 flex-1">Browse and read clinical guidelines, target populations, and procedures.</p>
-                        <button className="bg-slate-900 border border-slate-800 hover:bg-slate-950 text-white px-8 py-4 rounded-xl font-black transition-all duration-300 shadow-xl transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
+                        <button className="bg-slate-900 border border-slate-800 hover:bg-slate-950 text-white px-8 py-3 rounded-xl font-black transition-all duration-300 shadow-lg transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
                           Open Library <ArrowRight size={16} />
                         </button>
                       </div>
                       
                       {/* My Assessments Card */}
-                      <div className="bg-gradient-to-br from-violet-700 to-indigo-800 rounded-[2rem] border border-violet-600 p-10 flex flex-col items-center text-center shadow-[0_12px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_15px_50px_rgba(99,102,241,0.5)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => setCurrentView('report')}>
-                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="bg-white/10 group-hover:bg-white/20 transition-colors w-28 h-28 rounded-full mb-8 border border-white/10 flex items-center justify-center text-white shadow-inner relative z-10 mx-auto">
-                          <ClipboardList size={48} className="transform group-hover:scale-110 transition-transform duration-500"/>
+                      <div className="bg-slate-900 rounded-[2rem] border border-slate-800 p-8 sm:p-10 flex flex-col items-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgb(192,38,211,0.15)] transition-all duration-300 relative overflow-hidden group cursor-pointer" onClick={() => setCurrentView('report')}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="bg-slate-800 group-hover:bg-slate-700 transition-colors w-20 h-20 sm:w-24 sm:h-24 rounded-full mb-6 border-2 border-fuchsia-900/50 group-hover:border-transparent flex items-center justify-center text-fuchsia-400 group-hover:text-white shadow-sm relative z-10 mx-auto">
+                          <ClipboardList size={36} className="transform group-hover:scale-110 transition-transform duration-500"/>
                         </div>
-                        <h3 className="text-2xl font-black mb-3 text-white relative z-10">My Assessments</h3>
-                        <p className="text-indigo-100 text-sm font-medium mb-8 relative z-10 flex-1">Continue or review your recent clinical assessments and reports.</p>
-                        <button className="bg-slate-900 border border-slate-800 hover:bg-slate-950 text-white px-8 py-4 rounded-xl font-black transition-all duration-300 shadow-xl transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
+                        <h3 className="text-xl font-black mb-3 text-white relative z-10">My Assessments</h3>
+                        <p className="text-slate-400 text-sm font-medium mb-8 relative z-10 flex-1">Continue or review your recent clinical assessments and reports.</p>
+                        <button className="bg-slate-800 border-2 border-slate-700 text-fuchsia-400 hover:bg-slate-700 hover:border-fuchsia-500/50 hover:text-white px-8 py-3 rounded-xl font-black transition-all duration-300 shadow-sm transform group-hover:-translate-y-1 w-full relative z-10 flex items-center justify-center gap-2">
                           View Assessments <ArrowRight size={16} />
                         </button>
                       </div>
                     </div>
 
                     {/* Horizontal Quick Shortcuts */}
-                    <div className="mt-4">
+                    <div className="mt-8">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="bg-violet-600 text-white rounded-full p-1.5 w-8 h-8 flex items-center justify-center shrink-0 shadow-sm"><i className="fa-solid fa-bolt text-xs"></i></div>
                             <h3 className="text-xl font-black text-white">Quick Shortcuts</h3>
@@ -1777,9 +1783,9 @@
                     </div>
 
                     {/* Lower Layout: Features and Promo */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mt-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mt-8">
                         <div className="lg:col-span-8 flex flex-col">
-                             <div className="bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 h-full flex flex-col justify-center">
+                             <div className="bg-slate-900 rounded-[2rem] p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-slate-800 h-full flex flex-col justify-center">
                                 <h4 className="font-extrabold text-white mb-6 text-lg">Why PhysioMeasure?</h4>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                     <div className="flex items-start gap-3">
@@ -1803,7 +1809,7 @@
                         </div>
 
                         <div className="lg:col-span-4 flex flex-col">
-                            <div className="bg-indigo-950/50 border border-indigo-900 rounded-[2rem] p-8 relative overflow-hidden flex items-center h-full group">
+                            <div className="bg-indigo-950/50 border border-indigo-900 rounded-[2rem] p-6 sm:p-8 relative overflow-hidden flex items-center h-full group">
                                 <div className="z-10 w-2/3">
                                     <h4 className="font-black text-indigo-100 mb-2 text-base">Standardized. Reliable. Efficient.</h4>
                                     <p className="text-xs text-indigo-300 leading-relaxed font-medium">Support evidence-based practice and deliver better patient outcomes.</p>
@@ -1811,8 +1817,8 @@
                                 <div className="absolute right-[-10px] top-1/2 transform -translate-y-1/2 opacity-20 group-hover:scale-110 transition-transform duration-500">
                                     <i className="fa-solid fa-shield-check text-8xl text-indigo-500"></i>
                                 </div>
-                                <div className="absolute right-6 z-10 bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform">
-                                    <i className="fa-solid fa-check text-xl"></i>
+                                <div className="absolute right-6 z-10 bg-indigo-600 text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform">
+                                    <i className="fa-solid fa-check text-lg sm:text-xl"></i>
                                 </div>
                             </div>
                         </div>
@@ -1823,7 +1829,7 @@
                 </div>
               </main>
 
-              <footer className="border-t border-slate-800 bg-slate-900 pt-8 pb-8 text-center no-print mt-auto">
+              <footer className="border-t border-slate-800 bg-slate-900 pt-6 sm:pt-8 pb-6 sm:pb-8 text-center no-print mt-auto px-4">
                 <p className="text-sm font-bold text-white mb-2">PhysioMeasure Clinical Tool</p>
                 <div className="flex flex-col items-center justify-center text-xs text-slate-400 space-y-1 font-medium">
                   <p>Developed by HSA Physiotherapy Department. For internal clinical use.</p>
@@ -1855,6 +1861,15 @@
       .animate-slide-up { animation: slideUp 0.2s ease-out forwards; }
       .animate-shake { animation: shake 0.3s ease-in-out; }
       .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+      /* Hide scrollbar for top nav on mobile but allow scrolling */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
 
       @media print { 
         @page { margin: 15mm; size: A4 portrait; }
