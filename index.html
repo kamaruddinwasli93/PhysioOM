@@ -387,7 +387,7 @@
           'Pediatric Quality of Life Inventory (PedsQL)': [ { range: '80 - 100', label: 'Good QoL' }, { range: '60 - 79', label: 'Mild Reduction' }, { range: '40 - 59', label: 'Moderate Reduction' }, { range: '0 - 39', label: 'Severe Reduction' } ]
         };
 
-        // --- HELPER CONSTANTS & CONFIGS ---
+        // --- OPTIONS DEFINITIONS COMPRESSED ---
         const makeOptions = (max) => Array.from({length: max + 1}, (_, i) => ({ val: i, label: i.toString() }));
         const fmaOpts = [ { val: 0, label: '0 - Cannot perform' }, { val: 1, label: '1 - Performs partially' }, { val: 2, label: '2 - Performs fully' } ];
         const gmfmOpts = [ { val: 0, label: '0 - Does not initiate' }, { val: 1, label: '1 - Initiates (<10%)' }, { val: 2, label: '2 - Partially completes' }, { val: 3, label: '3 - Completes task' } ];
@@ -422,7 +422,7 @@
         const masItem6 = [ {val: 0, label: "0 - Unable"}, {val: 1, label: "1 - Lying, protract shoulder girdle with arm in elevation (therapist assist)"}, {val: 2, label: "2 - Lying, hold extended arm in elevation for 2 seconds"}, {val: 3, label: "3 - Flexion and extension of elbow to take palm to forehead"}, {val: 4, label: "4 - Sitting, lifts arm to elevation, holds 10 seconds, then lowers it"}, {val: 5, label: "5 - Sitting, lifts arm to elevation, holds 10 seconds, then lowers it (supination)"}, {val: 6, label: "6 - Standing, hand against wall. Maintain arm pos while turning body"} ];
         const masItem7 = [ {val: 0, label: "0 - Unable"}, {val: 1, label: "1 - Sitting, extension of wrist (lifts object off table)"}, {val: 2, label: "2 - Sitting, radial deviation of wrist (lifts hand off table)"}, {val: 3, label: "3 - Sitting, elbow into side, pronation and supination"}, {val: 4, label: "4 - Reach forward, pick up large ball with both hands and put it down"}, {val: 5, label: "5 - Pick up a polystyrene cup from table and put it on table across body"}, {val: 6, label: "6 - Continuous opposition of thumb and each finger >14 times in 10s"} ];
         const masItem8 = [ {val: 0, label: "0 - Unable"}, {val: 1, label: "1 - Picking up the top of a pen and putting it down again"}, {val: 2, label: "2 - Picking up one jellybean and placing it in another cup"}, {val: 3, label: "3 - Drawing horizontal lines to stop at a vertical line 10 times in 20s"}, {val: 4, label: "4 - Holding a pencil, making rapid consecutive dots (2 dots/sec for 5s)"}, {val: 5, label: "5 - Taking a dessert spoon of liquid to the mouth without spilling"}, {val: 6, label: "6 - Holding a comb and combing hair at back of head"} ];
-        const masItem9 = [ {val: 1, label: "1 - Flaccid, limp, no resistance"}, {val: 2, label: "2 - Some resistance felt as body parts are moved"}, {val: 3, label: "3 - Variable, sometimes flaccid, sometimes hypertonic"}, {val: 5, label: "5 - Hypertonic 50 percent of the time"}, {val: 6, label: "6 - Hypertonic at all times"}, {val: 4, label: "4 - Consistently normal response (normal tone)"}, {val: 0, label: "0 - Unassessed / Unable"} ];
+        const masItem9 = [ {val: 1, label: "1 - Flaccid, limp, no resistance"}, {val: 2, label: "2 - Some resistance felt as body parts are moved"}, {val: 3, label: "3 - Variable, sometimes flaccid, sometimes hypertonic"}, {val: 4, label: "4 - Consistently normal response (normal tone)"}, {val: 5, label: "5 - Hypertonic 50 percent of the time"}, {val: 6, label: "6 - Hypertonic at all times"}, {val: 0, label: "0 - Unassessed / Unable"} ];
 
         const scimFeedingOpts = [ {val:0, label:'0. Needs parenteral, gastrostomy or fully assisted oral feeding'}, {val:1, label:'1. Needs partial assistance for eating and/or drinking, or for wearing adaptive devices'}, {val:2, label:'2. Eats independently; needs adaptive devices or assistance only for cutting food and/or pouring and/or opening containers'}, {val:3, label:'3. Eats and drinks independently; does not require assistance or adaptive devices'} ];
         const scimBathingOpts = [ {val:0, label:'0. Requires total assistance'}, {val:1, label:'1. Requires partial assistance'}, {val:2, label:'2. Washes independently with adaptive devices or in a specific setting (e.g., bars, chair)'}, {val:3, label:'3. Washes independently; does not require adaptive devices or specific setting'} ];
@@ -1713,33 +1713,33 @@
 
           return (
             <div className="min-h-screen bg-slate-950 font-sans flex flex-col text-slate-200 print:bg-white print:block print:h-auto print:overflow-visible overflow-x-hidden">
-              <nav className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-4 sticky top-0 z-50 no-print flex flex-col sm:flex-row justify-between items-center shadow-sm w-full gap-4 sm:gap-0">
-                  <div className="flex items-center space-x-4 cursor-pointer w-full sm:w-auto justify-between sm:justify-start" onClick={() => setCurrentView('dashboard')}>
-                      <div className="flex items-center space-x-3">
-                          <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-3 py-1.5 rounded-lg font-black italic text-sm shadow-md shadow-fuchsia-900/50">KKM</div>
-                          <div>
-                              <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight leading-none">Physio<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Measure</span></h1>
-                              <p className="text-[9px] sm:text-[10px] text-slate-400 tracking-widest uppercase font-bold mt-0.5">Developed by HSA Physio Department</p>
-                          </div>
+              <nav className="bg-slate-900 border-b border-slate-800 px-6 py-4 sticky top-0 z-50 no-print flex flex-wrap justify-between items-center w-full">
+                  <div className="flex items-center space-x-4 cursor-pointer" onClick={() => setCurrentView('dashboard')}>
+                      <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-3 py-1.5 rounded-lg font-black italic text-sm shadow-md shadow-fuchsia-900/50">KKM</div>
+                      <div>
+                          <h1 className="text-xl font-extrabold text-white tracking-tight leading-none">Physio<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Measure</span></h1>
+                          <p className="text-[10px] text-slate-400 tracking-widest uppercase font-bold mt-0.5">Developed by Hospital Sri Aman Physiotherapy Department</p>
                       </div>
                   </div>
-                  
-                  {/* Horizontally scrollable menu on mobile */}
-                  <div className="flex space-x-2 bg-slate-800 p-1 rounded-xl w-full sm:w-auto overflow-x-auto flex-nowrap scrollbar-hide shrink-0">
-                      <button onClick={() => setCurrentView('dashboard')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'dashboard' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Dashboard</button>
-                      <button onClick={() => setCurrentView('library')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'library' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Library</button>
-                      <button onClick={() => setCurrentView('assessment')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'assessment' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Assessment</button>
-                      <button onClick={() => setCurrentView('report')} className={`whitespace-nowrap font-bold text-sm px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 ${currentView === 'report' ? 'bg-slate-700 text-fuchsia-400 shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}>Report</button>
+                  <div className="flex space-x-2 mt-4 sm:mt-0 font-medium text-sm">
+                      <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200 ${currentView === 'dashboard' ? 'bg-slate-800 text-fuchsia-400 font-bold shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}><Home size={16}/> Dashboard</button>
+                      <button onClick={() => setCurrentView('library')} className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200 ${currentView === 'library' ? 'bg-slate-800 text-fuchsia-400 font-bold shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}><BookOpen size={16}/> Library</button>
+                      <button onClick={() => setCurrentView('assessment')} className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200 ${currentView === 'assessment' ? 'bg-slate-800 text-fuchsia-400 font-bold shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}><ClipboardList size={16}/> Assessment</button>
+                      <button onClick={() => setCurrentView('report')} className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-200 ${currentView === 'report' ? 'bg-slate-800 text-fuchsia-400 font-bold shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}><FileText size={16}/> Report</button>
                   </div>
               </nav>
 
-              <main className="flex-1 p-4 md:p-8 print:m-0 print:p-0 print:bg-white overflow-y-auto">
-                <div className="max-w-7xl mx-auto w-full">
+              <main className="flex-1 p-4 md:p-8 lg:px-12 xl:px-24 print:m-0 print:p-0 print:bg-white overflow-y-auto">
+                <div className="mx-auto w-full max-w-[1400px]">
                   {currentView === 'dashboard' ? (
-                  <div className="space-y-8 pt-4 sm:pt-8 animate-fade-in-up">
-                    <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-                      <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-4">Welcome back, Physios!</h2>
-                      <p className="text-slate-400 text-base sm:text-lg font-medium">Streamline your workflow with instant, standardized clinical outcome evaluations.</p>
+                  <div className="space-y-8 animate-fade-in-up">
+                    <div className="mb-10 text-center sm:text-left">
+                      <h2 className="text-4xl lg:text-[2.75rem] font-black text-white tracking-tight mb-4">Welcome back, Physios!</h2>
+                      <p className="text-slate-400 text-lg font-medium">Streamline your workflow with instant, standardized clinical outcome evaluations.</p>
+                    </div>
+                    
+                    {/* 3 Main Cards Layout */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                     </div>
                     
                     {/* 3 Main Cards Layout */}
@@ -1834,7 +1834,8 @@
                         </div>
 
                         <div className="lg:col-span-4 flex flex-col">
-                            <div className="bg-indigo-950/50 border border-indigo-900 rounded-[2rem] p-6 sm:p-8 relative overflow-hidden flex items-center h-full group">
+                            {/* Standardized Promo Panel */}
+                            <div className="bg-indigo-950/50 border border-indigo-900 rounded-[2rem] p-8 relative overflow-hidden flex items-center h-full group">
                                 <div className="z-10 w-2/3">
                                     <h4 className="font-black text-indigo-100 mb-2 text-base">Standardized. Reliable. Efficient.</h4>
                                     <p className="text-xs text-indigo-300 leading-relaxed font-medium">Support evidence-based practice and deliver better patient outcomes.</p>
@@ -1842,8 +1843,8 @@
                                 <div className="absolute right-[-10px] top-1/2 transform -translate-y-1/2 opacity-20 group-hover:scale-110 transition-transform duration-500">
                                     <i className="fa-solid fa-shield-check text-8xl text-indigo-500"></i>
                                 </div>
-                                <div className="absolute right-6 z-10 bg-indigo-600 text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform">
-                                    <i className="fa-solid fa-check text-lg sm:text-xl"></i>
+                                <div className="absolute right-6 z-10 bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform">
+                                    <i className="fa-solid fa-check text-xl"></i>
                                 </div>
                             </div>
                         </div>
@@ -1854,14 +1855,29 @@
                 </div>
               </main>
 
-              <footer className="border-t border-slate-800 bg-slate-900 pt-6 sm:pt-8 pb-6 sm:pb-8 text-center no-print mt-auto px-4">
-                <p className="text-sm font-bold text-white mb-2">PhysioMeasure Clinical Tool</p>
-                <div className="flex flex-col items-center justify-center text-xs text-slate-400 space-y-1 font-medium">
-                  <p>Developed by HSA Physiotherapy Department. For internal clinical use.</p>
-                  <a href="mailto:kamaruddin.w@moh.gov.my" className="inline-flex items-center text-violet-400 hover:text-fuchsia-300 transition font-bold mt-2 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full">
-                    <Mail size={12} className="mr-2" />
-                    Contact Support: Kamaruddin Wasli
-                  </a>
+              <footer className="border-t border-slate-800 bg-slate-900 py-6 text-center no-print mt-auto">
+                <div className="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-violet-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-sm"><i className="fa-solid fa-heart-pulse text-xs"></i></div>
+                            <div className="text-left">
+                                <p className="text-xs font-bold text-violet-400">PhysioMeasure Clinical Tool</p>
+                                <p className="text-[10px] text-slate-500">Developed by Hospital Sri Aman Physiotherapy Department.</p>
+                            </div>
+                        </div>
+                        <div className="hidden md:block w-px h-8 bg-slate-700"></div>
+                        <a href="mailto:kamaruddin.w@moh.gov.my" className="inline-flex items-center text-violet-400 hover:text-fuchsia-300 transition font-bold bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-[11px]">
+                            <i className="fa-solid fa-envelope mr-2"></i>
+                            Creator: Kamaruddin Wasli
+                        </a>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="bg-slate-800 p-2 rounded-full text-slate-400"><i className="fa-solid fa-shield-check"></i></div>
+                        <div className="text-left">
+                            <p className="text-xs font-bold text-slate-300">Your Clinical Companion</p>
+                            <p className="text-[10px] text-slate-500">Empowering physiotherapists. Enhancing outcomes.</p>
+                        </div>
+                    </div>
                 </div>
               </footer>
 
