@@ -1697,48 +1697,47 @@
 
                         <div className="space-y-12">
                             {[
-                                { id: 'Neurology', title: 'Neurology', icon: 'fa-brain', color: 'text-violet-400', bg: 'bg-violet-900/30 border border-violet-800/50' },
-                                { id: 'Musculoskeletal', title: 'Musculoskeletal', icon: 'fa-bone', color: 'text-amber-400', bg: 'bg-amber-900/30 border border-amber-800/50' },
-                                { id: 'Cardiopulmonary', title: 'Cardiopulmonary', icon: 'fa-heart-pulse', color: 'text-rose-400', bg: 'bg-rose-900/30 border border-rose-800/50' },
-                                { id: 'Paediatric', title: 'Paediatric', icon: 'fa-child-reaching', color: 'text-emerald-400', bg: 'bg-emerald-900/30 border border-emerald-800/50' }
+                                { id: 'Neurology', title: 'Neurology', icon: 'fa-brain', headColor: 'text-violet-400', headBg: 'bg-violet-900/30 border border-violet-800/50', cardBg: 'bg-gradient-to-br from-slate-900 to-violet-950/20 border-violet-900/50', cardHover: 'hover:border-violet-500 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)]', badgeBg: 'bg-violet-900/30 text-violet-400 group-hover:bg-violet-600 group-hover:text-white', btnText: 'text-violet-400', watermark: 'text-violet-600/30 group-hover:text-violet-500/40' },
+                                { id: 'Musculoskeletal', title: 'Musculoskeletal', icon: 'fa-bone', headColor: 'text-amber-400', headBg: 'bg-amber-900/30 border border-amber-800/50', cardBg: 'bg-gradient-to-br from-slate-900 to-amber-950/20 border-amber-900/50', cardHover: 'hover:border-amber-500 hover:shadow-[0_8px_30px_rgba(245,158,11,0.15)]', badgeBg: 'bg-amber-900/30 text-amber-400 group-hover:bg-amber-500 group-hover:text-white', btnText: 'text-amber-400', watermark: 'text-amber-600/30 group-hover:text-amber-500/40' },
+                                { id: 'Cardiopulmonary', title: 'Cardiopulmonary', icon: 'fa-heart-pulse', headColor: 'text-rose-400', headBg: 'bg-rose-900/30 border border-rose-800/50', cardBg: 'bg-gradient-to-br from-slate-900 to-rose-950/20 border-rose-900/50', cardHover: 'hover:border-rose-500 hover:shadow-[0_8px_30px_rgba(244,63,94,0.15)]', badgeBg: 'bg-rose-900/30 text-rose-400 group-hover:bg-rose-600 group-hover:text-white', btnText: 'text-rose-400', watermark: 'text-rose-600/30 group-hover:text-rose-500/40' },
+                                { id: 'Paediatric', title: 'Paediatric', icon: 'fa-child-reaching', headColor: 'text-emerald-400', headBg: 'bg-emerald-900/30 border border-emerald-800/50', cardBg: 'bg-gradient-to-br from-slate-900 to-emerald-950/20 border-emerald-900/50', cardHover: 'hover:border-emerald-500 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)]', badgeBg: 'bg-emerald-900/30 text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white', btnText: 'text-emerald-400', watermark: 'text-emerald-600/30 group-hover:text-emerald-500/40' }
                             ].map(category => {
                                 const catMeasures = filteredMeasures.filter(m => m.category === category.id);
                                 
+                                // Sembunyikan kategori jika tidak ada hasil dari kolom pencarian
                                 if (catMeasures.length === 0) return null;
                                 
                                 return (
                                     <div key={category.id} className="animate-fade-in-up">
-                                        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6 border-b border-slate-800 pb-4 text-center sm:text-left">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${category.bg} ${category.color} shadow-sm shrink-0 mx-auto sm:mx-0`}>
+                                        <div className="flex items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${category.headBg} ${category.headColor} shadow-sm`}>
                                                 <i className={`fa-solid ${category.icon} text-xl`}></i>
                                             </div>
-                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full justify-between sm:justify-start">
-                                              <h3 className="text-2xl font-black text-white tracking-tight">{category.title}</h3>
-                                              <span className="bg-slate-800 border border-slate-700 text-slate-300 py-1 px-3 rounded-full text-xs font-bold shadow-sm self-center sm:self-auto">{catMeasures.length} Measures</span>
-                                            </div>
+                                            <h3 className="text-2xl font-black text-white tracking-tight">{category.title}</h3>
+                                            <span className="bg-slate-800 border border-slate-700 text-slate-300 py-1 px-3 rounded-full text-xs font-bold shadow-sm">{catMeasures.length} Measures</span>
                                         </div>
                                         
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             {catMeasures.map((measure, idx) => (
                                                 <div 
                                                     key={idx} 
                                                     onClick={() => setSelectedLibMeasure(measure)} 
-                                                    className="bg-slate-900 p-6 rounded-3xl border border-slate-800 hover:border-violet-500 hover:shadow-xl hover:shadow-violet-900/20 cursor-pointer transition-all duration-300 group flex flex-col h-full relative overflow-hidden"
+                                                    className={`p-6 rounded-3xl border shadow-lg cursor-pointer transition-all duration-300 group flex flex-col h-full relative overflow-hidden ${category.cardBg} ${category.cardHover}`}
                                                 >
-                                                    <div className="absolute -right-6 -bottom-6 text-7xl text-slate-800 opacity-50 group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500">
+                                                    <div className={`absolute -right-6 -bottom-6 text-7xl transition-all duration-500 group-hover:scale-110 group-hover:-rotate-12 ${category.watermark}`}>
                                                         <i className={`fa-solid ${measure.icon}`}></i>
                                                     </div>
                                                     <div className="relative z-10 flex-1">
                                                         <div className="flex items-center gap-2 mb-4">
-                                                            <span className="bg-slate-800 text-slate-400 group-hover:bg-violet-900/50 group-hover:text-violet-400 border border-slate-700 group-hover:border-violet-800/50 transition-colors w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                                                            <span className={`transition-colors w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${category.badgeBg}`}>
                                                                 <i className={`fa-solid ${measure.icon} text-xs`}></i>
                                                             </span>
-                                                            <span className="text-[10px] font-black text-slate-500 group-hover:text-violet-400 uppercase tracking-widest transition-colors">{measure.category}</span>
+                                                            <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${category.headColor}`}>{measure.category}</span>
                                                         </div>
                                                         <h3 className="text-lg font-black text-slate-200 mb-3 leading-snug group-hover:text-white transition-colors">{measure.name}</h3>
                                                         <p className="text-sm text-slate-400 font-medium line-clamp-3 leading-relaxed">{measure.evidence.findings}</p>
                                                     </div>
-                                                    <div className="relative z-10 mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-fuchsia-400 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                                                    <div className={`relative z-10 mt-6 pt-4 border-t border-slate-800/50 flex justify-between items-center font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 ${category.btnText}`}>
                                                         <span>Read Guidelines</span>
                                                         <ArrowRight size={16} />
                                                     </div>
